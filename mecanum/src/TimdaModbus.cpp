@@ -10,6 +10,7 @@ TimdaModbus::TimdaModbus()
 
 TimdaModbus::~TimdaModbus()
 {
+    this->move(0, 0, 0, 0);
     int rc1 = modbus_write_register(this->ct1, 0x007D, 0x00);
     int rc2 = modbus_write_register(this->ct2, 0x007D, 0x00);
     int rc3 = modbus_write_register(this->ct3, 0x007D, 0x00);

@@ -36,7 +36,7 @@ public:
                                     <<W.at(1)<<" "
                                     <<W.at(2)<<" "
                                     <<W.at(3)<<std::endl;
-
+        this->TM->move(W.at(0), W.at(1), W.at(2), W.at(3));
     }
 };
 
