@@ -1,4 +1,4 @@
-#include "mecanum.h"
+#include <Mecanum/Mecanum.h>
 
 Mecanum::Mecanum(double ia, double ib, double iR)
 {
@@ -11,7 +11,7 @@ Mecanum::~Mecanum()
 {
 }
 
-void Mecanum::IK(double vx, double vy, double vw)
+std::vector<double> Mecanum::IK(double vx, double vy, double vw)
 {
     Eigen::MatrixXf J(4, 3);
     Eigen::MatrixXf V(3, 1);
@@ -22,6 +22,7 @@ void Mecanum::IK(double vx, double vy, double vw)
          1, -1,  1*(a + b);
     V << vx, vy, vw;
     W = 1/R * (J*V);
-    std::cout<<"W: "<<W<<std::endl;
+    std::vector<double>MW(W.data(), W.data() + W.size());
+    return MW;
 }
 
