@@ -3,10 +3,7 @@
 #include <iostream>
 #include <Mecanum/Mecanum.h>
 #include <TimdaModbus/TimdaModbus.h>
-
-double a = 0.48544;
-double b = 0.253;
-double R = 0.1524;
+#define K 0.10472
 
 class TimdaMobile
 {
@@ -14,11 +11,15 @@ class TimdaMobile
     ros::Subscriber sub_;
     Mecanum *M;
     TimdaModbus *TM;
+    double a = 0.48544;
+    double b = 0.253;
+    double R = 0.1524;
+
 
 public:
     TimdaMobile() {
         sub_ = nh_.subscribe("/mobile/cmd_vel", 1, &TimdaMobile::Callback, this);
-        M = new Mecanum(a, b, R);
+        M = new Mecanum(this->a, this->b, this->R);
         TM = new TimdaModbus();
     }
 
@@ -32,11 +33,19 @@ public:
         W = M->IK(msg->linear.x,
                   msg->linear.y,
                   msg->angular.z);
-        std::cout<<"Return from IK:"<<W.at(0)<<" "
-                                    <<W.at(1)<<" "
-                                    <<W.at(2)<<" "
-                                    <<W.at(3)<<std::endl;
-        this->TM->move(W.at(0), W.at(1), W.at(2), W.at(3));
+        //std::cout<<"Return from IK:"<<W.at(0)<<" "
+        //                            <<W.at(1)<<" "
+        //                            <<W.at(2)<<" "
+        //                            <<W.at(3)<<std::endl;
+        //this->TM->move(W.at(0), W.at(1), W.at(2), W.at(3));
+        this->TM->move(W2RPM(W.at(0)), W2RPM(W.at(1)), W2RPM(W.at(2)), W2RPM(W.at(3)));
+        std::cout<<"PWM: "<<W2RPM(W.at(0)) <<" "<< W2RPM(W.at(1))<<" "<< W2RPM(W.at(2))<<" "<< W2RPM(W.at(3))<<std::endl;
+    }
+
+    int W2RPM(double W) {
+        double v = W * this->R;
+        int RPM = (int)((v / this->R)/K);
+        return RPM;
     }
 };
 
