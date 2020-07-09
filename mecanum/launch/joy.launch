@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="joy_node" pkg="joy" type="joy_node">
+        <param name="/joy_node/dev" value="/dev/input/js1" />
+  </node>
+  <node name="rescale" pkg="topic_tools" type="transform"
+        args="/joy /mobile/cmd_vel geometry_msgs/Twist
+              'geometry_msgs.msg.Twist(
+                 linear=geometry_msgs.msg.Vector3(m.axes[3]*100, m.axes[2]*100, 0.0),
+                 angular=geometry_msgs.msg.Vector3(0.0, 0.0, m.axes[0]*100)
+               )' --import geometry_msgs" />
+</launch>

@@ -11,10 +11,10 @@ TimdaModbus::TimdaModbus()
 TimdaModbus::~TimdaModbus()
 {
     this->move(0, 0, 0, 0);
-    int rc1 = modbus_write_register(this->ct1, 0x007D, 0x00);
-    int rc2 = modbus_write_register(this->ct2, 0x007D, 0x00);
-    int rc3 = modbus_write_register(this->ct3, 0x007D, 0x00);
-    int rc4 = modbus_write_register(this->ct4, 0x007D, 0x00);
+    modbus_write_register(this->ct1, 0x007D, 0x00);
+    modbus_write_register(this->ct2, 0x007D, 0x00);
+    modbus_write_register(this->ct3, 0x007D, 0x00);
+    modbus_write_register(this->ct4, 0x007D, 0x00);
     modbus_close(this->ct1);
     modbus_free(this->ct1);
     modbus_close(this->ct2);
@@ -45,30 +45,30 @@ modbus_t* TimdaModbus::init_modbus_rtu(int id,
 
 void TimdaModbus::move(int motor_1_rpm, int motor_2_rpm, int motor_3_rpm, int motor_4_rpm)
 {
-    int rc1 = modbus_write_register(this->ct1, 0x485, abs(motor_1_rpm));
-    int rc2 = modbus_write_register(this->ct2, 0x485, abs(motor_2_rpm));
-    int rc3 = modbus_write_register(this->ct3, 0x485, abs(motor_3_rpm));
-    int rc4 = modbus_write_register(this->ct4, 0x485, abs(motor_4_rpm));
+    modbus_write_register(this->ct1, 0x485, abs(motor_1_rpm));
+    modbus_write_register(this->ct2, 0x485, abs(motor_2_rpm));
+    modbus_write_register(this->ct3, 0x485, abs(motor_3_rpm));
+    modbus_write_register(this->ct4, 0x485, abs(motor_4_rpm));
 
     // Ref pg19 in HM-5117C.pdf, 0x0A: 00000000 00001010 means FWD 1 w/ reg 2
     if (motor_1_rpm > 0) {
-        int rc11 = modbus_write_register(this->ct1, 0x007D, 0x0A);
+        modbus_write_register(this->ct1, 0x007D, 0x0A);
     }else {
-        int rc11 = modbus_write_register(this->ct1, 0x007D, 0x12);
+        modbus_write_register(this->ct1, 0x007D, 0x12);
     }
     if (motor_2_rpm > 0) {
-        int rc22 = modbus_write_register(this->ct2, 0x007D, 0x12);
+        modbus_write_register(this->ct2, 0x007D, 0x12);
     }else {
-        int rc22 = modbus_write_register(this->ct2, 0x007D, 0x0A);
+        modbus_write_register(this->ct2, 0x007D, 0x0A);
     }
     if (motor_3_rpm > 0) {
-        int rc33 = modbus_write_register(this->ct3, 0x007D, 0x0A);
+        modbus_write_register(this->ct3, 0x007D, 0x0A);
     }else {
-        int rc33 = modbus_write_register(this->ct3, 0x007D, 0x12);
+        modbus_write_register(this->ct3, 0x007D, 0x12);
     }
     if (motor_4_rpm > 0) {
-        int rc44 = modbus_write_register(this->ct4, 0x007D, 0x12);
+        modbus_write_register(this->ct4, 0x007D, 0x12);
     }else {
-        int rc44 = modbus_write_register(this->ct4, 0x007D, 0x0A);
+        modbus_write_register(this->ct4, 0x007D, 0x0A);
     }
 }

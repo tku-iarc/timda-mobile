@@ -4,6 +4,12 @@
 #include <Mecanum/Mecanum.h>
 #include <TimdaModbus/TimdaModbus.h>
 #define K 0.10472
+#define MAX_RPM 3979
+#define MIN_RPM 83
+
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
 
 class TimdaMobile
 {
@@ -15,6 +21,8 @@ class TimdaMobile
     double b = 0.253;
     double R = 0.1524;
 
+private:
+    int RPM;
 
 public:
     TimdaMobile() {
@@ -44,7 +52,9 @@ public:
 
     int W2RPM(double W) {
         double v = W * this->R;
-        int RPM = (int)((v / this->R)/K);
+        RPM = (int)((v / this->R)/K);
+        RPM = (abs(RPM) > MAX_RPM) ? MAX_RPM*sgn(RPM) : RPM;
+        RPM = (abs(RPM) < MIN_RPM) ? 0 : RPM;
         return RPM;
     }
 };
