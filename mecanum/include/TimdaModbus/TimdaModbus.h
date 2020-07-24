@@ -14,6 +14,7 @@
 
 class TimdaModbus
 {
+    modbus_t *ct = nullptr;
     modbus_t *ct1 = nullptr;
     modbus_t *ct2 = nullptr;
     modbus_t *ct3 = nullptr;

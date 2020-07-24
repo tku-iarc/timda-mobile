@@ -2,27 +2,35 @@
 
 TimdaModbus::TimdaModbus()
 {
-    this->ct1 = init_modbus_rtu(1, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
-    this->ct2 = init_modbus_rtu(2, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
-    this->ct3 = init_modbus_rtu(3, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
-    this->ct4 = init_modbus_rtu(4, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
+    // this->ct1 = init_modbus_rtu(1, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
+    // this->ct2 = init_modbus_rtu(2, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
+    // this->ct3 = init_modbus_rtu(3, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
+    // this->ct4 = init_modbus_rtu(4, UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
+    this->ct = modbus_new_rtu(UART_PORT, BAUD_RATE, PARITY, BYTESIZE, STOPBITS);
+    modbus_set_slave(this->ct, 1);
+    if (modbus_connect(this->ct) == -1) {
+        fprintf(stderr, "Connection ID '%d' failed: %s\n", 1, modbus_strerror(errno));
+        modbus_free(this->ct);
+    }
 }
 
 TimdaModbus::~TimdaModbus()
 {
     this->move(0, 0, 0, 0);
-    modbus_write_register(this->ct1, 0x007D, 0x00);
-    modbus_write_register(this->ct2, 0x007D, 0x00);
-    modbus_write_register(this->ct3, 0x007D, 0x00);
-    modbus_write_register(this->ct4, 0x007D, 0x00);
-    modbus_close(this->ct1);
-    modbus_free(this->ct1);
-    modbus_close(this->ct2);
-    modbus_free(this->ct2);
-    modbus_close(this->ct3);
-    modbus_free(this->ct3);
-    modbus_close(this->ct4);
-    modbus_free(this->ct4);
+    modbus_close(this->ct);
+    modbus_free(this->ct);
+    // modbus_write_register(this->ct1, 0x007D, 0x00);
+    // modbus_write_register(this->ct2, 0x007D, 0x00);
+    // modbus_write_register(this->ct3, 0x007D, 0x00);
+    // modbus_write_register(this->ct4, 0x007D, 0x00);
+    // modbus_close(this->ct1);
+    // modbus_free(this->ct1);
+    // modbus_close(this->ct2);
+    // modbus_free(this->ct2);
+    // modbus_close(this->ct3);
+    // modbus_free(this->ct3);
+    // modbus_close(this->ct4);
+    // modbus_free(this->ct4);
 }
 
 modbus_t* TimdaModbus::init_modbus_rtu(int id,
@@ -35,7 +43,7 @@ modbus_t* TimdaModbus::init_modbus_rtu(int id,
     modbus_t* ct = modbus_new_rtu(port.c_str(), baud_rate, parity, bytesize, stop_bits);
     modbus_set_slave(ct, id);
     if (modbus_connect(ct) == -1) {
-        fprintf(stderr, "Connection failed: %s\n", modbus_strerror(errno));
+        fprintf(stderr, "Connection ID '%d' failed: %s\n", id, modbus_strerror(errno));
         modbus_free(ct);
         return nullptr;
     }
@@ -45,30 +53,48 @@ modbus_t* TimdaModbus::init_modbus_rtu(int id,
 
 void TimdaModbus::move(int motor_1_rpm, int motor_2_rpm, int motor_3_rpm, int motor_4_rpm)
 {
-    modbus_write_register(this->ct1, 0x485, abs(motor_1_rpm));
-    modbus_write_register(this->ct2, 0x485, abs(motor_2_rpm));
-    modbus_write_register(this->ct3, 0x485, abs(motor_3_rpm));
-    modbus_write_register(this->ct4, 0x485, abs(motor_4_rpm));
+    // modbus_write_register(this->ct1, 0x485, abs(motor_1_rpm));
+    // modbus_write_register(this->ct2, 0x485, abs(motor_2_rpm));
+    // modbus_write_register(this->ct3, 0x485, abs(motor_3_rpm));
+    // modbus_write_register(this->ct4, 0x485, abs(motor_4_rpm));
+    int mrpm_arr[4] = {motor_1_rpm, motor_2_rpm, motor_3_rpm, motor_4_rpm};
+    for (int i = 1; i <=4; i++) {
+        modbus_set_slave(this->ct, i);
+        modbus_write_register(this->ct, 0x485, abs(mrpm_arr[i - 1]));
+        if ( i % 2 == 0) {
+            if (mrpm_arr[i - 1] > 0) {
+                modbus_write_register(this->ct, 0x007D, 0x12);
+            }else {
+                modbus_write_register(this->ct, 0x007D, 0x0A);
+            }
+        }else {
+            if (mrpm_arr[i - 1] > 0) {
+                modbus_write_register(this->ct, 0x007D, 0x0A);
+            }else {
+                modbus_write_register(this->ct, 0x007D, 0x12);
+            }
+        }
+    }
 
     // Ref pg19 in HM-5117C.pdf, 0x0A: 00000000 00001010 means FWD 1 w/ reg 2
-    if (motor_1_rpm > 0) {
-        modbus_write_register(this->ct1, 0x007D, 0x0A);
-    }else {
-        modbus_write_register(this->ct1, 0x007D, 0x12);
-    }
-    if (motor_2_rpm > 0) {
-        modbus_write_register(this->ct2, 0x007D, 0x12);
-    }else {
-        modbus_write_register(this->ct2, 0x007D, 0x0A);
-    }
-    if (motor_3_rpm > 0) {
-        modbus_write_register(this->ct3, 0x007D, 0x0A);
-    }else {
-        modbus_write_register(this->ct3, 0x007D, 0x12);
-    }
-    if (motor_4_rpm > 0) {
-        modbus_write_register(this->ct4, 0x007D, 0x12);
-    }else {
-        modbus_write_register(this->ct4, 0x007D, 0x0A);
-    }
+    // if (motor_1_rpm > 0) {
+    //     modbus_write_register(this->ct1, 0x007D, 0x0A);
+    // }else {
+    //     modbus_write_register(this->ct1, 0x007D, 0x12);
+    // }
+    // if (motor_2_rpm > 0) {
+    //     modbus_write_register(this->ct2, 0x007D, 0x12);
+    // }else {
+    //     modbus_write_register(this->ct2, 0x007D, 0x0A);
+    // }
+    // if (motor_3_rpm > 0) {
+    //     modbus_write_register(this->ct3, 0x007D, 0x0A);
+    // }else {
+    //     modbus_write_register(this->ct3, 0x007D, 0x12);
+    // }
+    // if (motor_4_rpm > 0) {
+    //     modbus_write_register(this->ct4, 0x007D, 0x12);
+    // }else {
+    //     modbus_write_register(this->ct4, 0x007D, 0x0A);
+    // }
 }
