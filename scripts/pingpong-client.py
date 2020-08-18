@@ -1,38 +1,75 @@
-import os
-import sys
-import time
 import socketio
+import time
+from threading import Timer, Event, Thread
 
 sio = socketio.Client()
+event = Event()
+CONNECTED = False
+LAST_CONNECT_TIME = time.time()
 
-sio.connect('http://localhost:3000')
-sio.wait()
+# class HeartbeatThread(Thread):
 
-@sio.event
-def message(data):
-    print('I received a message ', data)
+#     def __init__(self, socket, event):
+#         super(HeartbeatThread, self).__init__()
+#         self.socket = socket
+#         self.eve = event
 
-@sio.on('my message')
-def on_message(data):
-    print('I received a message ', data)
-
-@sio.on('pong')
-def on_message(data):
-    print('I received a message ', data)
+#     def run(self):
+#         while 1:
+#             # 发送ping包
+#             # self.ws.send('2')
+#             print("Send...")
+#             self.socket.emit('ping', {'ping': 'ping'})
+#             self.eve.wait(timeout=2)
 
 @sio.event
 def connect():
-    print("I'm connected!")
+    print('[*] Connection established')
+    print('[*] Start Ping-pong')
+    sio.emit('ping', {'ping': 'ping'})
 
-@sio.event
-def connect_error():
-    print("The connection failed!")
+@sio.on('pong')
+def on_message(data):
+    LAST_CONNECT_TIME = time.time()
+    print("[*] I got pong '{}', I will 'ping!' back".format(data))
+    time.sleep(.5)
+    sio.emit('ping', {'ping': 'ping'})
 
 @sio.event
 def disconnect():
-    print("I'm disconnected!")
+    print('[*] Disconnected from server.')
 
-while True:
-    sio.emit('ping', {'ping': 'ping'})
-    time.sleep(.5)
+@sio.event
+def connect_error(message):
+    if (time.time() - LAST_CONNECT_TIME) > 10:
+        print('[*] Connection error timeout due to ' + message)
 
+## Example 1
+# @sio.event
+# deprint('Connection was rejected due to ' + message)
+#     print('message received with ', data)
+#     print('by io.emit my_message')
+#     sio.emit('my response', {'response': 'my response'})
+
+if __name__ == "__main__":
+
+    """
+    If this program is already running, but server does not run yet.
+    Try to connect until connected.
+    """
+    while not CONNECTED:
+        try:
+            print("Try.....")
+            sio.connect('http://localhost:3000')
+        except socketio.exceptions.ConnectionError as err:
+            print("ConnectionError: {}".format(err))
+        else:
+            print("Connected!")
+            CONNECTED = True
+
+        time.sleep(1)
+
+    sio.wait()
+
+    # hbt = HeartbeatThread(sio, event)
+    # hbt.start()

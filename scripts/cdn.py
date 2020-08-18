@@ -21,11 +21,11 @@ class HeartbeatThread(Thread):
 
 def on_message(ws, message):
     """接收信息"""
-    print(message)
+    print("on_message: ", message)
 
 
 def on_error(ws, error):
-    print(error)
+    print("on_error: ", error)
 
 
 def on_close(ws):

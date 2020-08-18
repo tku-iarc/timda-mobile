@@ -24,7 +24,9 @@ io.on('connection', function (socket) {
 
     socket.on('ping', function (msg) {
         console.log('Get Ping');
-        io.emit('pong', 'PONG');
+        setTimeout(function () {
+            io.emit('pong', 'PONG')
+        }, 500);
     });
 });
 
