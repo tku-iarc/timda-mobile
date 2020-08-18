@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Timda Mobile Platform<title>
+</head>
+<body>
+  <h1>Welcome</h1>
+  <div id="status"></div>
+<body>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    var socket = io.connect();
+    socket.on('status_response', function(msg) {
+      var date = new Date();
+      $('#status').append('<p>status: ' + msg.data + "Time:"+ date+ '</p>');
+    });
+  });
+</script>
+</html>
+
