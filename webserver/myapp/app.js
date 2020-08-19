@@ -28,6 +28,15 @@ io.on('connection', function (socket) {
             io.emit('pong', 'PONG')
         }, 500);
     });
+
+    /**
+     * shutdown needs superuser's permission
+     * Give the user permission by $visudo
+     * (user name) ALL=NOPASSWD:/sbin/shutdown
+     */
+    socket.on('shutdown', function () {
+        require('child_process').exec('shutdown -h now', console.log);
+    });
 });
 
 http.listen(3000, function () {

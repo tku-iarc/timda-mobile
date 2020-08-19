@@ -1,6 +1,12 @@
 import socketio
 import time
 from threading import Timer, Event, Thread
+from wakeonlan import send_magic_packet
+
+HOST_IP = '10.0.0.3'
+HOST_MAC = '54:b2:03:93:e2:5e'
+HOST_BROADCAST = '10.0.0.255'
+HOST_WOL_PORT = 9
 
 sio = socketio.Client()
 event = Event()
@@ -16,7 +22,7 @@ LAST_CONNECT_TIME = time.time()
 
 #     def run(self):
 #         while 1:
-#             # 发送ping包
+#             ## Send Ping Pack
 #             # self.ws.send('2')
 #             print("Send...")
 #             self.socket.emit('ping', {'ping': 'ping'})
@@ -55,14 +61,23 @@ if __name__ == "__main__":
 
     """
     If this program is already running, but server does not run yet.
-    Try to connect until connected.
+    Try to startup server by WoL and keep connecting until connected.
     """
+    send_magic_packet(HOST_MAC,
+                        ip_address=HOST_BROADCAST,
+                        port=HOST_WOL_PORT)
     while not CONNECTED:
         try:
-            print("Try.....")
-            sio.connect('http://localhost:3000')
+            print('Try to connect to http://'+HOST_IP+':3000 ......')
+            sio.connect('http://'+HOST_IP+':3000')
+            send_magic_packet(HOST_MAC,
+                              ip_address=HOST_BROADCAST,
+                              port=HOST_WOL_PORT)
         except socketio.exceptions.ConnectionError as err:
             print("ConnectionError: {}".format(err))
+            send_magic_packet(HOST_MAC,
+                              ip_address=HOST_BROADCAST,
+                              port=HOST_WOL_PORT)
         else:
             print("Connected!")
             CONNECTED = True
