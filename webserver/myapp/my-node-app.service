@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=idle
-User=iclab-nuc
+User=root
 ExecStart=/home/iclab-nuc/.nvm/versions/node/v12.18.3/bin/node /home/iclab-nuc/timda-mobile/src/webserver/myapp/app.js
 Restart=on-failure
 WorkingDirectory=/home/iclab-nuc/timda-mobile/src/webserver/myapp
