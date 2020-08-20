@@ -1,0 +1,14 @@
+[Unit]
+Description=pingpong-client.py - ping-pong client for startup server
+After=network.target
+
+[Service]
+Type=idle
+User=ubuntu
+ExecStart=/usr/bin/python3 /home/ubuntu/mobile_ws/src/scripts/pingpong-client.py
+Restart=on-failure
+WorkingDirectory=/home/ubuntu/mobile_ws/src/scripts
+
+[Install]
+WantedBy=multi-user.target
+
