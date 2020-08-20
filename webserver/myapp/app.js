@@ -3,6 +3,7 @@ var express = require('express')
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var shutdown = require('shutdown');
 
 app.get('/', function (req, res) {
     app.use(express.static(path.resolve('..', 'pages')));
@@ -35,7 +36,8 @@ io.on('connection', function (socket) {
      * (user name) ALL=NOPASSWD:/sbin/shutdown
      */
     socket.on('shutdown', function () {
-        require('child_process').exec('shutdown -h now', console.log);
+        require('child_process').exec('/sbin/shutdown -h now', console.log);
+	//shutdown.shutdownGracefully();
     });
 });
 
