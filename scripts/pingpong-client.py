@@ -3,8 +3,8 @@ import time
 from threading import Timer, Event, Thread
 from wakeonlan import send_magic_packet
 
-HOST_IP = '10.0.0.3'
-HOST_MAC = '54:b2:03:93:e2:5e'
+HOST_IP = '10.0.0.1'
+HOST_MAC = 'b8:ae:ed:71:65:45'
 HOST_BROADCAST = '10.0.0.255'
 HOST_WOL_PORT = 9
 
