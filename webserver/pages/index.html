@@ -34,11 +34,24 @@
 </head>
 
 <body>
-    <p id="io-status"></p>
-    <button id="shutdown" class="button button1">Shutdown</button>
-
+    <div>
+        <p id="io-status"></p>
+        <button id="shutdown" class="button button1">Shutdown</button>
+    </div>
+    <div id="joystick">
+        <!-- <div id="joy3Div" style="width:200px;height:200px;margin:50px;position:fixed;bottom:30px;left:500px;"></div> -->
+        <div id="joy3Div" style="width:200px;height:200px;margin:50px;"></div>
+		<div style="left:750px;">
+			Posizione X:<input id="joy3PosizioneX" type="text" /><br />
+			Posizione Y:<input id="joy3PosizioneY" type="text" /><br />
+			Direzione:<input id="joy3Direzione" type="text" /><br />
+			X :<input id="joy3X" type="text" /></br>
+			Y :<input id="joy3Y" type="text" />
+		</div>
+    </div>
     <script src="js/jquery.min.js"></script>
     <script src="js/socket.io.js"></script>
+    <script src="js/joy.js"></script>
     <script>
         $(function () {
             var socket = io();
@@ -57,6 +70,22 @@
                 }
             });
         });
+
+        document.oncontextmenu=function(){return false;} // 防右鍵選單
+        var joy3Param = { "title": "joystick3" };
+        var Joy3 = new JoyStick('joy3Div', joy3Param);
+
+        var joy3IinputPosX = document.getElementById("joy3PosizioneX");
+        var joy3InputPosY = document.getElementById("joy3PosizioneY");
+        var joy3Direzione = document.getElementById("joy3Direzione");
+        var joy3X = document.getElementById("joy3X");
+        var joy3Y = document.getElementById("joy3Y");
+
+        setInterval(function(){ joy3IinputPosX.value=Joy3.GetPosX(); }, 50);
+        setInterval(function(){ joy3InputPosY.value=Joy3.GetPosY(); }, 50);
+        setInterval(function(){ joy3Direzione.value=Joy3.GetDir(); }, 50);
+        setInterval(function(){ joy3X.value=Joy3.GetX(); }, 50);
+        setInterval(function(){ joy3Y.value=Joy3.GetY(); }, 50);
     </script>
 </body>
 
