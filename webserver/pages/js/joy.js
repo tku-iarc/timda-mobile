@@ -77,11 +77,12 @@ var JoyStick = (function(container, parameters)
   objContainer.appendChild(canvas);
   var context=canvas.getContext("2d");
   
-  var pressed = 0; // Bool - 1=Yes - 0=No
+  var pressed = 0;
   var circumference = 2 * Math.PI;
-  var internalRadius = (canvas.width-((canvas.width/2)+10))/2;
-  var maxMoveStick = internalRadius + 5;
+  var internalRadius = (canvas.width-((canvas.width/2)+0))/2;
+  var maxMoveStick = internalRadius;
   var externalRadius = internalRadius + 30;
+  // var externalRadius = Math.max(canvas.width/2, canvas.height/2) - externalLineWidth;
   var centerX = canvas.width / 2;
   var centerY = canvas.height / 2;
   var directionHorizontalLimitPos = canvas.width / 10;
@@ -91,6 +92,7 @@ var JoyStick = (function(container, parameters)
   // Used to save current position of stick
   var movedX=centerX;
   var movedY=centerY;
+  var movedAng = 0;
     
   // Check if the device support the touch or not
   if("ontouchstart" in document.documentElement)
@@ -154,25 +156,26 @@ var JoyStick = (function(container, parameters)
    */
   function drawInternal2()
   {
-    var radius = Math.sqrt(Math.pow((canvas.width / 2) - movedX, 2) + Math.pow((canvas.height / 2) - movedY, 2));
-    var c_length = Math.sqrt(Math.pow((canvas.width / 2) - movedX, 2) + Math.pow((canvas.height / 2) - radius - movedY, 2));
-    var h = Math.sqrt(Math.pow(radius, 2) - Math.pow(c_length / 2, 2));
-    var angle = Math.PI - 2 * Math.asin(h / radius);
-    if (radius > externalRadius) {radius=externalRadius;}
-    context.beginPath();
-    context.moveTo(canvas.width / 2, canvas.height / 2);
-    if (((canvas.width / 2) - movedX) < 0) {
-        context.arc(canvas.width / 2, canvas.height / 2, radius, 270 * Math.PI / 180, angle + 270 * Math.PI / 180, false);
-    } else {
-        context.arc(canvas.width / 2, canvas.height / 2, radius, 270 * Math.PI / 180 - angle, 270 * Math.PI / 180, false);
-    }
-    context.closePath();
-    context.fillStyle = '#FFCEBE';
-    context.fill();
     if(movedX<internalRadius) { movedX=maxMoveStick; }
     if((movedX+internalRadius) > canvas.width) { movedX = canvas.width-(maxMoveStick); }
     if(movedY<internalRadius) { movedY=maxMoveStick; }
     if((movedY+internalRadius) > canvas.height) { movedY = canvas.height-(maxMoveStick); }
+    var rx = (100*((movedX - centerX)/maxMoveStick)).toFixed();
+    var ry = (100*((movedY - centerY)/maxMoveStick)*-1).toFixed();
+    var radius = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
+    var angle = Math.atan2(rx, ry)*-1;
+    if (radius > externalRadius) {radius=externalRadius;}
+    context.beginPath();
+    context.moveTo(centerX, centerY);
+    if (rx < 0) {
+        context.arc(centerX, centerY, radius, -1*angle+1.5*Math.PI, 1.5*Math.PI, false);
+    } else {
+        context.arc(centerX, centerY, radius, 1.5*Math.PI, -1*angle+1.5*Math.PI, false);
+    }
+    movedAng = angle * (180 / Math.PI);
+    context.closePath();
+    context.fillStyle = '#FFCEBE';
+    context.fill();
   }
   
   /**
@@ -423,5 +426,23 @@ var JoyStick = (function(container, parameters)
     }
     
     return result;
+  };
+
+  /**
+   * @desc Get variable 'pressed' to detect joystick movement
+   * @return value of pressed
+   */
+  this.GetPressed = function ()
+  {
+    return pressed;
+  };
+
+  /**
+   * @desc the value of Angle of stick when pressed stick w/ right click
+   * @return Integer from -180 to +180
+   */
+  this.GetAng = function ()
+  {
+    return movedAng;
   };
 });

@@ -30,6 +30,47 @@
             background-color: red;
             color: white;
         }
+        .slidecontainer {
+            width: 200px; /* Width of the outside container */
+        }
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;  
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%; 
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .inline {
+            float: left;
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -49,10 +90,37 @@
 			Y :<input id="joy3Y" type="text" />
 		</div>
     </div>
+    <div class="slidecontainer inline">
+        <input type="range" min="1" max="100" value="20" class="slider" id="powerRange" />
+    </div>
+    <div class="inline"><input id="powerShow" type="text" value="20" disabled /></div>
+
     <script src="js/jquery.min.js"></script>
     <script src="js/socket.io.js"></script>
     <script src="js/joy.js"></script>
+    <script src="js/eventemitter2.min.js"></script>
+    <script src="js/roslib.min.js"></script>
     <script>
+        // Connecting to ROS
+        // -----------------
+        var ros = new ROSLIB.Ros({
+            url : 'ws://localhost:9090'
+        });
+
+        ros.on('connection', function() {
+            console.log('Connected to websocket server.');
+        });
+
+        ros.on('error', function(error) {
+            console.log('Error connecting to websocket server: ', error);
+        });
+
+        ros.on('close', function() {
+            console.log('Connection to websocket server closed.');
+        });
+
+        // Connecting to SocketIO
+        // -----------------
         $(function () {
             var socket = io();
             socket.on('connect', function () {
@@ -86,6 +154,55 @@
         setInterval(function(){ joy3Direzione.value=Joy3.GetDir(); }, 50);
         setInterval(function(){ joy3X.value=Joy3.GetX(); }, 50);
         setInterval(function(){ joy3Y.value=Joy3.GetY(); }, 50);
+
+        $('#powerRange').on("input change", function() {
+            $('#powerShow').val($('#powerRange').val());
+        });
+
+        // Publishing cmd_vel of Joystick
+        // ------------------
+        var cmdVel = new ROSLIB.Topic({
+          ros : ros,
+          name : '/cmd_vel',
+          messageType : 'geometry_msgs/Twist'
+        });
+
+        var twist = new ROSLIB.Message({
+          linear : {
+            x : 0.0,
+            y : 0.0,
+            z : 0.0
+          },
+          angular : {
+            x : 0.0,
+            y : 0.0,
+            z : 0.0
+          }
+        });
+        setInterval(function(){
+            if (Joy3.GetPressed() === 1) {
+                // console.log("Translation");
+                twist.linear.x = Number(Joy3.GetX()) / 100 * $('#powerRange').val();
+                twist.linear.y = Number(Joy3.GetY()) / 100 * $('#powerRange').val();
+                twist.angular.z = 0.0;
+                cmdVel.publish(twist);
+            }else if (Joy3.GetPressed() ==2) {
+                // console.log("Rotation");
+                var maxPowerLimit = 20;
+                var minPowerLimit = 0;
+                var powerR = Math.sqrt(Math.pow(Joy3.GetX(), 2) + Math.pow(Joy3.GetY(), 2));
+                var percent = (powerR - 0) / (100 - 0);
+                var power = percent * (maxPowerLimit - minPowerLimit) + minPowerLimit;
+                if (power > maxPowerLimit) {power=maxPowerLimit;}
+                if (power < minPowerLimit) {power=minPowerLimit;}
+                twist.linear.x = 0.0;
+                twist.linear.y = 0.0;
+                twist.angular.z = Math.sign(Joy3.GetAng()) * power.toFixed();
+                cmdVel.publish(twist);
+            }else {
+                // console.log("Unknown Pressed")
+            }
+        });
     </script>
 </body>
 
