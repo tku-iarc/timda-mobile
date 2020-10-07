@@ -182,8 +182,8 @@
         setInterval(function(){
             if (Joy3.GetPressed() === 1) {
                 // console.log("Translation");
-                twist.linear.x = Number(Joy3.GetX()) / 100 * $('#powerRange').val();
-                twist.linear.y = Number(Joy3.GetY()) / 100 * $('#powerRange').val();
+                twist.linear.x = Number(Joy3.GetY()) / 100 * $('#powerRange').val();
+                twist.linear.y = Number(Joy3.GetX()) *-1 / 100 * $('#powerRange').val();
                 twist.angular.z = 0.0;
                 cmdVel.publish(twist);
             }else if (Joy3.GetPressed() ==2) {
