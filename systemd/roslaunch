@@ -2,7 +2,7 @@
 ## Move this file to /usr/sbin/roslaunch
 #source ~/catkin_ws/devel/setup.bash
 source /etc/ros/env.sh
-export ROS_HOME=$(echo ~ubuntu/.ros
+export ROS_HOME=$(echo ~iclab-nuc/.ros
 roslaunch rosbridge_server rosbridge_websocket.launch &
 PID=$!
 wait “$PID”
