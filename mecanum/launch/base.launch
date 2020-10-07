@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+  <node name="mobile_node" pkg="mecanum" type="mobile_node"></node>
+</launch>
