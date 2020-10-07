@@ -163,7 +163,7 @@
         // ------------------
         var cmdVel = new ROSLIB.Topic({
           ros : ros,
-          name : '/cmd_vel',
+          name : '/mobile/cmd_vel',
           messageType : 'geometry_msgs/Twist'
         });
 
@@ -200,9 +200,12 @@
                 twist.angular.z = Math.sign(Joy3.GetAng()) * power.toFixed();
                 cmdVel.publish(twist);
             }else {
-                // console.log("Unknown Pressed")
+                twist.linear.x = 0.0;
+                twist.linear.y = 0.0;
+                twist.angular.z = 0.0;
+                cmdVel.publish(twist);
             }
-        });
+        }, 50);
     </script>
 </body>
 
