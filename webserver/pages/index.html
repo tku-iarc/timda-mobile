@@ -79,6 +79,10 @@
         <p id="io-status"></p>
         <button id="shutdown" class="button button1">Shutdown</button>
     </div>
+    <label>Manual Control: </label>
+    <label>
+        <input id="manual-control" type="checkbox">
+    </label>
     <div id="joystick">
         <!-- <div id="joy3Div" style="width:200px;height:200px;margin:50px;position:fixed;bottom:30px;left:500px;"></div> -->
         <div id="joy3Div" style="width:200px;height:200px;margin:50px;"></div>
@@ -104,7 +108,7 @@
         // Connecting to ROS
         // -----------------
         var ros = new ROSLIB.Ros({
-            url : 'ws://localhost:9090'
+            url : 'ws://10.0.0.1:9090'
         });
 
         ros.on('connection', function() {
@@ -180,7 +184,9 @@
           }
         });
         setInterval(function(){
-            if (Joy3.GetPressed() === 1) {
+	    if ($('#manual-control').prop('checked') == false) {
+                // Disable joystick
+            }else if (Joy3.GetPressed() === 1) {
                 // console.log("Translation");
                 twist.linear.x = Number(Joy3.GetY()) / 100 * $('#powerRange').val();
                 twist.linear.y = Number(Joy3.GetX()) *-1 / 100 * $('#powerRange').val();
