@@ -2,5 +2,5 @@
 	path = ira_laser_tools
 	url = https://github.com/tku-iarc/ira_laser_tools.git
 [submodule "timda-sim"]
-	path = timda-sim
+	path = timda_sim
 	url = https://github.com/tku-iarc/timda-mobile-simulation.git
