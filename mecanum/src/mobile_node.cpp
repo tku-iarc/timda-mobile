@@ -22,7 +22,7 @@ class TimdaMobile
     double R = 0.1524;
 
 private:
-    int RPM;
+    double RPM;
 
 public:
     TimdaMobile() {
@@ -41,21 +41,24 @@ public:
         W = M->IK(msg->linear.x,
                   msg->linear.y,
                   msg->angular.z);
-        //std::cout<<"Return from IK:"<<W.at(0)<<" "
+        // std::cout<<"Return from IK:"<<W.at(0)<<" "
         //                            <<W.at(1)<<" "
         //                            <<W.at(2)<<" "
         //                            <<W.at(3)<<std::endl;
-        //this->TM->move(W.at(0), W.at(1), W.at(2), W.at(3));
         this->TM->move(W2RPM(W.at(0)), W2RPM(W.at(1)), W2RPM(W.at(2)), W2RPM(W.at(3)));
         std::cout<<"PWM: "<<W2RPM(W.at(0)) <<" "<< W2RPM(W.at(1))<<" "<< W2RPM(W.at(2))<<" "<< W2RPM(W.at(3))<<std::endl;
     }
 
     int W2RPM(double W) {
         double v = W * this->R;
-        RPM = (int)((v / this->R)/K);
-        RPM = (abs(RPM) > MAX_RPM) ? MAX_RPM*sgn(RPM) : RPM;
-        RPM = (abs(RPM) < MIN_RPM) ? 0 : RPM;
-        return RPM;
+        RPM = (v / this->R)/K;
+        // RPM = (abs(RPM) > MAX_RPM) ? MAX_RPM*sgn(RPM) : RPM;
+        // RPM = (abs(RPM) < MIN_RPM) ? 0 : RPM;
+        // return (int)RPM;
+        /* Re-Mapping Range */
+        double slope = 1.0 * (MAX_RPM - MIN_RPM) / (4627 - 0);
+        double output = MIN_RPM + slope * abs(RPM);
+        return (int)output * sgn(RPM);
     }
 };
 

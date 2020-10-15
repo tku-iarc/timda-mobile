@@ -6,7 +6,7 @@
   <node name="rescale" pkg="topic_tools" type="transform"
         args="/joy /mobile/cmd_vel geometry_msgs/Twist
               'geometry_msgs.msg.Twist(
-                 linear=geometry_msgs.msg.Vector3(m.axes[3]*100, m.axes[2]*100, 0.0),
-                 angular=geometry_msgs.msg.Vector3(0.0, 0.0, m.axes[0]*100)
+                 linear=geometry_msgs.msg.Vector3(m.axes[3]*30, m.axes[2]*30, 0.0),
+                 angular=geometry_msgs.msg.Vector3(0.0, 0.0, m.axes[0]*30)
                )' --import geometry_msgs" />
 </launch>

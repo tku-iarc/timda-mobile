@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TMP</title>
+    <style>
+        .button {
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button1 {
+            background-color: white; 
+            color: red; 
+            border: 2px solid red;
+        }
+
+        .button1:hover {
+            background-color: red;
+            color: white;
+        }
+        .slidecontainer {
+            width: 200px; /* Width of the outside container */
+        }
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;  
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%; 
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .inline {
+            float: left;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <label>Connect to rosbridge: </label>
+        <span id="host-info"></span>
+	<span id="ros-status"></span>
+        <br>
+        <label>Socket IO status: </label>
+        <span id="io-status"></span>
+        <br>
+        <button id="shutdown" class="button button1">Shutdown</button>
+    </div>
+    <label>Manual Control: </label>
+    <label>
+        <input id="manual-control" type="checkbox">
+    </label>
+    <div id="joystick">
+        <!-- <div id="joy3Div" style="width:200px;height:200px;margin:50px;position:fixed;bottom:30px;left:500px;"></div> -->
+        <div id="joy3Div" style="width:200px;height:200px;margin:50px;"></div>
+		<div style="left:750px;">
+			Posizione X:<input id="joy3PosizioneX" type="text" /><br />
+			Posizione Y:<input id="joy3PosizioneY" type="text" /><br />
+			Direzione:<input id="joy3Direzione" type="text" /><br />
+			X :<input id="joy3X" type="text" /></br>
+			Y :<input id="joy3Y" type="text" />
+		</div>
+    </div>
+    <div class="slidecontainer inline">
+        <input type="range" min="1" max="100" value="20" class="slider" id="powerRange" />
+    </div>
+    <div class="inline"><input id="powerShow" type="text" value="20" disabled /></div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script src="js/joy.js"></script>
+    <script src="js/eventemitter2.min.js"></script>
+    <script src="js/roslib.min.js"></script>
+    <script>
+        // Connecting to ROS
+        // -----------------
+        var ros = new ROSLIB.Ros({
+            url : 'ws://'+location.hostname+':9090'
+        });
+
+        ros.on('connection', function() {
+            console.log('Connected to websocket server.');
+            $('#ros-status').text('\tOK');
+        });
+
+        ros.on('error', function(error) {
+            console.log('Error connecting to websocket server: ', error);
+            $('#ros-status').text('\tERROR');
+        });
+
+        ros.on('close', function() {
+            console.log('Connection to websocket server closed.');
+            $('#ros-status').text('\tCLOSE');
+        });
+
+        // Connecting to SocketIO
+        // -----------------
+        $(function () {
+            var socket = io();
+            socket.on('connect', function () {
+                console.log('IO STATUS: ', socket.connected);
+                $('#io-status').text(socket.connected);
+            });
+            socket.on('disconnect', function () {
+                console.log('IO STATUS: ', socket.connected);
+                $('#io-status').text(socket.connected);
+            });
+            $('#shutdown').click(function () {
+                var c = confirm("Are you sure you want to shut down?");
+                if (c) {
+                    socket.emit('shutdown', '');
+                }
+            });
+        });
+        // Show rosbridge connection info
+        // -----------------
+        $(function () {
+            $('#host-info').text(location.hostname + ':9090');
+        });
+
+        document.oncontextmenu=function(){return false;} // 防右鍵選單
+        var joy3Param = { "title": "joystick3" };
+        var Joy3 = new JoyStick('joy3Div', joy3Param);
+
+        var joy3IinputPosX = document.getElementById("joy3PosizioneX");
+        var joy3InputPosY = document.getElementById("joy3PosizioneY");
+        var joy3Direzione = document.getElementById("joy3Direzione");
+        var joy3X = document.getElementById("joy3X");
+        var joy3Y = document.getElementById("joy3Y");
+
+        setInterval(function(){ joy3IinputPosX.value=Joy3.GetPosX(); }, 50);
+        setInterval(function(){ joy3InputPosY.value=Joy3.GetPosY(); }, 50);
+        setInterval(function(){ joy3Direzione.value=Joy3.GetDir(); }, 50);
+        setInterval(function(){ joy3X.value=Joy3.GetX(); }, 50);
+        setInterval(function(){ joy3Y.value=Joy3.GetY(); }, 50);
+
+        $('#powerRange').on("input change", function() {
+            $('#powerShow').val($('#powerRange').val());
+        });
+
+        // Publishing cmd_vel of Joystick
+        // ------------------
+        var cmdVel = new ROSLIB.Topic({
+          ros : ros,
+          name : '/mobile/cmd_vel',
+          messageType : 'geometry_msgs/Twist'
+        });
+
+        var twist = new ROSLIB.Message({
+          linear : {
+            x : 0.0,
+            y : 0.0,
+            z : 0.0
+          },
+          angular : {
+            x : 0.0,
+            y : 0.0,
+            z : 0.0
+          }
+        });
+        setInterval(function(){
+	    if ($('#manual-control').prop('checked') == false) {
+                // Disable joystick
+            }else if (Joy3.GetPressed() === 1) {
+                // console.log("Translation");
+                twist.linear.x = Number(Joy3.GetY()) / 100 * $('#powerRange').val();
+                twist.linear.y = Number(Joy3.GetX()) *-1 / 100 * $('#powerRange').val();
+                twist.angular.z = 0.0;
+                cmdVel.publish(twist);
+            }else if (Joy3.GetPressed() ==2) {
+                // console.log("Rotation");
+                var maxPowerLimit = 20;
+                var minPowerLimit = 0;
+                var powerR = Math.sqrt(Math.pow(Joy3.GetX(), 2) + Math.pow(Joy3.GetY(), 2));
+                var percent = (powerR - 0) / (100 - 0);
+                var power = percent * (maxPowerLimit - minPowerLimit) + minPowerLimit;
+                if (power > maxPowerLimit) {power=maxPowerLimit;}
+                if (power < minPowerLimit) {power=minPowerLimit;}
+                twist.linear.x = 0.0;
+                twist.linear.y = 0.0;
+                twist.angular.z = Math.sign(Joy3.GetAng()) * power.toFixed();
+                cmdVel.publish(twist);
+            }else {
+                twist.linear.x = 0.0;
+                twist.linear.y = 0.0;
+                twist.angular.z = 0.0;
+                cmdVel.publish(twist);
+            }
+        }, 50);
+    </script>
+</body>
+
+</html>
