@@ -1,4 +1,5 @@
 <launch>
+  <param name="use_sim_time" value="true" />
   <include file="$(find timda_gazebo)/launch/timda_sim.launch" />
   <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find timda_description)/rviz/laser.rviz" />
