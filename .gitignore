@@ -3,3 +3,5 @@ node_modules/
 
 *.tfw
 *.tif
+timda_configs/maps/*.pgm
+timda_configs/maps/*.yaml

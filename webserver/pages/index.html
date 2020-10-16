@@ -208,7 +208,7 @@
                 cmdVel.publish(twist);
             }else if (Joy3.GetPressed() ==2) {
                 // console.log("Rotation");
-                var maxPowerLimit = 20;
+                var maxPowerLimit = 50;
                 var minPowerLimit = 0;
                 var powerR = Math.sqrt(Math.pow(Joy3.GetX(), 2) + Math.pow(Joy3.GetY(), 2));
                 var percent = (powerR - 0) / (100 - 0);
@@ -217,7 +217,7 @@
                 if (power < minPowerLimit) {power=minPowerLimit;}
                 twist.linear.x = 0.0;
                 twist.linear.y = 0.0;
-                twist.angular.z = Math.sign(Joy3.GetAng()) * power.toFixed();
+                twist.angular.z = Number(Math.sign(Joy3.GetAng()) * power.toFixed()) / 100 * $('#powerRange').val();
                 cmdVel.publish(twist);
             }else {
                 twist.linear.x = 0.0;
