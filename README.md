@@ -10,5 +10,13 @@
 | Controller    	| BLVD20KM   	| Orientalmotor 	|                                                                                     	|
 | Mecanum wheel 	|            	|               	| 6 inch
 
+## Systems
+OS: Ubuntu 18.04 bionic
+ROS: Melodic
+
 ## Installization and Setup
 ### Requirements
+ROS Dependments:
+```bash
+$ sudo apt-get install ros-melodic-rosbridge-server ros-melodic-hector-slam ros-melodic-amcl ros-melodic-move-base ros-melodic-dwa-local-planner ros-melodic-map-server
+```
