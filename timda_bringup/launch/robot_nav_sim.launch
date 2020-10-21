@@ -23,7 +23,8 @@
     <rosparam file="$(find timda_configs)/nav/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find timda_configs)/nav/global_costmap_params.yaml" command="load" /> 
     <!-- <rosparam file="$(find timda_configs)/nav/base_local_planner_params.yaml" command="load" /> -->
-    <rosparam file="$(find timda_configs)/nav/dwa_local_planner_params.yaml" command="load" />
+    <!-- <rosparam file="$(find timda_configs)/nav/dwa_local_planner_params.yaml" command="load" /> -->
+    <rosparam file="$(find timda_configs)/nav/teb_local_planner_params.yaml" command="load" />
     <rosparam file="$(find timda_configs)/nav/move_base_params.yaml" command="load" />
     <rosparam file="$(find timda_configs)/nav/global_planner_params.yaml" command="load" />
     <rosparam file="$(find timda_configs)/nav/navfn_global_planner_params.yaml" command="load" />
@@ -33,7 +34,7 @@
     <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
     <param name="local_costmap/global_frame" value="$(arg odom_frame_id)"/>
     <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
-    <param name="DWAPlannerROS/global_frame_id" value="$(arg odom_frame_id)"/>
+    <!-- <param name="DWAPlannerROS/global_frame_id" value="$(arg odom_frame_id)"/> -->
 
     <remap from="cmd_vel" to="mobile/cmd_vel" />
     <remap from="odom" to="$(arg odom_topic)" />
