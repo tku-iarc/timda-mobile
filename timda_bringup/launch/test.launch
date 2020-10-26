@@ -1,8 +1,0 @@
-<launch>
-  <arg name="urdf_file" default="$(find xacro)/xacro '$(find timda_description)/urdf/timda_mobile_platform.urdf.xacro'"/>
-  <param name="robot_description" command="$(arg urdf_file)"/>
-
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
-    <param name="publish_frequency" type="double" value="30.0"/>
-  </node>
-</launch>
