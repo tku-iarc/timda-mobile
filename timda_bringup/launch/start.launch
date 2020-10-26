@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+  <node name="mobile_node" pkg="mecanum" type="mobile_node"></node>
+  <!-- Lidar -->
+  <node name="front_lidar" pkg="urg_node" type="urg_node" output="screen">
+    <param name="ip_address" value=""/>
+    <param name="serial_port" value="/dev/sensors/hokuyo_00905846"/>
+    <param name="serial_baud" value="115200"/>
+    <param name="frame_id" value="laser"/>
+    <param name="calibrate_time" value="true"/>
+    <param name="publish_intensity" value="false"/>
+    <param name="publish_multiecho" value="false"/>
+    <param name="angle_min" value="-2.35619449"/>
+    <param name="angle_max" value="2.35619449"/>
+  </node>
+</launch>
