@@ -19,4 +19,6 @@ ROS: Melodic
 ROS Dependments:
 ```bash
 $ sudo apt-get install ros-melodic-rosbridge-server ros-melodic-hector-slam ros-melodic-amcl ros-melodic-move-base ros-melodic-dwa-local-planner ros-melodic-map-server
+## Hokuyo UTM30LX driver
+$ sudo apt-get install ros-melodic-urg-node
 ```
