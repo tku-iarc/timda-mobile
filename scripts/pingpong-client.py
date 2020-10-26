@@ -68,8 +68,8 @@ if __name__ == "__main__":
                         port=HOST_WOL_PORT)
     while not CONNECTED:
         try:
-            print('Try to connect to http://'+HOST_IP+':3000 ......')
-            sio.connect('http://'+HOST_IP+':3000')
+            print('Try to connect to http://'+HOST_IP+':8080......')
+            sio.connect('http://'+HOST_IP+':8080')
             send_magic_packet(HOST_MAC,
                               ip_address=HOST_BROADCAST,
                               port=HOST_WOL_PORT)
