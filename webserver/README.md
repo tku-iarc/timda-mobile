@@ -35,3 +35,14 @@ $ sudo journalctl -u my-node-app.service
 $sudo systemctl enable my-node-app.service
 ```
 
+## Port forwarding
+
+Because 80 port needs permission, use iptables forward 80 port to 8080 port
+```bash
+$ sudo iptables-restore < my-iptables.conf
+$ sudo apt-get install iptables-persistent
+## Press YES while installing
+## If need save new iptables, reconfigure iptables-persistent as below:
+$ sudo dpkg-reconfigure iptables-persistent
+```
+
