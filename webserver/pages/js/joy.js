@@ -179,6 +179,51 @@ var JoyStick = (function(container, parameters)
   }
   
   /**
+   * For gamepad
+   */
+  function drawInternal3(x, y, z)
+  {
+    dx = centerX + x;
+    dy = centerY + y;
+    context.beginPath();
+    if(dx<internalRadius) { dx=maxMoveStick; }
+    if((dx+internalRadius) > canvas.width) { dx= canvas.width-(maxMoveStick); }
+    if(dy<internalRadius) { dy=maxMoveStick; }
+    if((dy+internalRadius) > canvas.height) { dy= canvas.height-(maxMoveStick); }
+    // context.arc(centerX/2 + x, centerY/2 + y, internalRadius, 0, circumference, false);
+    context.arc(dx, dy, internalRadius, 0, circumference, false);
+    // create radial gradient
+    var grd = context.createRadialGradient(centerX, centerY, 5, centerX, centerY, 200);
+    // Light color
+    grd.addColorStop(0, internalFillColor);
+    // Dark color
+    grd.addColorStop(1, internalStrokeColor);
+    context.fillStyle = grd;
+    context.fill();
+    context.lineWidth = internalLineWidth;
+    context.strokeStyle = internalStrokeColor;
+    context.stroke();
+
+    // var rx = (100*((dx - centerX)/maxMoveStick)).toFixed();
+    // var ry = (100*((dy - centerY)/maxMoveStick)*-1).toFixed();
+    // var radius = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
+    var radius = Math.abs(z);
+    var angle = Math.sign(z)*-3.24159;
+    if (radius > externalRadius) {radius=externalRadius;}
+    context.beginPath();
+    context.moveTo(centerX, centerY);
+    if (angle < 0) {
+        context.arc(centerX, centerY, radius, -1*angle+1.5*Math.PI, 1.5*Math.PI, false);
+    } else {
+        context.arc(centerX, centerY, radius, 1.5*Math.PI, -1*angle+1.5*Math.PI, false);
+    }
+    movedAng = angle * (180 / Math.PI);
+    context.closePath();
+    // context.fillStyle = '#FFCEBE';
+    context.fillStyle = 'rgba(255, 206, 190, 0.8)';
+    context.fill();
+  }
+  /**
    * @desc Events for manage touch
    */
   function onTouchStart(event) 
@@ -444,5 +489,34 @@ var JoyStick = (function(container, parameters)
   this.GetAng = function ()
   {
     return movedAng;
+  };
+
+  /**
+   * @desc Set param: autoReturnToCenter
+   */
+  this.SetReturnToCenter = function (c)
+  {
+    autoReturnToCenter = c;
+    if (!c) {
+      canvas.removeEventListener("mousedown", onMouseDown);
+      canvas.removeEventListener("mousemove", onMouseMove);
+      canvas.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("mouseout", onMouseUp);
+    }else {
+      canvas.addEventListener("mousedown", onMouseDown, false);
+      canvas.addEventListener("mousemove", onMouseMove, false);
+      canvas.addEventListener("mouseup", onMouseUp, false);
+      canvas.addEventListener("mouseout", onMouseUp, false);
+    }
+  };
+
+  /**
+   * @desc Draw joystick with specfic position
+   */
+  this.DrawJoy = function (x, y, z)
+  {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    drawExternal();
+    drawInternal3(x, y, z);
   };
 });
