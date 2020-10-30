@@ -32,6 +32,7 @@
         }
         .slidecontainer {
             width: 200px; /* Width of the outside container */
+            margin: 15px 20px;
         }
         .slider {
             -webkit-appearance: none;
@@ -68,8 +69,71 @@
         }
 
         .inline {
-            float: left;
+            /* float: left; */
             display: inline-block;
+        }
+        /* The radio check container */
+        .radio-container {
+          display:inline-block; 
+          position: relative;
+          padding-left: 35px;
+          margin-bottom: 12px;
+          cursor: pointer;
+          font-size: 22px;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+
+        /* Hide the browser's default radio button */
+        .radio-container input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 25px;
+          width: 25px;
+          background-color: #eee;
+          border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .radio-container:hover input ~ .checkmark {
+          background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .radio-container input:checked ~ .checkmark {
+          background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+          content: "";
+          position: absolute;
+          display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .radio-container input:checked ~ .checkmark:after {
+          display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .radio-container .checkmark:after {
+         	top: 9px;
+        	left: 9px;
+        	width: 8px;
+        	height: 8px;
+        	border-radius: 50%;
+        	background: white;
         }
     </style>
 </head>
@@ -85,11 +149,27 @@
         <br>
         <button id="shutdown" class="button button1">Shutdown</button>
     </div>
-    <label>Manual Control: </label>
-    <label>
-        <input id="manual-control" type="checkbox">
-    </label>
-    <div id="joystick">
+    <div>
+    <h2>Manual Control: </h2>
+    <form id="controlForm" class="inline">
+        <label class="radio-container">No Manual
+        <input type="radio" checked="checked" name="radio" value="No Manual">
+        <span class="checkmark"></span>
+        </label>
+        <label class="radio-container">Virtual Joystick
+        <input type="radio" name="radio" value="Virtual Joystick">
+        <span class="checkmark"></span>
+        </label>
+        <label class="radio-container">Real Joystick
+        <input type="radio" name="radio" value="Real Joystick">
+        <span class="checkmark"></span>
+        <select name="gamepadList" id="gamepadList" class="inline">
+            <option selected="selected" disabled>Select Gamepad</option>
+        </select>
+        </label>
+    </form>
+    </div>
+    <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
         <!-- <div id="joy3Div" style="width:200px;height:200px;margin:50px;position:fixed;bottom:30px;left:500px;"></div> -->
         <div id="joy3Div" style="width:200px;height:200px;margin:50px;"></div>
 		<div style="left:750px;">
@@ -99,11 +179,11 @@
 			X :<input id="joy3X" type="text" /></br>
 			Y :<input id="joy3Y" type="text" />
 		</div>
+        <div class="slidecontainer inline">
+            <input type="range" min="1" max="100" value="20" class="slider" id="powerRange" />
+        </div>
+        <div class="inline"><input id="powerShow" type="text" value="20" disabled /></div>
     </div>
-    <div class="slidecontainer inline">
-        <input type="range" min="1" max="100" value="20" class="slider" id="powerRange" />
-    </div>
-    <div class="inline"><input id="powerShow" type="text" value="20" disabled /></div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/socket.io.js"></script>
@@ -113,6 +193,10 @@
     <script>
         // Connecting to ROS
         // -----------------
+        if (location.hostname=="") {
+            location.hostname = "localhost";
+        }
+
         var ros = new ROSLIB.Ros({
             url : 'ws://'+location.hostname+':9090'
         });
@@ -198,18 +282,74 @@
           }
         });
 
+        /**
+         *  Handling Real Joystick
+         **/
+        var gamepads = {};
+
+        function gamepadHandler(event, connecting) {
+          var gamepad = event.gamepad;
+          // Note:
+          // gamepad === navigator.getGamepads()[gamepad.index]
+        
+          if (connecting) {
+            gamepads[gamepad.index] = gamepad;
+            optionText = "Gamepad "+gamepad.index;
+            optionValue = gamepad.index;
+            $('#gamepadList').append(new Option(optionText, optionValue));
+          } else {
+            delete gamepads[gamepad.index];
+            $('#gamepadList option[value='+gamepad.index+']').remove();
+            for (i = 0; i < countNum; i++) {
+                twist.linear.x = 0.0;
+                twist.linear.y = 0.0;
+                twist.angular.z = 0.0;
+                cmdVel.publish(twist);
+                // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
+            }
+          }
+        }
+
+        var countGP = 0;
+        function gamepadController() {
+            if ($('#gamepadList').val() != null) {
+                var i =$('#gamepadList').val(); 
+                var gp = navigator.getGamepads()[i];
+                const gpt = 0.5;
+                if (Math.abs(gp.axes[0]) > gpt || Math.abs(gp.axes[1]) > gpt || Math.abs(gp.axes[2]) > gpt) {
+                    twist.linear.x = gp.axes[1] * -1 * $('#powerRange').val();
+                    twist.linear.y = gp.axes[0] * -1 * $('#powerRange').val();
+                    twist.angular.z = gp.axes[2] * -0.5 * $('#powerRange').val();
+                    cmdVel.publish(twist);
+                    // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
+                    countGP = 0;
+                }else {
+                    if (countGP <= countNum) {
+                        twist.linear.x = 0.0;
+                        twist.linear.y = 0.0;
+                        twist.angular.z = 0.0;
+                        cmdVel.publish(twist);
+                        // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
+                    }
+                    countGP += 1;
+                }
+                Joy3.DrawJoy(gp.axes[0]*100, gp.axes[1]*100, gp.axes[2]*-100);
+            }
+        }
+        
+        window.addEventListener("gamepadconnected", function(e) { gamepadHandler(e, true); }, false);
+        window.addEventListener("gamepaddisconnected", function(e) { gamepadHandler(e, false); }, false);
+
         var countJoy = 0;
         const countNum = 10;
-        setInterval(function(){
-    	    if ($('#manual-control').prop('checked') == false) {
-                // Disable joystick
-                countJoy = 0;
-            }else if (Joy3.GetPressed() === 1) {
+        function vJoy() {
+            if (Joy3.GetPressed() === 1) {
                 // console.log("Translation");
                 twist.linear.x = Number(Joy3.GetY()) / 100 * $('#powerRange').val();
                 twist.linear.y = Number(Joy3.GetX()) *-1 / 100 * $('#powerRange').val();
                 twist.angular.z = 0.0;
                 cmdVel.publish(twist);
+                // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
                 countJoy = 0;
             }else if (Joy3.GetPressed() ==2) {
                 // console.log("Rotation");
@@ -224,6 +364,7 @@
                 twist.linear.y = 0.0;
                 twist.angular.z = Number(Math.sign(Joy3.GetAng()) * power.toFixed()) / 100 * $('#powerRange').val();
                 cmdVel.publish(twist);
+                // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
                 countJoy = 0;
             }else {
                 if (countJoy <= countNum) {
@@ -231,10 +372,51 @@
                     twist.linear.y = 0.0;
                     twist.angular.z = 0.0;
                     cmdVel.publish(twist);
+                    // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
                 }
                 countJoy += 1;
             }
-        }, 50);
+        }
+
+        var joyInterval;
+        var gamepadInterval;
+        $('input[type=radio][name=radio]').change(function() {
+            if ($('input[name=radio]:checked', '#controlForm').val() == "No Manual") {
+                // Disable joystick
+                Joy3.SetReturnToCenter(false);
+                $('#joystick').css('background-color', 'rgba(0, 0, 0, .1)');
+
+                clearInterval(joyInterval);
+                clearInterval(gamepadInterval);
+                for (i = 0; i < countNum; i++) {
+                    twist.linear.x = 0.0;
+                    twist.linear.y = 0.0;
+                    twist.angular.z = 0.0;
+                    cmdVel.publish(twist);
+                    // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
+                }
+            }else if ($('input[name=radio]:checked', '#controlForm').val() == "Virtual Joystick") {
+                Joy3.SetReturnToCenter(true);
+                $('#joystick').css('background-color', '');
+                joyInterval = setInterval(vJoy, 50);
+                clearInterval(gamepadInterval);
+            }else if ($('input[name=radio]:checked', '#controlForm').val() == "Real Joystick") {
+                Joy3.SetReturnToCenter(false);
+                $('#joystick').css('background-color', 'rgba(0, 0, 0, .1)');
+                // Use real joystick
+                // if (gamepads[$('#gamepadList').optionValue])
+            // $('#gamepadList option[value='+gamepad.index+']').remove();
+                gamepadInterval = setInterval(gamepadController, 50);
+                clearInterval(joyInterval);
+                for (i = 0; i < countNum; i++) {
+                    twist.linear.x = 0.0;
+                    twist.linear.y = 0.0;
+                    twist.angular.z = 0.0;
+                    cmdVel.publish(twist);
+                    // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
+                }
+            }
+        });
     </script>
 </body>
 
