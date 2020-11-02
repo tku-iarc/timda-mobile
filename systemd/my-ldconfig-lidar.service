@@ -1,0 +1,14 @@
+[Unit]
+Description=link urg_node library for root user by ldconfig
+After=network.target
+
+[Service]
+Type=idle
+User=root
+ExecStart=/sbin/ldconfig /opt/ros/melodic/lib/
+Restart=on-failure
+WorkingDirectory=/home/iclab-nuc/timda_mobile_ws/
+
+[Install]
+WantedBy=multi-user.target
+
