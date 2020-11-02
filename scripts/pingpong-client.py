@@ -5,7 +5,7 @@ from wakeonlan import send_magic_packet
 
 HOST_IP = '192.168.0.1'
 HOST_MAC = 'b8:ae:ed:71:65:45'
-HOST_BROADCAST = '10.0.0.255'
+HOST_BROADCAST = '192.168.0.255'
 HOST_WOL_PORT = 9
 
 sio = socketio.Client()
