@@ -1,6 +1,9 @@
-#include "ros/ros.h"
-#include "geometry_msgs/Twist.h"
+#include <ros/ros.h>
+#include <geometry_msgs/Twist.h>
+#include <tf/transform_broadcaster.h>
+#include <nav_msgs/Odometry.h>
 #include <iostream>
+#include <iterator>
 #include <Mecanum/Mecanum.h>
 #include <TimdaModbus/TimdaModbus.h>
 #define K 0.10472
@@ -15,6 +18,9 @@ class TimdaMobile
 {
     ros::NodeHandle nh_;
     ros::Subscriber sub_;
+    ros::Publisher odom_pub;
+    tf::TransformBroadcaster odom_broadcaster;
+    ros::Time current_time, last_time;
     Mecanum *M;
     TimdaModbus *TM;
     double a = 0.48544;
@@ -26,9 +32,14 @@ private:
 
 public:
     TimdaMobile() {
-        sub_ = nh_.subscribe("/mobile/cmd_vel", 1, &TimdaMobile::Callback, this);
+        sub_ = nh_.subscribe("mobile/cmd_vel", 1, &TimdaMobile::Callback, this);
+        odom_pub = nh_.advertise<nav_msgs::Odometry>("odom", 50);
         M = new Mecanum(this->a, this->b, this->R);
         TM = new TimdaModbus();
+        current_time = ros::Time::now();
+        last_time = ros::Time::now();
+
+        this->Looper();
     }
 
     ~TimdaMobile() {
@@ -60,6 +71,18 @@ public:
         double output = MIN_RPM + slope * abs(RPM);
         return (int)output * sgn(RPM);
     }
+
+    void Looper() {
+        while(ros::ok()){
+            std::vector<double> V(3, 0);
+            V = M->FK(0, 0, 0, 0);
+            // std::copy(V.begin(),
+            //           V.end(),
+            //           std::ostream_iterator<double>(std::cout, " "));
+            // std::cout<<std::endl;
+            ros::spinOnce();
+        }
+    }
 };
 
 int main(int argc, char **argv)
@@ -67,7 +90,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "mobile_node");
   TimdaMobile tm;
 
-  ros::spin();
+//   ros::spin();
 
   return 0;
 }
