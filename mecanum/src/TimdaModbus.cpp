@@ -56,3 +56,21 @@ void TimdaModbus::move(int motor_1_rpm, int motor_2_rpm, int motor_3_rpm, int mo
         }
     }
 }
+
+std::vector<int> TimdaModbus::read_motor_rpm()
+{
+    std::vector<int> mrpm;
+    mrpm.clear();
+    int rc;
+    uint16_t tab_reg[1];
+    for (int i = 1; i <= 4; i++) {
+        modbus_set_slave(this->ct, i);
+        rc = modbus_read_registers(this->ct, 0x00CF, 1, tab_reg);
+        if (rc == -1) {
+            fprintf(stderr, "%s\n", modbus_strerror(errno));
+            return std::vector<int>(4, 0);
+        }
+        mrpm.push_back((short)tab_reg[0]);
+    }
+    return mrpm;
+}
