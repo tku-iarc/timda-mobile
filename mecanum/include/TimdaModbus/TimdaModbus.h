@@ -6,7 +6,7 @@
 #define Motor2_ID 2
 #define Motor3_ID 3
 #define Motor4_ID 4
-#define UART_PORT "/dev/ttyUSB0"
+#define UART_PORT "/dev/mobile/controller"
 #define BAUD_RATE 9600
 #define PARITY 'E' // Even (Odd, None)
 #define BYTESIZE 8
