@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  nav_msgs
+  tf
 )
 #find_package(Eigen3)
 
@@ -112,7 +114,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES mecanum
-  CATKIN_DEPENDS actionlib actionlib_msgs dynamic_reconfigure message_runtime roscpp rospy std_msgs
+  CATKIN_DEPENDS actionlib actionlib_msgs dynamic_reconfigure message_runtime roscpp rospy std_msgs nav_msgs tf
   DEPENDS system_lib
 )
 
