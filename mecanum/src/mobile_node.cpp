@@ -28,9 +28,9 @@ class TimdaMobile
     pthread_t t;
     Mecanum *M;
     TimdaModbus *TM;
-    double a = 0.48544;
+    double a = 0.24145;
     double b = 0.253;
-    double R = 0.1524;
+    double R = 0.15098;
     double rx = 0.0;
     double ry = 0.0;
     double rz = 0.0;
@@ -43,7 +43,7 @@ public:
     {
         sub_ = nh_.subscribe("mobile/cmd_vel", 1, &TimdaMobile::Callback, this);
         odom_pub = nh_.advertise<nav_msgs::Odometry>("odom", 50);
-        loop_rate = new ros::Rate(10);
+        loop_rate = new ros::Rate(1000);
         current_time = ros::Time::now();
         last_time = ros::Time::now();
 
@@ -67,23 +67,27 @@ public:
             std::vector<double> V(3, 0);
             MRPM = TM->read_motor_rpm();
             // std::cout<<"Motor's RPM:"<<MRPM.at(0)<<" "
-            //                                             <<MRPM.at(1)<<" "
-            //                                             <<MRPM.at(2)<<" "
-            //                                             <<MRPM.at(3)<<std::endl;
+            //                          <<MRPM.at(1)<<" "
+            //                          <<MRPM.at(2)<<" "
+            //                          <<MRPM.at(3)<<std::endl;
             V = M->FK(RPM2W(MRPM.at(0)), RPM2W(MRPM.at(1))*-1,
-                                 RPM2W(MRPM.at(2)), RPM2W(MRPM.at(3))*-1);
+                      RPM2W(MRPM.at(2)), RPM2W(MRPM.at(3))*-1);
             // std::cout<<"Robot's Speed:"<<V.at(0)<<" "
-            //                                               <<V.at(1)<<" "
-            //                                               <<V.at(2)<<std::endl;
+            //                            <<V.at(1)<<" "
+            //                            <<V.at(2)<<std::endl;
             current_time = ros::Time::now();
             double dt = (current_time - last_time).toSec();
-            double delta_x = (V.at(0)* cos(rz) - V.at(1)* sin(rz)) * dt;
-            double delta_y = (V.at(0)* sin(rz) + V.at(1)* cos(rz)) * dt;
+            double delta_x = (V.at(0)*cos(rz) - V.at(1)*sin(rz)) * dt;
+            double delta_y = (V.at(0)*sin(rz) + V.at(1)*cos(rz)) * dt;
             double delta_th = V.at(2)* dt;
 
             rx += delta_x;
             ry += delta_y;
             rz += delta_th;
+            // std::cout<<"Robot's Position: "<<rx<<" "
+            //                                <<ry<<" "
+            //                                <<rz<<" "
+            //                                <<rz*(180.0/M_PI)<<std::endl;
 
             //since all odometry is 6DOF we'll need a quaternion created from yaw
             geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(rz);
@@ -132,17 +136,17 @@ public:
     {
         std::vector<double> W(4, 0);
         W = M->IK(msg->linear.x,
-                             msg->linear.y,
-                             msg->angular.z);
+                  msg->linear.y,
+                  msg->angular.z);
         // std::cout<<"Return from IK:"<<W.at(0)<<" "
         //                            <<W.at(1)<<" "
         //                            <<W.at(2)<<" "
         //                            <<W.at(3)<<std::endl;
         this->TM->move(W2RPM(W.at(0)), W2RPM(W.at(1)), W2RPM(W.at(2)), W2RPM(W.at(3)));
-        // std::cout<<"PWM: "<<W2RPM(W.at(0)) <<" "
-        //                                  << W2RPM(W.at(1))<<" "
-        //                                  << W2RPM(W.at(2))<<" "
-        //                                  << W2RPM(W.at(3))<<std::endl;
+        // std::cout<<"Send RPM: "<< W2RPM(W.at(0)) <<" "
+        //                        << W2RPM(W.at(1))<<" "
+        //                        << W2RPM(W.at(2))<<" "
+        //                        << W2RPM(W.at(3))<<std::endl;
     }
 
     int W2RPM(double W)
@@ -160,7 +164,8 @@ public:
 
     double RPM2W(int RPM)
     {
-        return K*RPM;
+        double reduction = 30;
+        return K*RPM/reduction;
     }
 };
 
