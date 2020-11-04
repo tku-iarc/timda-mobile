@@ -19,7 +19,7 @@ ROS: Melodic
 ROS Dependments:
 ```bash
 $ sudo apt-get install ros-melodic-hector-sensors-description
-$ sudo apt-get install ros-melodic-rosbridge-server ros-melodic-hector-slam ros-melodic-amcl ros-melodic-move-base ros-melodic-dwa-local-planner ros-melodic-map-server
+$ sudo apt-get install ros-melodic-rosbridge-server ros-melodic-hector-slam ros-melodic-amcl ros-melodic-move-base ros-melodic-dwa-local-planner ros-melodic-map-server ros-melodic-teb-local-planner
 ## Hokuyo UTM30LX driver
 $ sudo apt-get install ros-melodic-urg-node
 ```
