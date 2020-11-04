@@ -22,7 +22,8 @@ std::vector<double> Mecanum::IK(double vx, double vy, double vw)
          1,  1, -1*(a + b),
          1, -1,  1*(a + b);
     V << vx, vy, vw;
-    W = 1/R * (J*V);
+    double r = R / 2;
+    W = 1/r * (J*V);
     VW.clear();
     VW.push_back(*(W.data() + 0));
     VW.push_back(*(W.data() + 1));
@@ -37,7 +38,8 @@ std::vector<double> Mecanum::FK(double w1, double w2, double w3, double w4)
           -1,  1,  1, -1,
           -1/(a+b), 1/(a+b), -1/(a+b), 1/(a+b);
     W << w1, w2, w3, w4;
-    V = R/4 * (JI*W);
+    double r = R / 2;
+    V = r/4 * (JI*W);
 
     VV.clear();
     VV.push_back(*(V.data() + 0));
