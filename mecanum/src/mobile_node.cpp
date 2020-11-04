@@ -34,6 +34,7 @@ class TimdaMobile
     double rx = 0.0;
     double ry = 0.0;
     double rz = 0.0;
+    double reduction = 30;
 
 private:
     double RPM;
@@ -152,7 +153,7 @@ public:
     int W2RPM(double W)
     {
         double v = W * this->R;
-        RPM = (v / this->R)/K;
+        RPM = (v / this->R)/K*reduction;
         // RPM = (abs(RPM) > MAX_RPM) ? MAX_RPM*sgn(RPM) : RPM;
         // RPM = (abs(RPM) < MIN_RPM) ? 0 : RPM;
         // return (int)RPM;
@@ -164,7 +165,6 @@ public:
 
     double RPM2W(int RPM)
     {
-        double reduction = 30;
         return K*RPM/reduction;
     }
 };
