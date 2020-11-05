@@ -8,7 +8,7 @@
   <node name="mobile_node" pkg="mecanum" type="mobile_node"></node>
 
   <!-- Robot description -->
-  <param name="robot_description" command="$(find xacro)/xacro $(find timda_description)/urdf/timda_mobile_platform.urdf.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro $(find timda_description)/urdf/timda.urdf.xacro" />
   <!--
   <node name="spawn_model"
         pkg="gazebo_ros"
