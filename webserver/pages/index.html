@@ -167,6 +167,10 @@
             <option selected="selected" disabled>Select Gamepad</option>
         </select>
         </label>
+        <label class="radio-container">Keyboard
+        <input type="radio" name="radio" value="KeyboardControl">
+        <span class="checkmark"></span>
+        </label>
     </form>
     </div>
     <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
@@ -191,6 +195,7 @@
     <script src="js/joy.js"></script>
     <script src="js/eventemitter2.min.js"></script>
     <script src="js/roslib.min.js"></script>
+    <script src="js/KeyboardControl.js"></script>
     <script>
         // Connecting to ROS
         // -----------------
@@ -416,6 +421,8 @@
                     cmdVel.publish(twist);
                     // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
                 }
+            }else if ($('input[name=radio]:checked', '#controlForm').val() == "KeyboardControl") {
+                KeyboardState(this.checked)
             }
         });
     </script>
