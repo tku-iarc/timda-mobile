@@ -11,72 +11,9 @@ function KeyboardState(state) {
 
 function keysdown(e) {
     if (start == true) {
-        var speed = document.getElementById("SpeedInput").value;
+        var speed = document.getElementById("powerRange").value;
         keys[e.keyCode] = true;
         
-        //m reset imu
-        if (keys[86]) {
-            //console.log(e.keyCode);
-            ImuReset();
-        }
-
-        //, hold_ball control
-        if (keys[67]) {
-            //console.log(e.keyCode);
-            let hold_ball_checked = document.getElementById("HoldBallButton1").checked;
-            //console.log(hold_ball_checked);
-
-           if (hold_ball_checked) {
-                $("#HoldBallButton1").remove();
-                var holdball_i = $(document.createElement('i'))
-                    .attr("class", "fa fa-futbol-o fa-3x")
-                    .attr("aria-hidden", "true")
-                    .attr("id", "HoldBallButton1")
-                holdball_i.appendTo("#HoldBallDiv1");
-                this.value = 0;
-                HoldBallSwitch(0,1);
-                $('#HoldBallButton1').prop('checked',false);
-                $('#HoldBallButton1').change();
-            } else {
-                $("#HoldBallButton1").remove();
-                var holdball_i = $(document.createElement('i'))
-                    .attr("class", "fa fa-futbol-o fa-3x fa-spin")
-                    .attr("aria-hidden", "true")
-                    .attr("id", "HoldBallButton1")
-                    .attr("style","color: #FFCC00;")
-                holdball_i.appendTo("#HoldBallDiv1");
-                this.value = 1;
-                HoldBallSwitch(1,1);
-                $('#HoldBallButton1').prop('checked',true);
-                $('#HoldBallButton1').change();
-            }
-        }
-        //Strategy_Choose
-        if (keys[32] && keys[49]) {
-            SetBehaviorKeyborard([0, 1, 1, 0, 0, 0, 0]);
-            e.preventDefault();
-        } else if (keys[32] && keys[50]) {
-            SetBehaviorKeyborard([1, 0, 1, 0, 0, 0, 0]);
-            e.preventDefault();
-        } else if (keys[32] && keys[51]) {
-            SetBehaviorKeyborard([0, 1, 0, 0, 1, 0, 0]);
-            e.preventDefault();
-        } else if (keys[32] && keys[52]) {
-            SetBehaviorKeyborard([1, 0, 0, 0, 1, 0, 0]);
-            e.preventDefault();
-        } else if (keys[32] && keys[53]) {
-            SetBehaviorKeyborard([0, 1, 0, 0, 0, 1, 0]);
-            e.preventDefault();
-        } else if (keys[32] && keys[54]) {
-            SetBehaviorKeyborard([1, 0, 0, 0, 0, 1, 0]);
-            e.preventDefault();
-        } else if (keys[32] && keys[55]) {
-            SetBehaviorKeyborard([0, 1, 0, 1, 0, 0, 0]);
-            e.preventDefault();
-        } else if (keys[32] && keys[56]) {
-            SetBehaviorKeyborard([1, 0, 0, 1, 0, 0, 0]);
-            e.preventDefault();
-        }
         //RobotControl
         if (keys[87] && keys[68]) {
             vec3 = new ROSLIB.Message({
@@ -84,7 +21,8 @@ function keysdown(e) {
                 y: parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
+            console.log("fuck");
             //PublishTopicCmdVel(vec3);
         } else if (keys[87] && keys[65]) {
             vec3 = new ROSLIB.Message({
@@ -92,7 +30,7 @@ function keysdown(e) {
                 y: parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
         } else if (keys[83] && keys[68]) {
             vec3 = new ROSLIB.Message({
@@ -100,7 +38,7 @@ function keysdown(e) {
                 y: -parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
         } else if (keys[83] && keys[65]) {
             vec3 = new ROSLIB.Message({
@@ -108,7 +46,7 @@ function keysdown(e) {
                 y: -parseFloat(speed / Math.pow(2, 0.5)),
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
         } else if (keys[87]) {
             vec3 = new ROSLIB.Message({
@@ -116,7 +54,7 @@ function keysdown(e) {
                 y: parseFloat(speed),
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
            // PublishTopicCmdVel(vec3);
         } else if (keys[68]) {
             vec3 = new ROSLIB.Message({
@@ -124,7 +62,7 @@ function keysdown(e) {
                 y: 0,
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
         } else if (keys[83]) {
             vec3 = new ROSLIB.Message({
@@ -132,7 +70,7 @@ function keysdown(e) {
                 y: -parseFloat(speed),
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
         } else if (keys[65]) {
             vec3 = new ROSLIB.Message({
@@ -140,7 +78,7 @@ function keysdown(e) {
                 y: 0,
                 z: 0
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
         } else if (keys[69]) {
             var speed_;
@@ -154,7 +92,7 @@ function keysdown(e) {
                 y: 0,
                 z: -parseFloat(speed_)
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
         } else if (keys[81]) {
             var speed_;
@@ -168,15 +106,8 @@ function keysdown(e) {
                 y: 0,
                 z: parseFloat(speed_)
             });
-            PublishTopicCmdVel(vec3);
+            cmdVel.publish(vec3);
             //PublishTopicCmdVel(vec3);
-        }
-        //SwitchRobot
-        if (keys[80]) {
-            PublishTopicGameState(0);
-            StrategyStop();
-        } else if (keys[79]) {
-            PublishTopicGameState(1);
         }
 
     }
@@ -216,7 +147,7 @@ function releasebutton(state) {
     //    console.log("stop");
     //    PublishTopicCmdVel(vec3);
     //}
-    PublishTopicCmdVel(vec3);
+    cmdVel.publish(vec3);
 }
 
 function keyuped(e) {
