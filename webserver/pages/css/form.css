@@ -4,61 +4,11 @@ body {
   background-color: #ffffffff;
 }
 
-/*class*/
-
-.modal-dialog {
-  width: 1400px;
-}
-
-/*==============================================*/
-
-/*Wifi*/
-
-#StrategyWifi {
-  border: 0px solid #d3d3d3;
-}
-
-#StrategyWifi span {
-  cursor: pointer;
-  position: absolute;
-  top: 1%;
-  left: 12%;
-}
-
-#Setting_Wifi {
-  height: 100%;
-  width: 50px;
-}
-
-#WifiLight {
-  width: 45px;
-  height: 45px;
-  border: 0px solid #d3d3d3;
-  position: absolute;
-  top: 1.5%;
-  left: 13%;
-}
-
-.Wifimodal_content {
-  position: relative;
-  background-color: #ffffff;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  border: 1px solid #999;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  outline: 0;
-  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-}
-
-/*==============================================*/
-
 /*modal*/
 
 .modal-content {
   position: relative;
-  background-color: #586085;
+  background-color: #eaeaee;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   border: 1px solid #999;
@@ -71,22 +21,16 @@ body {
 
 .modal-title {
   color: #0026ff;
-  font-size: 25px;
+  font-size: 15px;
   font-family: "Arial,serif,sans-serif";
 }
-
-#StrategyParameter {
-  width: 1365px;
-  height: 600px;
-  z-index: 1;
-  border: 1px solid black;
-  border-radius: 3px;
-  background-color: #ffefd5;
+.content {
+  font-size: 10px;
 }
 .button {
   border: none;
   color: white;
-  padding: 16px 32px;
+  padding: 8px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -155,7 +99,7 @@ body {
   padding-left: 35px;
   margin-bottom: 12px;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -172,10 +116,10 @@ body {
 /* Create a custom radio button */
 .checkmark {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
+  top: 1px;
+  left: 20px;
+  height: 10px;
+  width: 10px;
   background-color: #eee;
   border-radius: 50%;
 }
@@ -187,7 +131,7 @@ body {
 
 /* When the radio button is checked, add a blue background */
 .radio-container input:checked ~ .checkmark {
-  background-color: #2196f3;
+  background-color: #f321f3;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */

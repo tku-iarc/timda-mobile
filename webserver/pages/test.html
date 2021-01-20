@@ -19,25 +19,8 @@
     <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/form.css" />
-    <link rel="stylesheet" href="css/general.css" />
-    <link rel="stylesheet" href="css/pathplan.css" />
-    <link rel="stylesheet" href="css/BehaviorForm.css" />
-    <link rel="stylesheet" href="css/TeamStrategy.css" />
-    <link rel="stylesheet" href="css/ChooseShow.css" />
-    <link rel="stylesheet" href="css/wifi.css" />
-    <link rel="stylesheet" href="css/ButtonStyle.css" />
-    <link rel="stylesheet" href="css/RangeStyle.css" />
-    <!-- jQuery UI-->
+
     <link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css" />
-    <!-- Javascript -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
-    <script src="jquery-ui-1.11.4/jquery-ui.min.js"></script>
-    <script src="js/eventemitter2.min.js"></script>
-    <script src="js/roslib.js"></script>
-    <script src="js/CloseReverseOut.js"></script>
-    <script src="js/CloseCenterRightButton.js"></script>
     <link
       rel="stylesheet"
       dfdsjfisjt
@@ -46,56 +29,57 @@
     />
     <title>test</title>
   </head>
+
   <body>
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div>
-            <h4 class="modal-title">TIMDA UI</h4>
-          </div>  
-        <div>
-            <label>Connect to rosbridge: </label>
-            <span id="host-info"></span>
-            <span id="ros-status"></span>
-            <br />
-            <label>Socket IO status: </label>
-            <span id="io-status"></span>
-            <br />
-            <button id="shutdown" class="button button1">Shutdown</button>
-          </div>
-          <div>
-            <h2 class="modal-title">Manual Control:</h2>
-            <form id="controlForm" class="inline">
-              <label class="radio-container"
-                >No Manual
-                <input
-                  type="radio"
-                  checked="checked"
-                  name="radio"
-                  value="No Manual"
-                />
-                <span class="checkmark"></span>
-              </label>
-              <label class="radio-container"
-                >Virtual Joystick
-                <input type="radio" name="radio" value="Virtual Joystick" />
-                <span class="checkmark"></span>
-              </label>
-              <label class="radio-container"
-                >Real Joystick
-                <input type="radio" name="radio" value="Real Joystick" />
-                <span class="checkmark"></span>
-                <select name="gamepadList" id="gamepadList" class="inline">
-                  <option selected="selected" disabled>Select Gamepad</option>
-                </select>
-              </label>
-              <label class="radio-container"
-                >Keyboard
-                <input type="radio" name="radio" value="KeyboardControl" />
-                <span class="checkmark"></span>
-              </label>
-            </form>
-          </div>
+    <div>
+      <h4 class="modal-title">TIMDA UI</h4>
+      <div id="StatusTableDiv">
+        <label class="content">Connect to rosbridge: </label>
+        <span id="host-info"></span>
+        <span id="ros-status"></span>
+        <br />
+        <label class="content">Socket IO status: </label>
+        <span id="io-status"></span>
+        <br />
+        <button id="shutdown" class="button button1">Shutdown</button>
+      </div>
+      <div id="ContuolTable">
+        <h2 class="modal-title">Manual Control:</h2>
+        <form id="controlForm" class="inline">
+          <label class="radio-container"
+            >No Manual
+            <input
+              type="radio"
+              checked="checked"
+              name="radio"
+              value="No Manual"
+            />
+            <span class="checkmark"></span>
+          </label>
+            <br/>
+          <label class="radio-container"
+            >Virtual Joystick
+            <input type="radio" name="radio" value="Virtual Joystick" />
+            <span class="checkmark"></span>
+          </label>
+            <br/>
+          <label class="radio-container"
+            >Real Joystick
+            <input type="radio" name="radio" value="Real Joystick" />
+            <span class="checkmark"></span>
+            <select name="gamepadList" id="gamepadList" class="inline">
+              <option selected="selected" disabled>Select Gamepad</option>
+            </select>
+          </label>
+            <br/>
+          <label class="radio-container"
+            >Keyboard
+            <input type="radio" name="radio" value="KeyboardControl" />
+            <span class="checkmark"></span>
+          </label>
+            <br/>
+        </form>
+      </div>
       </div>
     </div>
 
