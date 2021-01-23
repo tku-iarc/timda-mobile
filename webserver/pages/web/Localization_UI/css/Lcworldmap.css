@@ -6,8 +6,8 @@ body {
     background-size: cover;
     height: 100%;
     width: 100%;
-    //overflow-y: hidden;
-    //overflow-x: hidden;
+    /* //overflow-y: hidden; */
+    /* //overflow-x: hidden; */
 }
 
 #HoldBallDiv1 {
@@ -385,7 +385,7 @@ body {
     position: absolute;
     width: 1000px;
     top: 170px;
-    left: 223px;
+    left: 300px;
     height: 723px;
 }
 
@@ -781,7 +781,7 @@ body {
     height: 60px;
     z-index: 1;
     position: absolute;
-    top: 120px;
+    top: 100px;
     left: 250px;
     text-align: left;
     font-size: 20px;

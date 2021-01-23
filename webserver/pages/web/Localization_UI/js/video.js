@@ -15,7 +15,7 @@ function MonitorSwitch(checked) {
         document.getElementById('canvasMap').style.webkitTransform = "rotate(0deg)";
         video.src = "img/LcGround.png";
         if (ground_reverse == false) {
-            video.src = "img/LcGround.png";
+            video.src = "img/black.png";
         }else{
             video.src = "img/LcGround2.png";
         }
@@ -36,9 +36,9 @@ function WhielineSwitch(checked) {
     } else {
         document.getElementById('canvasMap').style.webkitTransform = "rotate(0deg)";
         document.getElementById('canvasMap').style.zIndex = "0";
-        video.src = "img/LcGround.png";
+        video.src = "img/black.png";
         if (ground_reverse == false) {
-            video.src = "img/LcGround.png";
+            video.src = "img/black.png";
         }else{
             video.src = "img/LcGround2.png";
         }
@@ -72,7 +72,7 @@ function GroundSwitch(checked) {
     else{
         if(whiteline==false){
           if (checked == false) {
-              video.src = "img/LcGround.png";
+              video.src = "img/black.png";
               //console.log("11111111");
           }else{
               video.src = "img/LcGround2.png";
