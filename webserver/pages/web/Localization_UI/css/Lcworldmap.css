@@ -234,137 +234,137 @@ body {
     left: 0px;
     top: 0px;
 }
-#Rect1 {
-    position: absolute;
-    left: 100px;
-    top: 95px;
-}
-
-#Rect2 {
-    position: absolute;
-    left: 363px;
-    top: 95px;
-}
-
-#Rect3 {
-    position: absolute;
-    left: 577px;
-    top: 95px;
-}
-
-#Rect4 {
-    position: absolute;
-    left: 840px;
-    top: 95px;
-}
-
-#Rect5 {
-    position: absolute;
-    left: 175px;
-    top: 195px;
-}
-
-#Rect6 {
-    position: absolute;
-    left: 304px;
-    top: 225px;
-}
-
-#Rect7 {
-    position: absolute;
-    left: 471px;
-    top: 203px;
-}
-
-#Rect8 {
-    position: absolute;
-    left: 639px;
-    top: 224px;
-}
-
-#Rect9 {
-    position: absolute;
-    left: 766px;
-    top: 195px;
-}
-
-#Rect10 {
-    position: absolute;
-    left: 133px;
-    top: 332px;
-}
-
-#Rect11 {
-    position: absolute;
-    left: 263px;
-    top: 333px;
-}
-
-#Rect12 {
-    position: absolute;
-    left: 678px;
-    top: 332px;
-}
-
-#Rect13 {
-    position: absolute;
-    left: 809px;
-    top: 332px;
-}
-
-#Rect14 {
-    position: absolute;
-    left: 175px;
-    top: 469px;
-}
-
-#Rect15 {
-    position: absolute;
-    left: 303px;
-    top: 442px;
-}
-
-#Rect16 {
-    position: absolute;
-    left: 472px;
-    top: 463px;
-}
-
-#Rect17 {
-    position: absolute;
-    left: 640px;
-    top: 442px;
-}
-
-#Rect18 {
-    position: absolute;
-    left: 768px;
-    top: 470px;
-}
-
-#Rect19 {
-    position: absolute;
-    left: 104px;
-    top: 571px;
-}
-
-#Rect20 {
-    position: absolute;
-    left: 365px;
-    top: 571px;
-}
-
-#Rect21 {
-    position: absolute;
-    left: 579px;
-    top:571px;
-}
-
-#Rect22 {
-    position: absolute;
-    left: 840px;
-    top: 571px;
-}
+/* #Rect1 { */
+    /* position: absolute; */
+    /* left: 100px; */
+    /* top: 95px; */
+/* } */
+/*  */
+/* #Rect2 { */
+    /* position: absolute; */
+    /* left: 363px; */
+    /* top: 95px; */
+/* } */
+/*  */
+/* #Rect3 { */
+    /* position: absolute; */
+    /* left: 577px; */
+    /* top: 95px; */
+/* } */
+/*  */
+/* #Rect4 { */
+    /* position: absolute; */
+    /* left: 840px; */
+    /* top: 95px; */
+/* } */
+/*  */
+/* #Rect5 { */
+    /* position: absolute; */
+    /* left: 175px; */
+    /* top: 195px; */
+/* } */
+/*  */
+/* #Rect6 { */
+    /* position: absolute; */
+    /* left: 304px; */
+    /* top: 225px; */
+/* } */
+/*  */
+/* #Rect7 { */
+    /* position: absolute; */
+    /* left: 471px; */
+    /* top: 203px; */
+/* } */
+/*  */
+/* #Rect8 { */
+    /* position: absolute; */
+    /* left: 639px; */
+    /* top: 224px; */
+/* } */
+/*  */
+/* #Rect9 { */
+    /* position: absolute; */
+    /* left: 766px; */
+    /* top: 195px; */
+/* } */
+/*  */
+/* #Rect10 { */
+    /* position: absolute; */
+    /* left: 133px; */
+    /* top: 332px; */
+/* } */
+/*  */
+/* #Rect11 { */
+    /* position: absolute; */
+    /* left: 263px; */
+    /* top: 333px; */
+/* } */
+/*  */
+/* #Rect12 { */
+    /* position: absolute; */
+    /* left: 678px; */
+    /* top: 332px; */
+/* } */
+/*  */
+/* #Rect13 { */
+    /* position: absolute; */
+    /* left: 809px; */
+    /* top: 332px; */
+/* } */
+/*  */
+/* #Rect14 { */
+    /* position: absolute; */
+    /* left: 175px; */
+    /* top: 469px; */
+/* } */
+/*  */
+/* #Rect15 { */
+    /* position: absolute; */
+    /* left: 303px; */
+    /* top: 442px; */
+/* } */
+/*  */
+/* #Rect16 { */
+    /* position: absolute; */
+    /* left: 472px; */
+    /* top: 463px; */
+/* } */
+/*  */
+/* #Rect17 { */
+    /* position: absolute; */
+    /* left: 640px; */
+    /* top: 442px; */
+/* } */
+/*  */
+/* #Rect18 { */
+    /* position: absolute; */
+    /* left: 768px; */
+    /* top: 470px; */
+/* } */
+/*  */
+/* #Rect19 { */
+    /* position: absolute; */
+    /* left: 104px; */
+    /* top: 571px; */
+/* } */
+/*  */
+/* #Rect20 { */
+    /* position: absolute; */
+    /* left: 365px; */
+    /* top: 571px; */
+/* } */
+/*  */
+/* #Rect21 { */
+    /* position: absolute; */
+    /* left: 579px; */
+    /* top:571px; */
+/* } */
+/*  */
+/* #Rect22 { */
+    /* position: absolute; */
+    /* left: 840px; */
+    /* top: 571px; */
+/* } */
 
 
 /*=======================================================*/
@@ -385,14 +385,14 @@ body {
     position: absolute;
     width: 1000px;
     top: 170px;
-    left: 300px;
+    left: 215px;
     height: 723px;
 }
 
 #RobotModule {
     position: absolute;
-    top: 12%;
-    left: 82.2%;
+    top: 20%;
+    left: 81.5%;
     width: 250px;
     font-family: Signika;
     font-size: 150%;
@@ -402,7 +402,13 @@ body {
     border-radius: 10px;
     text-align: left;
 }
-
+.iformation {
+    width: 55px;
+    height: 25px;
+    position: relative;
+    top: 48%;
+    left: 10%;
+}
 #titleModalLabel {
     position: relative;
     font-size: 60px;
@@ -477,7 +483,7 @@ body {
 #Joystick {
     position: relative;
     top: 53%;
-    left: 0.8%;
+    left: 82.7%;
     width: 210px;
     height: 210px;
     z-index: 1;
@@ -497,7 +503,7 @@ body {
     z-index: 1;
     position: relative;
     top: 49%;
-    left: 0.5%;
+    left: 82.5%;
     font-size: 20px;
 }
 
@@ -777,7 +783,7 @@ body {
 
 /*==========================================================*/
 #MCLInformation{
-    width: 900px;
+    width: 1000px;
     height: 60px;
     z-index: 1;
     position: absolute;

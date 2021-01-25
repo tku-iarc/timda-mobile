@@ -13,11 +13,11 @@ function MonitorSwitch(checked) {
         console.log("localization map");
     } else {
         document.getElementById('canvasMap').style.webkitTransform = "rotate(0deg)";
-        video.src = "img/LcGround.png";
+        video.src = "img/black.png";
         if (ground_reverse == false) {
             video.src = "img/black.png";
         }else{
-            video.src = "img/LcGround2.png";
+            video.src = "img/mask.jpg";
         }
         console.log("ground map");
     }
@@ -40,7 +40,7 @@ function WhielineSwitch(checked) {
         if (ground_reverse == false) {
             video.src = "img/black.png";
         }else{
-            video.src = "img/LcGround2.png";
+            video.src = "img/mask.jpg";
         }
         console.log("ground map");
     }
@@ -75,7 +75,7 @@ function GroundSwitch(checked) {
               video.src = "img/black.png";
               //console.log("11111111");
           }else{
-              video.src = "img/LcGround2.png";
+              video.src = "img/mask.jpg";
           }
         }
     }

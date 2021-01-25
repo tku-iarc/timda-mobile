@@ -53,30 +53,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="SpeedDiv">
-                <table>
-                    <tr>
-                        <td colspan="2">
-                            <label id="SpeedLabel">Speed&nbsp;<i class="fa fa-bolt "></i></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="SpeedSlider" name="SpeedElement" type="range" min="0" max="100" value="0" oninput="ToInputValue(this.value,this.name,1);">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="SpeedInput" name="SpeedElement" placeholder="Speed" value="0" type="number" min="0" max="100" oninput="ToSliderValue(this.value,this.name,0);" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="Joystick">
-                <canvas id="Joystick_Canvas">
-                    Your browser does not support the HTML5 canvas tag.
-                </canvas>
-            </div>
+            
             <div id="LocalizationDiv" >
                 <table >
                     <tr >
@@ -110,12 +87,12 @@
                             <label id="GroundLable" for="GroundButton">Field Rotate</label>
                         </div>
                     </tr>
-                    <tr>
-                        <div style="width:140px;">
-                            <input autocomplete="off" id="WhitelineButton" type="checkbox" name="Whiteline" onclick="WhielineSwitch(this.checked);" />
-                            <label id="WhitelineLable" for="WhitelineButton">&nbsp;&nbsp;WhiteLine&nbsp;&nbsp;</label>
-                        </div>
-                    </tr>
+                    <!-- <tr> -->
+                        <!-- <div style="width:140px;"> -->
+                            <!-- <input autocomplete="off" id="WhitelineButton" type="checkbox" name="Whiteline" onclick="WhielineSwitch(this.checked);" /> -->
+                            <!-- <label id="WhitelineLable" for="WhitelineButton">&nbsp;&nbsp;WhiteLine&nbsp;&nbsp;</label> -->
+                        <!-- </div> -->
+                    <!-- </tr> -->
                     <tr>
                         <div style="width:140px;">
                             <input autocomplete="off" id="LocalizationButton" type="checkbox" onclick="MonitorSwitch(this.checked);">
@@ -184,30 +161,33 @@
 -->
                 <!-- <img src="img/black.png" id="court"> -->
                 <div id="MCLInformation">
-                    <label>coordinate:&nbsp;( </label>
-                    <label id="coordinate_x">0</label>
-                    <label>,&nbsp; </label>
-                    <label id="coordinate_y">0</label>
-                    <label>)&nbsp;&nbsp;Angle:&nbsp;</label>
-                    <label id="coordinate_angle"></label>
-                    <label>Sigma:&nbsp; </label>
-                    <label id="coordinate_sigma"></label>
+                    <!-- <label>coordinate:&nbsp;( </label> -->
+                    <!-- <label id="coordinate_x">0</label> -->
+                    <!-- <label>,&nbsp; </label> -->
+                    <!-- <label id="coordinate_y">0</label> -->
+                    <!-- <label>)&nbsp;&nbsp;Angle:&nbsp;</label> -->
+                    <!-- <label id="coordinate_angle"></label> -->
+                    <!-- <label>Sigma:&nbsp; </label> -->
+                    <!-- <label id="coordinate_sigma"></label> -->
                     <!-- <label>&nbsp;&nbsp;&nbsp;ball:&nbsp;</label> -->
                     <!-- <label id="ball_ang">999&nbsp;°</label> -->
                     <!-- <label>&nbsp;&nbsp;</label> -->
                     <!-- <label id="ball_dis">999&nbsp;cm</label> -->
-                    <label>Connect to rosbridge: </label>
+                    <label>Connect to rosbridge:&nbsp; </label>
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <span id="host-info"></span>
                     <span id="ros-status"></span>
-                    <label>Socket IO status: </label>
+                    <br>
+                    <label>Socket IO status:&nbsp;</label>
+                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     <span id="io-status"></span>
                 </div>
                 <div id="MapArea">
                     <img id="canvasMap" ></img>
                 </div>
                 
-                <!-- <div id="canvasMap"> -->
-                    <!-- <canvas id="path_map" class="DrawRect" width="1000" height="723" ></canvas> -->
+                <div id="canvasMap">
+                    <canvas id="path_map" class="DrawRect" width="1000" height="723" ></canvas>
                     
                     <!-- 1 -->
                     <!-- <canvas id="Rect1" class="DrawRect" width="60" height="60"></canvas> -->
@@ -256,9 +236,23 @@
                     <!-- <canvas id="robot_map" class="DrawRect" width="1000" height="723"></canvas> -->
                     
                     <!-- <canvas id="reset_map" class="DrawRect" width="1000" height="723"></canvas> -->
-                <!-- </div> -->
-                <!-- <div class="form-group" id="RobotModule"> -->
-                    <!-- <table> -->
+                </div>
+                <div class="form-group" id="RobotModule">
+                    <table>
+                        <div id="iformation" style="border: 2px rgb(3, 167, 158) dashed">
+                    		<div style="left:750px;">
+                    			Posizione X:<input id="joy3PosizioneX" type="text" /><br />
+                    			Posizione Y:<input id="joy3PosizioneY" type="text" /><br />
+                    			Direzione:<input id="joy3Direzione" type="text" /><br />
+                    			X :<input id="joy3X" type="text" /></br>
+                    			Y :<input id="joy3Y" type="text" />
+                    		</div>
+                            <!-- <div class="slidecontainer inline"> -->
+                                <!-- <input type="range" min="0.1" max="2.0" step="0.01" value="0.1" class="slider" id="powerRange" /> -->
+                            <!-- </div> -->
+                            <!-- <div class="inline"><input style="width: 30px;" id="powerShow" type="text" value="20" disabled /></div> -->
+                            <!-- <label class="inline">m/s</label> -->
+                        </div>
                         <!-- <tr> -->
                             <!-- <th> -->
                                 <!-- <label for="Region_1" class="region">Region 1</label> -->
@@ -454,8 +448,32 @@
                                 <!-- <input class="button" type="button" value="stop" id="stop_button" onclick="topicROSGameState(0);stop_robot()"> -->
                             <!-- </td> -->
                         <!-- </tr> -->
-                    <!-- </table> -->
-                <!-- </div> -->
+                    </table>
+                </div>
+                <div id="SpeedDiv">
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <label id="SpeedLabel">Speed&nbsp;<i class="fa fa-bolt "></i></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="SpeedSlider" name="SpeedElement" type="range" min="0" max="100" value="0" oninput="ToInputValue(this.value,this.name,1);">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="SpeedInput" name="SpeedElement" placeholder="Speed" value="0" type="number" min="0" max="100" oninput="ToSliderValue(this.value,this.name,0);" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="Joystick">
+                    <canvas id="Joystick_Canvas">
+                        Your browser does not support the HTML5 canvas tag.
+                    </canvas>
+                </div>
                 <div id="HoldBallDiv1" vlaue="0">
                     <i id="HoldBallButton1" class="fa fa-futbol-o fa-2x" aria-hidden="true"></i>
                 </div>
