@@ -5,137 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/ButtonStyle.css">
     <title>TMP</title>
-    <style>
-        .button {
-            border: none;
-            color: white;
-            padding: 16px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-        }
-
-        .button1 {
-            background-color: white; 
-            color: red; 
-            border: 2px solid red;
-        }
-
-        .button1:hover {
-            background-color: red;
-            color: white;
-        }
-        .slidecontainer {
-            width: 200px; /* Width of the outside container */
-            margin: 15px 20px;
-        }
-        .slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 15px;
-            border-radius: 5px;  
-            background: #d3d3d3;
-            outline: none;
-            opacity: 0.7;
-            -webkit-transition: .2s;
-            transition: opacity .2s;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%; 
-            background: #4CAF50;
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #4CAF50;
-            cursor: pointer;
-        }
-
-        .slider:hover {
-            opacity: 1;
-        }
-
-        .inline {
-            /* float: left; */
-            display: inline-block;
-        }
-        /* The radio check container */
-        .radio-container {
-          display:inline-block; 
-          position: relative;
-          padding-left: 35px;
-          margin-bottom: 12px;
-          cursor: pointer;
-          font-size: 22px;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-
-        /* Hide the browser's default radio button */
-        .radio-container input {
-          position: absolute;
-          opacity: 0;
-          cursor: pointer;
-        }
-
-        /* Create a custom radio button */
-        .checkmark {
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 25px;
-          width: 25px;
-          background-color: #eee;
-          border-radius: 50%;
-        }
-
-        /* On mouse-over, add a grey background color */
-        .radio-container:hover input ~ .checkmark {
-          background-color: #ccc;
-        }
-
-        /* When the radio button is checked, add a blue background */
-        .radio-container input:checked ~ .checkmark {
-          background-color: #2196F3;
-        }
-
-        /* Create the indicator (the dot/circle - hidden when not checked) */
-        .checkmark:after {
-          content: "";
-          position: absolute;
-          display: none;
-        }
-
-        /* Show the indicator (dot/circle) when checked */
-        .radio-container input:checked ~ .checkmark:after {
-          display: block;
-        }
-
-        /* Style the indicator (dot/circle) */
-        .radio-container .checkmark:after {
-         	top: 9px;
-        	left: 9px;
-        	width: 8px;
-        	height: 8px;
-        	border-radius: 50%;
-        	background: white;
-        }
-    </style>
 </head>
 
 <body>
@@ -167,6 +38,10 @@
             <option selected="selected" disabled>Select Gamepad</option>
         </select>
         </label>
+        <label class="radio-container">Keyboard
+        <input type="radio" name="radio" value="KeyboardControl">
+        <span class="checkmark"></span>
+        </label>
     </form>
     </div>
     <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
@@ -191,6 +66,7 @@
     <script src="js/joy.js"></script>
     <script src="js/eventemitter2.min.js"></script>
     <script src="js/roslib.min.js"></script>
+    <script src="js/KeyboardControl.js"></script>
     <script>
         // Connecting to ROS
         // -----------------
@@ -416,6 +292,8 @@
                     cmdVel.publish(twist);
                     // console.log(twist.linear.x+", "+twist.linear.y+", "+twist.angular.z);
                 }
+            }else if ($('input[name=radio]:checked', '#controlForm').val() == "KeyboardControl") {
+                KeyboardState(this.checked)
             }
         });
     </script>
