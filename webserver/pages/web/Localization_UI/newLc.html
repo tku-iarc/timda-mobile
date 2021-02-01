@@ -393,6 +393,55 @@
     </div>
     </div>
     <script>
+         // Connecting to ROS
+        // -----------------
+        if (location.hostname=="") {
+            location.hostname = "localhost";
+        }
+
+        var ros = new ROSLIB.Ros({
+            url : 'ws://'+location.hostname+':9090'
+        });
+
+        ros.on('connection', function() {
+            console.log('Connected to websocket server.');
+            $('#ros-status').text('\tOK');
+        });
+
+        ros.on('error', function(error) {
+            console.log('Error connecting to websocket server: ', error);
+            $('#ros-status').text('\tERROR');
+        });
+
+        ros.on('close', function() {
+            console.log('Connection to websocket server closed.');
+            $('#ros-status').text('\tCLOSE');
+        });
+
+        // Connecting to SocketIO
+        // -----------------
+        $(function () {
+            var socket = io();
+            socket.on('connect', function () {
+                console.log('IO STATUS: ', socket.connected);
+                $('#io-status').text(socket.connected);
+            });
+            socket.on('disconnect', function () {
+                console.log('IO STATUS: ', socket.connected);
+                $('#io-status').text(socket.connected);
+            });
+            $('#shutdown').click(function () {
+                var c = confirm("Are you sure you want to shut down?");
+                if (c) {
+                    socket.emit('shutdown', '');
+                }
+            });
+        });
+        // Show rosbridge connection info
+        // -----------------
+        $(function () {
+            $('#host-info').text(location.hostname + ':9090');
+        });
         $(document).ready(function () {//单选  
             $('#LocalizationButton,#WhitelineButton').change(function () {
                 //console.log($(this).prop('checked'))
