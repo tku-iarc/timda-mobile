@@ -5,9 +5,6 @@ var Joystick_info = function (container, parameters) {
     if (Xspeed >= 100) {
       Xspeed = 100;
     }
-    if (Yspeed >= 100) {
-      Yspeed = 100;
-    }
     return Xspeed;
   };
   this.GetY = function () {
@@ -179,11 +176,11 @@ joystick_canvas.addEventListener("mousedown", function (e) {
       drawjoystick_base_rightkey();
       var radius = Math.sqrt(
         Math.pow(joystick_canvas.width / 2 - pos.x, 2) +
-          Math.pow(joystick_canvas.height / 2 - pos.y, 2)
+        Math.pow(joystick_canvas.height / 2 - pos.y, 2)
       );
       var c_length = Math.sqrt(
         Math.pow(joystick_canvas.width / 2 - pos.x, 2) +
-          Math.pow(joystick_canvas.height / 2 - radius - pos.y, 2)
+        Math.pow(joystick_canvas.height / 2 - radius - pos.y, 2)
       );
       var h = Math.sqrt(Math.pow(radius, 2) - Math.pow(c_length / 2, 2));
       var angle = Math.PI - 2 * Math.asin(h / radius);
@@ -275,11 +272,11 @@ joystick_canvas.addEventListener("mousemove", function (e) {
         drawjoystick_base_rightkey();
         var radius = Math.sqrt(
           Math.pow(joystick_canvas.width / 2 - pos.x, 2) +
-            Math.pow(joystick_canvas.height / 2 - pos.y, 2)
+          Math.pow(joystick_canvas.height / 2 - pos.y, 2)
         );
         var c_length = Math.sqrt(
           Math.pow(joystick_canvas.width / 2 - pos.x, 2) +
-            Math.pow(joystick_canvas.height / 2 - radius - pos.y, 2)
+          Math.pow(joystick_canvas.height / 2 - radius - pos.y, 2)
         );
         var h = Math.sqrt(Math.pow(radius, 2) - Math.pow(c_length / 2, 2));
         var angle = Math.PI - 2 * Math.asin(h / radius);
