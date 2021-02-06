@@ -24,8 +24,6 @@
     <script src="js/roslib.js"></script>
     <script src="js/Lcworldmap.js"></script>
     <!--<script src="js/RobotConnect.js"></script>-->
-
-
 </head>
 
 <body onload="joystick_main();MonitorSwitch(false)">
@@ -393,27 +391,27 @@
     </div>
     </div>
     <script>
-         // Connecting to ROS
+        // Connecting to ROS
         // -----------------
-        if (location.hostname=="") {
+        if (location.hostname == "") {
             location.hostname = "localhost";
         }
 
         var ros = new ROSLIB.Ros({
-            url : 'ws://'+location.hostname+':9090'
+            url: 'ws://' + location.hostname + ':9090'
         });
 
-        ros.on('connection', function() {
+        ros.on('connection', function () {
             console.log('Connected to websocket server.');
             $('#ros-status').text('\tOK');
         });
 
-        ros.on('error', function(error) {
+        ros.on('error', function (error) {
             console.log('Error connecting to websocket server: ', error);
             $('#ros-status').text('\tERROR');
         });
 
-        ros.on('close', function() {
+        ros.on('close', function () {
             console.log('Connection to websocket server closed.');
             $('#ros-status').text('\tCLOSE');
         });
