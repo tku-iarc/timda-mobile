@@ -1,0 +1,17 @@
+nav {
+  background-color: black;
+  text-align: left;
+  font-size: 0;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 20px;
+  font-size: 16px;
+  background-color: black;
+  transition: 0.5s;
+}
+nav a:hover {
+  background-color: coral;
+}

@@ -5,3 +5,7 @@ node_modules/
 *.tif
 timda_configs/maps/*.pgm
 timda_configs/maps/*.yaml
+bower_components/
+build/
+node_modules/
+package-lock.jso

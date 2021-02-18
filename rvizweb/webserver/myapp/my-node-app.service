@@ -1,0 +1,14 @@
+[Unit]
+Description=app.js - ping-pong and control server for Timda Mobile Platform
+After=network.target
+
+[Service]
+Type=idle
+User=root
+ExecStart=/home/iclab-nuc/.nvm/versions/node/v12.18.3/bin/node /home/iclab-nuc/timda_mobile_ws/src/webserver/myapp/app.js
+Restart=on-failure
+WorkingDirectory=/home/iclab-nuc/timda_mobile_ws/src/webserver/myapp
+
+[Install]
+WantedBy=multi-user.target
+
