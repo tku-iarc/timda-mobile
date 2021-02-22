@@ -18,8 +18,8 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/www)
 configure_file(package.json www/package.json COPYONLY)
 configure_file(index.html www/index.html COPYONLY)
 configure_file(bower.json www/bower.json COPYONLY)
-configure_file(webserver/pages/test.html www/test.html COPYONLY)
-
+configure_file(webserver/pages/index.html www/index2.html COPYONLY)
+file(COPY webserver DESTINATION www)
 # Install webapp build tools
 execute_process(
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/www
