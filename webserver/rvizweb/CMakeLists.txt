@@ -15,11 +15,10 @@ include_directories(
 
 # Copy needed files to www build folder
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/www)
-configure_file(webserver/pages/index.html www/index2.html COPYONLY)
 configure_file(package.json www/package.json COPYONLY)
 configure_file(index.html www/index.html COPYONLY)
 configure_file(bower.json www/bower.json COPYONLY)
-file(COPY webserver DESTINATION www)
+file(COPY ../pages DESTINATION www)
 # Install webapp build tools
 execute_process(
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/www/
@@ -42,7 +41,7 @@ install(
 install(
   DIRECTORY
     launch
-    ${CMAKE_CURRENT_BINARY_DIR}/www/webserver
+    ${CMAKE_CURRENT_BINARY_DIR}/www/pages
   DESTINATION
     ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
