@@ -1,768 +1,777 @@
 .btn:active {
-    position: relative;
-    top: 1px;
+  position: relative;
+  top: 1px;
 }
 /*==========================================================*/
 /*click me*/
-#CliekMe{
-    width:52px;
-    height:52px;
-    position:absolute;
-    top:1%;
-    left:20%;
-    background-image:url(../img/click_me.png);
-    background-color:rgba(255,255,255,0.1);
-    background-size: 50px 60px;
-    background-position: 30% 30%;
-    border-radius: 25px; 
+#CliekMe {
+  width: 52px;
+  height: 52px;
+  position: absolute;
+  top: 1%;
+  left: 20%;
+  background-image: url(../img/click_me.png);
+  background-color: rgba(255, 255, 255, 0.1);
+  background-size: 50px 60px;
+  background-position: 30% 30%;
+  border-radius: 25px;
 }
 /*==========================================================*/
 
 #StartButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #StartButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #StartButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #StopButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #StopButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #StopButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #YellowButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #YellowButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #YellowButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #BlueButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #BlueButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #BlueButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #SimulatorButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #SimulatorButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #SimulatorButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #KeyboardControlButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #KeyboardControlButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #KeyboardControlButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 #CameraSwitchTest {
-    position:absolute;
-    top:42px;
-    left:508px;
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  position: absolute;
+  top: 42px;
+  left: 508px;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #CameraSwitchTest.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #CameraSwitchTest.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
 /*==========================================================*/
-#MCLmapTest{
-    position:absolute;
-    top:42px;
-    left:600px;
-    
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
-    border-top-right-radius:5px;
-    border-bottom-right-radius:5px;
+#MCLmapTest {
+  position: absolute;
+  top: 42px;
+  left: 600px;
+
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 #MCLmapTest.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #MCLmapTest.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
 /*==========================================================*/
-#Fieldmap{
-    position:absolute;
-    top:42px;
-    left:720px;
-    
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
-    border-top-right-radius:5px;
-    border-bottom-right-radius:5px;
+#Fieldmap {
+  position: absolute;
+  top: 42px;
+  left: 720px;
+
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 #Fieldmap.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #Fieldmap.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
 #HoldBallDiv {
-    text-align: center;
-    width: 50px;
+  text-align: center;
+  width: 50px;
 }
 
 /*==========================================================*/
 #imuButton {
-    position:absolute;
-    top:42px;
-    left:720px;
+  position: absolute;
+  top: 42px;
+  left: 720px;
 
-    background-image: none;
-    
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+
+  font-size: 17px;
+  color: #663d00;
 }
 
 #imuButton.ui-state-hover {
-    background-image: none;
-    
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #imuButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
 
 /*==========================================================*/
 #resetButton {
-    position:absolute;
-    top:42px;
-    left:831px;
+  position: absolute;
+  top: 42px;
+  left: 831px;
 
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #resetButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #resetButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
 
 /*==========================================================*/
 
 #locReverseButton {
-    position:absolute;
-    top:42px;
-    left:936px;
-    
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  position: absolute;
+  top: 42px;
+  left: 936px;
+
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #locReverseButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #locReverseButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
 
 /*==========================================================*/
 #GroundButton {
-    position:absolute;
-    top:42px;
-    left:384px;
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  position: absolute;
+  top: 42px;
+  left: 384px;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #GroundButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #GroundButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
 
 /*==========================================================*/
 #HoldBallDiv {
-    text-align: center;
-    width: 50px;
-} 
-
+  text-align: center;
+  width: 50px;
+}
 
 /*RobotState*/
 
 #RobotOneButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #RobotOneButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #RobotOneButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #RobotTwoButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #RobotTwoButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #RobotTwoButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #RobotThreeButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #RobotThreeButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #RobotThreeButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #StandByButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  color: #663d00;
 }
 
 #StandByButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 17px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 17px;
+  background-color: #fff;
 }
 
 #StandByButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 17px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 17px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #ShootButton {
-    -moz-box-shadow: inset 0px 1px 0px 0px #f9eca0;
-    -webkit-box-shadow: inset 0px 1px 0px 0px #f9eca0;
-    box-shadow: inset 0px 1px 0px 0px #f9eca0;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f0c911), color-stop(1, #f2ab1e));
-    background: -moz-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
-    background: -webkit-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
-    background: -o-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
-    background: -ms-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
-    background: linear-gradient(to bottom, #f0c911 5%, #f2ab1e 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f0c911', endColorstr='#f2ab1e', GradientType=0);
-    background-color: #f0c911;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-    border: 1px solid #e65f44;
-    display: inline-block;
-    cursor: pointer;
-    color: #c92200;
-    font-family: Arial;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 6px 12px;
-    text-decoration: none;
-    text-shadow: 0px 1px 0px #ded17c;
+  -moz-box-shadow: inset 0px 1px 0px 0px #f9eca0;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #f9eca0;
+  box-shadow: inset 0px 1px 0px 0px #f9eca0;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, #f0c911),
+    color-stop(1, #f2ab1e)
+  );
+  background: -moz-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+  background: -webkit-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+  background: -o-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+  background: -ms-linear-gradient(top, #f0c911 5%, #f2ab1e 100%);
+  background: linear-gradient(to bottom, #f0c911 5%, #f2ab1e 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f0c911', endColorstr='#f2ab1e', GradientType=0);
+  background-color: #f0c911;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #e65f44;
+  display: inline-block;
+  cursor: pointer;
+  color: #c92200;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 12px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ded17c;
 }
 
 #ShootButton:hover {
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f2ab1e), color-stop(1, #f0c911));
-    background: -moz-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
-    background: -webkit-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
-    background: -o-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
-    background: -ms-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
-    background: linear-gradient(to bottom, #f2ab1e 5%, #f0c911 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f2ab1e', endColorstr='#f0c911', GradientType=0);
-    background-color: #f2ab1e;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0.05, #f2ab1e),
+    color-stop(1, #f0c911)
+  );
+  background: -moz-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+  background: -webkit-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+  background: -o-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+  background: -ms-linear-gradient(top, #f2ab1e 5%, #f0c911 100%);
+  background: linear-gradient(to bottom, #f2ab1e 5%, #f0c911 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#f2ab1e', endColorstr='#f0c911', GradientType=0);
+  background-color: #f2ab1e;
 }
 
 #ShootButton:active {
-    position: relative;
-    top: 1px;
+  position: relative;
+  top: 1px;
 }
 
-
 /*==========================================================*/
 
-
 /*==========================================================*/
-
 
 /*RobotStrategyDiv*/
 
 #IsTeamStrategyButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #IsTeamStrategyButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #IsTeamStrategyButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
 
 #IsTeamStrategyButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #StrategyButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 #StrategyButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #StrategyButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
 
 #StrategyButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 /*==========================================================*/
 
 #SingleButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #SingleButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #SingleButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #FreeKickButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #FreeKickButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #FreeKickButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #PenaltyKickButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #PenaltyKickButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #PenaltyKickButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #FreeBallButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #FreeBallButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #FreeBallButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #ThrowInButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #ThrowInButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #ThrowInButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #CornerKickButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #CornerKickButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #CornerKickButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #GoalKickButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  color: #663d00;
 }
 
 #GoalKickButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 13.8px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 13.8px;
+  background-color: #fff;
 }
 
 #GoalKickButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 13.8px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 13.8px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #AvoidBarrierButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 12px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663d00;
 }
 
 #AvoidBarrierButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 12px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  background-color: #fff;
 }
 
 #AvoidBarrierButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 12px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 12px;
+  color: #1a1a65;
 }
-
 
 /*==========================================================*/
 
 #RobotShowButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 12px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663d00;
 }
 
 #RobotShowButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 12px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  background-color: #fff;
 }
 
 #RobotShowButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 12px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 12px;
+  color: #1a1a65;
 }
 /*==========================================================*/
 
 #ShootBrokenButton {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 12px;
-    color: #663D00;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  color: #663d00;
 }
 
 #ShootBrokenButton.ui-state-hover {
-    background-image: none;
-    /*background-color: #99CCFF;*/
-    font-size: 12px;
-    background-color: #FFF;
+  background-image: none;
+  /*background-color: #99CCFF;*/
+  font-size: 12px;
+  background-color: #fff;
 }
 
 #ShootBrokenButton.ui-state-active {
-    background-color: #FFCC00;
-    font-size: 12px;
-    color: #1A1A65;
+  background-color: #ffcc00;
+  font-size: 12px;
+  color: #1a1a65;
+}
+
+/*==========================================================*/
+nav {
+  background-color: black;
+  text-align: left;
+  font-size: 0;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 20px;
+  font-size: 16px;
+  background-color: black;
+  transition: 0.5s;
+}
+nav a:hover {
+  background-color: coral;
 }
