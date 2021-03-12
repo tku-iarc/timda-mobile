@@ -1,1 +1,0 @@
-/home/damn/timda-mobile/src/webserver/pages/timda_web/timda.html
