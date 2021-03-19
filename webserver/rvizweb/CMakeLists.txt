@@ -18,7 +18,7 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/www)
 configure_file(package.json www/package.json COPYONLY)
 configure_file(index.html www/index.html COPYONLY)
 configure_file(bower.json www/bower.json COPYONLY)
-file(COPY pages DESTINATION www)
+file(COPY ../timda_server/pages DESTINATION www)
 # Install webapp build tools
 execute_process(
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/www/
