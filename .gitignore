@@ -8,4 +8,4 @@ timda_configs/maps/*.yaml
 bower_components/
 build/
 node_modules/
-package-lock.jso
+package-lock.json

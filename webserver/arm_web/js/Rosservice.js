@@ -1,7 +1,7 @@
     var myBoolean1 = new Boolean();
     var myBoolean2 = new Boolean();
     var myBoolean3 = new Boolean();
-    var myBoolean4 = new Boolean()
+    var myBoolean4 = new Boolean();
 
     function processFormData() {
         if(document.getElementById("chase_straight").checked) {

@@ -590,18 +590,18 @@ function PublishTopicTeamColor(color) {
 //vector
 var cmdVel1 = new ROSLIB.Topic({
     ros: ros,
-    name: 'motion/cmd_vel',
+    name: '/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
 var cmdVel2 = new ROSLIB.Topic({
     ros: ros2,
-    name: 'motion/cmd_vel',
+    name: '/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 var cmdVel3 = new ROSLIB.Topic({
     ros: ros3,
-    name: 'motion/cmd_vel',
+    name: '/cmd_vel',
     messageType: '/geometry_msgs/Twist'
 });
 
