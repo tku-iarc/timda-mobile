@@ -23,13 +23,13 @@ height: 255px;
   width: 1000px;
   position: absolute;
   top: 0px;
-  left: 275px;
+  left: 340px;
 }
 
 
 #Wifimodal_content {
   position: relative;
-  top: 0%;
+  top: 25px;
   background-color: #ffffff;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
