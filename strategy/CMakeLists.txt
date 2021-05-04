@@ -38,10 +38,10 @@ generate_messages(
   actionlib_msgs
 )
 
-#generate_dynamic_reconfigure_options(
-#  cfg/GameState.cfg
-#  cfg/Robot.cfg
-#)
+generate_dynamic_reconfigure_options(
+  # cfg/GameState.cfg
+  cfg/Robot.cfg
+)
 
 catkin_package(
 # INCLUDE_DIRS include

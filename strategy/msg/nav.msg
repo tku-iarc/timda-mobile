@@ -1,0 +1,1 @@
+geometry_msgs/PoseStamped.msg pose

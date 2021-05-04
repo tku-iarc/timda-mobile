@@ -22,6 +22,7 @@
 
 <body>
   Arm_web
+  <!-- <p class="test">test</p> -->
   <div id="WifiLight">
     <canvas id="Light"></canvas>
   </div>
@@ -32,26 +33,26 @@
       <tbody>
         <tr>
           <td>
-            <input type="radio">第一張桌子</input>
+            <button type="button" onclick="Sendtable(1)">第一張桌子</button>
           </td>
           <td>
-            <input type="radio">第二張桌子</input>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input type="radio">第三張桌子</input>
-          </td>
-          <td>
-            <input type="radio">第四張桌子</input>
+            <button type="button" onclick="Sendtable(2)">第一張桌子</button>
           </td>
         </tr>
         <tr>
           <td>
-            <input type="radio">第五張桌子</input>
+            <button type="button" onclick="Sendtable(3)">第三張桌子</button>
           </td>
           <td>
-            <input type="radio">第六張桌子</input>
+            <button type="button" onclick="Sendtable(4)">第四張桌子</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button type="button" onclick="Sendtable(5)">第五張桌子</button>
+          </td>
+          <td>
+            <button type="button" onclick="Sendtable(6)">第六張桌子</button>
           </td>
         </tr>
       </tbody>
@@ -66,48 +67,49 @@
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
       Joint 1[deg]
-      <input id="JointSlider" name="Joint_1" type="range" min="-10.00" max="10.00" value="0.00"
+      <input id="JointSlide" name="Joint_1" type="range" min="-10.00" max="10.00" value="0.00"
         oninput="ToInputValue(this.value,this.name,1)">
-      <input id="JointInput" name="Joint_1" value="0.00" type="number" min="-10.00" max="10.00"
+      <input id="joint1" name="Joint_1" value="0.00" type="number" min="-10.00" max="10.00"
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
       Joint 2[deg]
       <input id="JointSlider" name="Joint_2" type="range" min="-10.00" max="10.00" value="0.00"
         oninput="ToInputValue(this.value,this.name,1)">
-      <input id="JointInput" name="Joint_2" value="0.00" type="number" min="-10.00" max="10.00"
+      <input id="joint2" name="Joint_2" value="0.00" type="number" min="-10.00" max="10.00"
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
       Joint 3[deg]
       <input id="JointSlider" name="Joint_3" type="range" min="-10.00" max="10.00" value="0.00"
         oninput="ToInputValue(this.value,this.name,1)">
-      <input id="JointInput" name="Joint_3" value="0.00" type="number" min="-10.00" max="10.00"
+      <input id="joint3" name="Joint_3" value="0.00" type="number" min="-10.00" max="10.00"
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
       Joint 4[deg]
       <input id="JointSlider" name="Joint_4" type="range" min="-10.00" max="10.00" value="0.00"
         oninput="ToInputValue(this.value,this.name,1)">
-      <input id="JointInput" name="Joint_4" value="0.00" type="number" min="-10.00" max="10.00"
+      <input id="joint4" name="Joint_4" value="0.00" type="number" min="-10.00" max="10.00"
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
       Joint 5[deg]
       <input id="JointSlider" name="Joint_5" type="range" min="-10.00" max="10.00" value="0.00"
         oninput="ToInputValue(this.value,this.name,1)">
-      <input id="JointInput" name="Joint_5" value="0.00" type="number" min="-10.00" max="10.00"
+      <input id="joint5" name="Joint_5" value="0.00" type="number" min="-10.00" max="10.00"
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
       Joint 6[deg]
       <input id="JointSlider" name="Joint_6" type="range" min="-10.00" max="10.00" value="0.00"
         oninput="ToInputValue(this.value,this.name,1)">
-      <input id="JointInput" name="Joint_6" value="0.00" type="number" min="-10.00" max="10.00"
+      <input id="joint6" name="Joint_6" value="0.00" type="number" min="-10.00" max="10.00"
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
       Joint 7[deg]
       <input id="JointSlider" name="Joint_7" type="range" min="-10.00" max="10.00" value="0.00"
         oninput="ToInputValue(this.value,this.name,1)">
-      <input id="JointInput" name="Joint_7" value="0.00" type="number" min="-10.00" max="10.00"
+      <input id="joint7" name="Joint_7" value="0.00" type="number" min="-10.00" max="10.00"
         oninput="ToSliderValue(this.value,this.name,0);" />
       <br>
-      <input type="button" name="send_des_joint_val" value="send des joint val." onclick="processFormData()" />
+      <input type="button" name="send_des_joint_val" value="send des joint val." onclick="Sendjoint()" />
+
       <br />
       <input type="button" name="initial_pose" value="intial pose" onclick="processFormData()" />
       <br />
@@ -119,45 +121,45 @@
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         position x[m]:
-        <input id="positionSlider" name="position_x" type="range" min="-10.00" max="10.00" value="0.00"
+        <input id="positionSlider_x" name="position_x" type="range" min="-10.00" max="10.00" value="0.00"
           oninput="ToInputValue(this.value,this.name,1)">
-        <input id="positionInput" name="position_x" value="0.00" type="number" min="-10.00" max="10.00"
+        <input id="positionInput_x" name="position_x" value="0.00" type="number" min="-10.00" max="10.00"
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         position y[m]:
-        <input id="positionSlider" name="position_y" type="range" min="-10.00" max="10.00" value="0.00"
+        <input id="positionSlider_y" name="position_y" type="range" min="-10.00" max="10.00" value="0.00"
           oninput="ToInputValue(this.value,this.name,1)">
-        <input id="positionInput" name="position_y" value="0.00" type="number" min="-10.00" max="10.00"
+        <input id="positionInput_y" name="position_y" value="0.00" type="number" min="-10.00" max="10.00"
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         position z[m]:
-        <input id="positionSlider" name="position_z" type="range" min="-10.00" max="10.00" value="0.00"
+        <input id="positionSlider_z" name="position_z" type="range" min="-10.00" max="10.00" value="0.00"
           oninput="ToInputValue(this.value,this.name,1)">
-        <input id="positionInput" name="position_z" value="0.00" type="number" min="-10.00" max="10.00"
+        <input id="positionInput_z" name="position_z" value="0.00" type="number" min="-10.00" max="10.00"
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         orientation roll[deg]:
-        <input id="orientationSlider" name="orientation_roll" type="range" min="-10.00" max="10.00" value="0.00"
+        <input id="orientationSlider_roll" name="orientation_roll" type="range" min="-10.00" max="10.00" value="0.00"
           oninput="ToInputValue(this.value,this.name,1)">
-        <input id="orientationInput" name="orientation_roll" value="0.00" type="number" min="-10.00" max="10.00"
+        <input id="orientationInput_roll" name="orientation_roll" value="0.00" type="number" min="-10.00" max="10.00"
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         orientation pitch[deg]:
-        <input id="orientationSlider" name="orientation_pitch" type="range" min="-10.00" max="10.00" value="0.00"
+        <input id="orientationSlider_pitch" name="orientation_pitch" type="range" min="-10.00" max="10.00" value="0.00"
           oninput="ToInputValue(this.value,this.name,1)">
-        <input id="orientationInput" name="orientation_pitch" value="0.00" type="number" min="-10.00" max="10.00"
+        <input id="orientationInput_pitch" name="orientation_pitch" value="0.00" type="number" min="-10.00" max="10.00"
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         orientation yaw[deg]:
-        <input id="orientationSlider" name="orientation_yaw" type="range" min="-10.00" max="10.00" value="0.00"
+        <input id="orientationSlider_yaw" name="orientation_yaw" type="range" min="-10.00" max="10.00" value="0.00"
           oninput="ToInputValue(this.value,this.name,1)">
-        <input id="orientationInput" name="orientation_yaw" value="0.00" type="number" min="-10.00" max="10.00"
+        <input id="orientationInput_yaw" name="orientation_yaw" value="0.00" type="number" min="-10.00" max="10.00"
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         orientation phi[deg]:
-        <input id="orientationSlider" name="orientation_phi" type="range" min="-10.00" max="10.00" value="0.00"
+        <input id="orientationSlider_phi" name="orientation_phi" type="range" min="-10.00" max="10.00" value="0.00"
           oninput="ToInputValue(this.value,this.name,1)">
-        <input id="orientationInput" name="orientation_phi" value="0.00" type="number" min="-10.00" max="10.00"
+        <input id="orientationInput_phi" name="orientation_phi" value="0.00" type="number" min="-10.00" max="10.00"
           oninput="ToSliderValue(this.value,this.name,0);" />
         <br>
         <input type="button" name="send line pos" value="send line pos." onclick="processFormData()" />
