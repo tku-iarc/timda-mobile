@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import actionlib
 import rospy
@@ -17,6 +17,9 @@ roslib.load_manifest('move_base')
 # goal message and the result message.
 
 
+POS_RECORD_TOPIC = "pos_record"
+
+
 class Robot(object):
 
     def __init__(self, sim=False):
@@ -25,8 +28,8 @@ class Robot(object):
         rospy.Subscriber("pos_record", Int32, self._RecordPosition)
         rospy.Subscriber("move_base/status", GoalStatusArray, self._getstatus)
         self.poslist = []
-        self.status = 10  # waiting
-        self.mode = "setting"
+        self.status = []  # waiting
+        self.loc_pub = self._Publisher(POS_RECORD_TOPIC, Int32)
 
     def goal_client(self, goal):
         # Creates the SimpleActionClient, passing the type of the action
@@ -62,21 +65,14 @@ class Robot(object):
         self.loc = pos
         # print(self.loc)
 
-    def Getlocation(self, a):
-        if a == "nav_list":
-            return self.poslist
-        else:
-            return self.loc
-
     def _RecordPosition(self, cmd):
         if cmd.data == 1:
-            self.mode = "setting"
             self.poslist.append(self.loc)
-        elif cmd.data == 0:
-            self.mode = "navagating"
+            print("Record done")
 
     def _getstatus(self, mobilestatus):
-        self.status = mobilestatus.status_list[0].status
+        self.status = mobilestatus.status_list
+        # print(mobilestatus.status_list)
 
     def Getstatus(self):
         return self.status

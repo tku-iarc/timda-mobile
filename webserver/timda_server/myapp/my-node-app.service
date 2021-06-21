@@ -5,9 +5,9 @@ After=network.target
 [Service]
 Type=idle
 User=root
-ExecStart=/usr/bin/node /home/damn/timda-mobile/src/webserver/myapp/app.js
+ExecStart=/usr/bin/node /home/damn/timda-mobile/src/webserver/timda_server/myapp/app.js
 Restart=on-failure
-WorkingDirectory=/home/damn/timda-mobile/src/webserver/myapp
+WorkingDirectory=/home/damn/timda-mobile/src/webserver/timda_server/myapp
 
 [Install]
 WantedBy=multi-user.target

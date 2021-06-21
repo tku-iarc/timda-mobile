@@ -13,7 +13,7 @@
   <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch" />
 
   <node pkg="map_server" type="map_server" name="map_server"
-        args="$(find timda_configs)/maps/$(arg use_map).yaml" />
+        args="$(find timda_configs)/maps/home_area.yaml" />
 
   <include file="$(find timda_bringup)/launch/amcl.launch" />
 
@@ -40,5 +40,6 @@
     <remap from="odom" to="$(arg odom_topic)" />
     <remap from="scan" to="$(arg laser_topic)" />
   </node>
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find timda_configs)/rviz/nav.rviz" />
 </launch>
