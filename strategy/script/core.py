@@ -17,12 +17,16 @@ class Core(Robot):
         self.game_start = config['game_start']
         self.get_loc = config['get_loc']
         self.mode = config['Robot_mode']
+        self.item = config['Item']
+        self.nav_mode = config['Nav_mode']
+        self.nav_start = config['nav_start']
         return config
 
     def __init__(self, sim=False):
         super(Core, self).__init__(sim)
+        self.initial_point = self.loc
         dsrv = DynamicReconfigureServer(RobotConfig, self.Callback)
-        self.mode = "Setting"
+        self.mode = "idle"
 
 
 class Strategy(object):
@@ -40,23 +44,42 @@ class Strategy(object):
         while not rospy.is_shutdown():
             if self.robot.game_start == True:
                 if self.robot.mode == "Navigating":
-                    j = 1
-                    for i in self.robot.poslist:
-                        print("going to the number", j, "goal")
-                        self.robot.goal_client(i)
-                        j = j + 1
-                        while 1:
-                            if self.robot.status[0].status == 3:
-                                print("Nav stop")
-                                break
+                    while self.robot.nav_start == True:
+                        if self.robot.nav_mode == "test":
+                            j = 1
+                            for i in self.robot.item_dict:
+                                print("going to the number", j, "goal")
+                                a = self.robot.goal_client(i)
+                                print(a)
+                                j = j + 1
+                                while 1:
+                                    if self.robot.status[0].status == 3:
+                                        print("Nav stop")
+                                        break
+                            self.dclient.update_configuration(
+                                {"nav_start": "False"})
+                        elif self.robot.nav_mode == "directory":
+                            a = self.robot.goal_client(self.robot.item)
+                            print(a)
+                            while 1:
+                                if self.robot.status[0].status == 3:
+                                    print("Nav stop")
+                                    break
+                            self.dclient.update_configuration(
+                                {"nav_start": "False"})
+                elif self.robot.mode == "Setting":
+                    if self.robot.get_loc == True:
+                        print("it is setting", self.robot.item, "position")
+                        self.robot.recordPosition(self.robot.item, 1)
+                        self.dclient.update_configuration({"get_loc": "False"})
+                elif self.robot.mode == "Calculating":
+                    self.robot.recordPosition(2)
+                    # self.robot.setting_path_point(
+                    # self.robot., self.robot.poslist[1])
                     self.dclient.update_configuration(
-                        {"Robot_mode": "Setting"})
-                elif self.robot.get_loc == True:
-                    self.robot.loc_pub.publish(1)
-                    print("goal size is:", len(self.robot.poslist)+1)
-                    self.dclient.update_configuration({"get_loc": "False"})
-            # else:
-                # log("Sleeping")
+                        {"Robot_mode": "idle"})
+                    self.path = self.robot.GetPath()
+                    self.robot.PrintPath(self.path)
 
 
 if __name__ == '__main__':
