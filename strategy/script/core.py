@@ -9,7 +9,7 @@ from my_sys import log, SysCheck, logInOne
 from dynamic_reconfigure.server import Server as DynamicReconfigureServer
 from strategy.cfg import RobotConfig
 import dynamic_reconfigure.client
-from navigation_tools.calculate_path_distance import Nav_cal
+from navigation_tool.calculate_path_distance import Nav_cal
 
 
 class Core(Robot):
