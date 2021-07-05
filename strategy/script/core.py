@@ -9,6 +9,7 @@ from my_sys import log, SysCheck, logInOne
 from dynamic_reconfigure.server import Server as DynamicReconfigureServer
 from strategy.cfg import RobotConfig
 import dynamic_reconfigure.client
+import itertools
 from navigation_tool.calculate_path_distance import Nav_cal
 
 
@@ -26,7 +27,6 @@ class Core(Robot):
         super(Core, self).__init__(sim)
         self.initial_point = self.loc
         dsrv = DynamicReconfigureServer(RobotConfig, self.Callback)
-        self.mode = "idle"
 
 
 class Strategy(object):
@@ -37,6 +37,10 @@ class Strategy(object):
         self.robot = Core(sim)
         self.dclient = dynamic_reconfigure.client.Client(
             "core", timeout=30, config_callback=None)
+        self.dclient.update_configuration(
+            {"game_start": False})
+
+        self.cal_list = []
 
         self.main()
 
@@ -70,16 +74,41 @@ class Strategy(object):
                 elif self.robot.mode == "Setting":
                     if self.robot.get_loc == True:
                         print("it is setting", self.robot.item, "position")
-                        self.robot.recordPosition(self.robot.item, 1)
+                        self.robot.recordPosition(self.robot.item)
                         self.dclient.update_configuration({"get_loc": "False"})
                 elif self.robot.mode == "Calculating":
-                    self.robot.recordPosition(2)
-                    # self.robot.setting_path_point(
-                    # self.robot., self.robot.poslist[1])
+                    self.cal_tmp2 = [1, 2, 3]
+                    self.route_dict = {}
+                    self.robot.Calculate(True)
+                    self.robot.recordPosition("Current")
+                    self.cal_list = self.robot.GetCal_list()
+                    self.cal_tmp = list(itertools.permutations(
+                        self.cal_list, len(self.cal_list)))
+                    self.cal_tmp2 = list(itertools.permutations(
+                        self.cal_tmp2, len(self.cal_tmp2)))
+                    jj = 0
+                    for i in self.cal_tmp:
+                        start = self.robot.initial_point
+                        dis_tmp = 0.0
+                        str1 = ','.join(str(i) for i in self.cal_tmp2[jj])
+                        kk = 1
+                        for j in i:
+                            end = j
+                            self.path = self.robot.setting_path_point(
+                                str1, kk, start, end)
+                            rospy.sleep(1)
+                            self.path = self.robot.GetPath()
+                            dis_tmp = dis_tmp + self.robot.PrintPath(self.path)
+                            print("Distance:", dis_tmp)
+                            start = end
+                            kk = kk + 1
+                        self.route_dict[str1] = dis_tmp
+                        jj = jj + 1
+                    self.robot.Calculate(False)
+
+                    print(self.route_dict)
                     self.dclient.update_configuration(
                         {"Robot_mode": "idle"})
-                    self.path = self.robot.GetPath()
-                    self.robot.PrintPath(self.path)
 
 
 if __name__ == '__main__':

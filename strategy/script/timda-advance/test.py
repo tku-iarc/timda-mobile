@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import itertools
 
 
 rt = np.zeros(6)
@@ -44,12 +45,26 @@ def main():
     # print(rt)
     # print(distance(3, 4))
 
-    dict = {}
-    dict['test1'] = 1
-    dict['test2'] = 2
-    dict['test3'] = 3
-    for i in dict:
-        print(dict[i])
+    # dict = {}
+    # dict['test1'] = 1
+    # dict['test2'] = 2
+    # dict['test3'] = 3
+    # print(dict(1))
+    # cal = [1, 2, 3]
+    # dic = {'test1': 123, 'test2': 234, 'test3': 345}
+    # dic_2 = [123, 234, 345]
+    # cal_2 = list(itertools.permutations(cal, len(cal)))
+
+    # for i in cal_2:
+    #     for j in i:
+    #         print(j)
+    # # for i in dict:
+    # #     print(dict[i])
+    list = [1, 2, 3, 4]
+
+    arr = [1, 2, 3]
+    str1 = ','.join(str(i) for i in arr)
+    print(len(list))
 
 
 def distance(x, y):

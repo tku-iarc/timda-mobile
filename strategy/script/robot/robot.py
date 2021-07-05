@@ -34,6 +34,14 @@ subscriber = None
 class Robot(object):
 
     def __init__(self, sim=False):
+        self.loc = PoseWithCovarianceStamped()
+        self.calculate_path = False
+        self.Current_loc = PoseWithCovarianceStamped()
+        self.initial_point = PoseWithCovarianceStamped()
+        self.status = []  # waiting
+        self.item_dict = {}
+        self.cal_list = []
+        self.path = Path()
         rospy.Subscriber(
             "amcl_pose", PoseWithCovarianceStamped, self._getPosition)
         rospy.Subscriber("move_base/status", GoalStatusArray, self._getstatus)
@@ -41,15 +49,13 @@ class Robot(object):
             "move_base/NavfnROS/plan", Path, self._getPath)
         # self.subscriber = rospy.Subscriber(
         #     PATH_CALCULATE_TOPIC, Path, self.printPath)
-        self.calculate_path = False
-        self.initial_point = PoseWithCovarianceStamped()
-        self.status = []  # waiting
-        self.item_dict = {}
-        self.path = Path()
         self.pub_goal = self._Publisher(GOAL_TOPIC, PoseStamped)
         self.pub_initial_point = self._Publisher(
             INITIALPOSE_TOPIC, PoseWithCovarianceStamped)
         self.pub_stopNav = self._Publisher(GOAL_STOP_TOPIC, GoalID)
+#--------------------------------------------------------------------------------------------------------#
+# Navigation function
+#--------------------------------------------------------------------------------------------------------#
 
     def goal_client(self, goal):
         # Creates the SimpleActionClient, passing the type of the action
@@ -58,6 +64,8 @@ class Robot(object):
         # Waits until the action server has started up and started
         # listening for goals.
         self.client.wait_for_server()
+        if goal == "initial":
+            goal = self.initial_point
 
         # Creates a goal to send to the action server.
         self.goal = MoveBaseGoal()
@@ -78,8 +86,30 @@ class Robot(object):
         # Prints out the result of executing the action
         return self.client.get_result()  # A FibonacciResult
 
+    def recordPosition(self, name):
+        # if cmd == 1:
+        if name == "Current":
+            self.Current_loc = self.loc
+            print("current_loc set done")
+        elif name == "initial":
+            self.initial_point = self.loc
+        else:
+            self.item_dict[name] = self.loc
+        print("Record done")
+        # elif cmd == 2:
+        #     self.initial_point = self.loc
+        #     print("initial point get")
+        #     self.calculate_path = True
+
+        # print(mobilestatus.status_list)
+#--------------------------------------------------------------------------------------------------------#
+# Publish function
+#--------------------------------------------------------------------------------------------------------#
     def _Publisher(self, topic, mtype):
         return rospy.Publisher(topic, mtype, queue_size=10)
+#--------------------------------------------------------------------------------------------------------#
+# Subscribe function
+#--------------------------------------------------------------------------------------------------------#
 
     def _getPosition(self, pos):
         self.loc = pos
@@ -87,34 +117,43 @@ class Robot(object):
 
     def _getPath(self, path):
         if self.calculate_path == True:
-            self.path = path
-            self.pub_initial_point.publish(self.initial_point)
             self.pub_stopNav.publish(GoalID())
-            self.path_subscriber.unregister()
-            self.calculate_path = False
+            self.path = path
         else:
             pass
+
+    def _getstatus(self, mobilestatus):
+        self.status = mobilestatus.status_list
+#--------------------------------------------------------------------------------------------------------#
+# Getting information
+#--------------------------------------------------------------------------------------------------------#
 
     def GetPath(self):
         return self.path
 
-    def recordPosition(self, name, cmd):
-        if cmd == 1:
-            self.item_dict[name] = self.loc
-            print("Record done")
-        elif cmd == 2:
-            self.initial_point = self.loc
-            print("initial point get")
-            self.calculate_path = True
-
-    def _getstatus(self, mobilestatus):
-        self.status = mobilestatus.status_list
-        # print(mobilestatus.status_list)
-
     def Getstatus(self):
         return self.status
 
-    def setting_path_point(self, start_point, goal_point):
+    def GetCal_list(self):
+        cal_list = []
+
+        # for dd in range(9):
+        #     cal_list.append(dd)
+        for i in self.item_dict:
+            cal_list.append(self.item_dict[i])
+        return cal_list
+#--------------------------------------------------------------------------------------------------------#
+# Calculate route function
+#--------------------------------------------------------------------------------------------------------#
+
+    def Calculate(self, cmd):
+        if cmd == True:
+            self.calculate_path = True
+        else:
+            self.pub_initial_point.publish(self.Current_loc)
+            self.calculate_path = False
+
+    def setting_path_point(self, str, kk, start_point, goal_point):
         self.start_point = PoseWithCovarianceStamped()
         self.start_point.pose.pose.position.x = start_point.pose.pose.position.x
         self.start_point.pose.pose.position.y = start_point.pose.pose.position.y
@@ -124,7 +163,7 @@ class Robot(object):
         self.start_point.header.frame_id = 'map'
         rospy.sleep(1)
         self.pub_initial_point.publish(self.start_point)
-        print("Start Point sends sucessfull ")
+        print(str, kk, "Start Point sends sucessfull ")
         print("--------------------")
         self.goal_point = PoseStamped()
         self.goal_point.pose.position.x = goal_point.pose.pose.position.x
@@ -135,10 +174,10 @@ class Robot(object):
         self.goal_point.header.frame_id = 'map'
         rospy.sleep(2)
         self.pub_goal.publish(self.goal_point)
-        print("Goal Point sends sucessfull")
+        print(str, kk, "Goal Point sends sucessfull")
         print("--------------------")
-        print("Listening to " + GOAL_TOPIC)
-        # rospy.spin()
+        print("Listening to " + "move_base/NavfnROS/plan")
+        rospy.wait_for_message("move_base/NavfnROS/plan", Path)
 
     def PrintPath(self, path):
         # global subscriber
@@ -161,4 +200,4 @@ class Robot(object):
                     first_time = False
                 prev_x = x
                 prev_y = y
-            print("Total Distance = "+str(total_distance)+" meters")
+        return total_distance
