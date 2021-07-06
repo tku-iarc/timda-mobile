@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import os
 from actionlib_msgs.msg import GoalID
@@ -65,16 +65,18 @@ class Robot(object):
         # listening for goals.
         self.client.wait_for_server()
         if goal == "initial":
-            goal = self.initial_point
+            goal_tmp = self.initial_point
+        else:
+            goal_tmp = self.item_dict[goal]
 
         # Creates a goal to send to the action server.
         self.goal = MoveBaseGoal()
         self.goal.target_pose.header.frame_id = "map"
         self.goal.target_pose.header.stamp = rospy.get_rostime()
-        self.goal.target_pose.pose.position.x = self.item_dict[goal].pose.pose.position.x
-        self.goal.target_pose.pose.position.y = self.item_dict[goal].pose.pose.position.y
-        self.goal.target_pose.pose.orientation.z = self.item_dict[goal].pose.pose.orientation.z
-        self.goal.target_pose.pose.orientation.w = self.item_dict[goal].pose.pose.orientation.w
+        self.goal.target_pose.pose.position.x = goal_tmp.pose.pose.position.x
+        self.goal.target_pose.pose.position.y = goal_tmp.pose.pose.position.y
+        self.goal.target_pose.pose.orientation.z = goal_tmp.pose.pose.orientation.z
+        self.goal.target_pose.pose.orientation.w = goal_tmp.pose.pose.orientation.w
 
         # Sends the goal to the action server.
         rospy.loginfo("Sending goal")
