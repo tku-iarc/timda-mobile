@@ -9,6 +9,8 @@ from my_sys import log, SysCheck, logInOne
 from dynamic_reconfigure.server import Server as DynamicReconfigureServer
 from strategy.cfg import RobotConfig
 import dynamic_reconfigure.client
+from std_msgs.msg import String
+from std_msgs.msg import Int32
 import itertools
 from navigation_tool.calculate_path_distance import Nav_cal
 
@@ -26,6 +28,7 @@ class Core(Robot):
     def __init__(self, sim=False):
         super(Core, self).__init__(sim)
         self.initial_point = self.loc
+
         dsrv = DynamicReconfigureServer(RobotConfig, self.Callback)
 
 
@@ -39,10 +42,15 @@ class Strategy(object):
             "core", timeout=30, config_callback=None)
         self.dclient.update_configuration(
             {"game_start": False})
-
         self.cal_list = []
-
+        self.tableNum = []
+        rospy.Subscriber("wifi_test", Int32, self._getTableNum)
         self.main()
+
+    def _getTableNum(self, table):
+        table_tmp = "Table"+str(table.data)
+        self.tableNum.append(table_tmp)
+        self.dclient.update_configuration({"Robot_mode": "Service"})
 
     def main(self):
         while not rospy.is_shutdown():
@@ -109,6 +117,16 @@ class Strategy(object):
                     print(self.route_dict)
                     self.dclient.update_configuration(
                         {"Robot_mode": "idle"})
+                elif self.robot.mode == "Service":
+                    table_tmp = self.tableNum[0]
+                    self.tableNum.pop(0)
+                    a = self.robot.goal_client(table_tmp)
+                    print(a)
+                    while 1:
+                        if self.robot.status[0].status == 3:
+                            print("Nav stop")
+                            break
+                    self.dclient.update_configuration({"Robot_mode": "Idle"})
 
 
 if __name__ == '__main__':

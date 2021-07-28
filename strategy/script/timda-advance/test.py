@@ -11,10 +11,13 @@ obj = [[0, 0], [-4, 6], [-1, 9], [3, 1]]
 def main():
     # plt.plot([1, 2, 3, 4])
     # plt.show()
-    a = np.array([[0], [1]])
-    chromosome = np.empty([3, 2])
-    chchcc = np.random.random((3, 2))
-    i = 0
+    # a = np.array([[0], [1]])
+    # chromosome = np.empty([3, 2])
+    # chchcc = np.random.random((3, 2))
+    # i = 0
+    k = 1
+    table = "table" + str(k)
+    print(table)
     # for i in range(1, 3):
     #     for j in range(1, 3):
     #         print(i, j)

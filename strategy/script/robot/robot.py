@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 
 import os
-from actionlib_msgs.msg import GoalID
-from move_base_msgs.msg import MoveBaseActionGoal
-from geometry_msgs.msg import PoseStamped
-from nav_msgs.msg import Path
 import math
 import actionlib
 import rospy
 import sys
 import roslib
+from actionlib_msgs.msg import GoalID
+from actionlib_msgs.msg import GoalStatusArray
+from move_base_msgs.msg import MoveBaseActionGoal
 from move_base_msgs.msg import MoveBaseAction
 from move_base_msgs.msg import MoveBaseGoal
+from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped
+from nav_msgs.msg import Path
+# from nodeMCU_python.srv import wifi_srv
 from std_msgs.msg import Int32
-from actionlib_msgs.msg import GoalStatusArray
+from std_msgs.msg import String
+
 roslib.load_manifest('move_base')
 
 # Brings in the SimpleActionClient
@@ -28,6 +31,7 @@ PATH_CALCULATE_TOPIC = ""
 GOAL_TOPIC = "move_base_simple/goal"
 INITIALPOSE_TOPIC = "initialpose"
 GOAL_STOP_TOPIC = "move_base/cancel"
+TABLE_SRV = "wifi_test"  # "wifi_srv"
 subscriber = None
 
 
@@ -41,14 +45,16 @@ class Robot(object):
         self.status = []  # waiting
         self.item_dict = {}
         self.cal_list = []
+        self.tableNum = []
         self.path = Path()
         rospy.Subscriber(
             "amcl_pose", PoseWithCovarianceStamped, self._getPosition)
         rospy.Subscriber("move_base/status", GoalStatusArray, self._getstatus)
         self.path_subscriber = rospy.Subscriber(
             "move_base/NavfnROS/plan", Path, self._getPath)
-        # self.subscriber = rospy.Subscriber(
-        #     PATH_CALCULATE_TOPIC, Path, self.printPath)
+        #rospy.Service('wifi_module', TABLE_SRV, self._getTableNum)
+
+       #     PATH_CALCULATE_TOPIC, Path, self.printPath)
         self.pub_goal = self._Publisher(GOAL_TOPIC, PoseStamped)
         self.pub_initial_point = self._Publisher(
             INITIALPOSE_TOPIC, PoseWithCovarianceStamped)
@@ -65,16 +71,18 @@ class Robot(object):
         # listening for goals.
         self.client.wait_for_server()
         if goal == "initial":
-            goal = self.initial_point
+            goal_tmp = self.initial_point
+        else:
+            goal_tmp = self.item_dict[goal]
 
         # Creates a goal to send to the action server.
         self.goal = MoveBaseGoal()
         self.goal.target_pose.header.frame_id = "map"
         self.goal.target_pose.header.stamp = rospy.get_rostime()
-        self.goal.target_pose.pose.position.x = self.item_dict[goal].pose.pose.position.x
-        self.goal.target_pose.pose.position.y = self.item_dict[goal].pose.pose.position.y
-        self.goal.target_pose.pose.orientation.z = self.item_dict[goal].pose.pose.orientation.z
-        self.goal.target_pose.pose.orientation.w = self.item_dict[goal].pose.pose.orientation.w
+        self.goal.target_pose.pose.position.x = goal_tmp.pose.pose.position.x
+        self.goal.target_pose.pose.position.y = goal_tmp.pose.pose.position.y
+        self.goal.target_pose.pose.orientation.z = goal_tmp.pose.pose.orientation.z
+        self.goal.target_pose.pose.orientation.w = goal_tmp.pose.pose.orientation.w
 
         # Sends the goal to the action server.
         rospy.loginfo("Sending goal")
@@ -95,6 +103,7 @@ class Robot(object):
             self.initial_point = self.loc
         else:
             self.item_dict[name] = self.loc
+        print(name)
         print("Record done")
         # elif cmd == 2:
         #     self.initial_point = self.loc
@@ -105,6 +114,7 @@ class Robot(object):
 #--------------------------------------------------------------------------------------------------------#
 # Publish function
 #--------------------------------------------------------------------------------------------------------#
+
     def _Publisher(self, topic, mtype):
         return rospy.Publisher(topic, mtype, queue_size=10)
 #--------------------------------------------------------------------------------------------------------#
@@ -124,6 +134,8 @@ class Robot(object):
 
     def _getstatus(self, mobilestatus):
         self.status = mobilestatus.status_list
+
+
 #--------------------------------------------------------------------------------------------------------#
 # Getting information
 #--------------------------------------------------------------------------------------------------------#
@@ -142,6 +154,10 @@ class Robot(object):
         for i in self.item_dict:
             cal_list.append(self.item_dict[i])
         return cal_list
+
+    def GetTable(self):
+
+        table_tmp = self.tableNum(0)
 #--------------------------------------------------------------------------------------------------------#
 # Calculate route function
 #--------------------------------------------------------------------------------------------------------#
