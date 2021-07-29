@@ -1,0 +1,24 @@
+<launch>
+    <arg name = "port" default = "/dev/ttyUSB0"/>
+
+    <node
+    pkg = "nodeMCU_python"
+    type = "master.py"
+    name = "master"
+    output = "screen"
+    />
+
+
+    <node
+    pkg = "nodeMCU_python"
+    type = "recieve_esp.py"
+    name = "NodeMCU"
+    >
+
+    <param name = "port" value = "$(arg port)"/>
+    
+    </node>
+
+
+</launch>
+
