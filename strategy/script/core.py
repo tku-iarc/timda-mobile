@@ -13,6 +13,8 @@ from std_msgs.msg import String
 from std_msgs.msg import Int32
 import itertools
 from navigation_tool.calculate_path_distance import Nav_cal
+from strategy.srv import wifi_srv
+WIFI_BUTTON = "wifi_module"
 
 
 class Core(Robot):
@@ -44,11 +46,12 @@ class Strategy(object):
             {"game_start": False})
         self.cal_list = []
         self.tableNum = []
-        rospy.Subscriber("wifi_test", Int32, self._getTableNum)
+        #rospy.Subscriber("wifi_test", Int32, self._getTableNum)
+        rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
         self.main()
 
     def _getTableNum(self, table):
-        table_tmp = "Table"+str(table.data)
+        table_tmp = "Table"+str(table.num_req)
         self.tableNum.append(table_tmp)
         self.dclient.update_configuration({"Robot_mode": "Service"})
 
