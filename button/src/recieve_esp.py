@@ -41,7 +41,7 @@ def pass_esp8266_info_to_server(data):
 if __name__ == "__main__":
     rospy.init_node("NodeMCU")
 
-    port_name = rospy.get_param('~port','/dev/ttyUSB0')
+    port_name = rospy.get_param('~port','/dev/ttyUSB1')
     #baud = int(rospy.get_param('~baud','57600'))
     print("try to connect with {port_name}")
 

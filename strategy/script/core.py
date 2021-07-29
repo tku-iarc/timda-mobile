@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 from yaml import serialize
 import rospy
 import sys
@@ -51,6 +51,7 @@ class Strategy(object):
         self.main()
 
     def _getTableNum(self, table):
+        print("1111")
         table_tmp = "Table"+str(table.num_req)
         self.tableNum.append(table_tmp)
         self.dclient.update_configuration({"Robot_mode": "Service"})
