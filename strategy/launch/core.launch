@@ -1,4 +1,4 @@
 <launch>
-  <node name="core" pkg="strategy" type="core.py" args="$(arg sim)" output="screen" />
-  <node name="QGA" pkg="strategy" type="QGA_RBF_SVM.py" output="screen" />
+  <node name="core" pkg="strategy" type="core.py"  output="screen" />
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
 </launch>
