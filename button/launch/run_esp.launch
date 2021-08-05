@@ -1,12 +1,6 @@
 <launch>
     <arg name = "port" default = "/dev/ttyUSB0"/>
 
-    <node
-    pkg = "button"
-    type = "master.py"
-    name = "master"
-    output = "screen"
-    />
 
 
     <node

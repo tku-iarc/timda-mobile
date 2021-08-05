@@ -13,7 +13,7 @@
   <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch" />
 
   <node pkg="map_server" type="map_server" name="map_server"
-        args="$(find timda_configs)/maps/home_area.yaml" />
+        args="$(find timda_configs)/maps/home-area.yaml" />
 
   <include file="$(find timda_bringup)/launch/amcl.launch" />
 

@@ -16,6 +16,7 @@ import itertools
 from strategy.srv import wifi_srv
 from strategy.srv import TimdaMode
 WIFI_BUTTON = "wifi_module"
+TIMDA_SERVER = "Timda_mobile"
 
 
 class Core(Robot):
@@ -47,9 +48,10 @@ class Strategy(object):
             {"game_start": False})
         self.cal_list = []
         self.tableNum = []
+        self.service_list = []
         #rospy.Subscriber("wifi_test", Int32, self._getTableNum)
-        rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
-        rospy.Service('Timda_mobile', TimdaMode, self.handle_timda_mobile)
+        # rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
+        rospy.Service(TIMDA_SERVER, TimdaMode, self.handle_timda_mobile)
         self.main()
 
 #--------------------------------------------------------------------------------------------------------#
@@ -57,15 +59,34 @@ class Strategy(object):
 #--------------------------------------------------------------------------------------------------------#
 
     def handle_timda_mobile(self, req):
-        print(req)
-        return "luv u"
+        if self.robot.mode == "Service":
+            # if req == "Table1" or req == "Table2":
+            #     table_tmp = self.tableNum[0]
+            #     self.tableNum.pop(0)
+            # print(req)
+            self.dclient.update_configuration({"Item": req.item_req})
+            self.dclient.update_configuration({"nav_start": "True"})
+            while self.robot.nav_start == True:
+                a = self.robot.goal_client(req.item_req)
+                print(a)
+                while 1:
+                    if self.robot.status[0].status == 3:
+                        print("Nav stop")
+                        break
+                self.dclient.update_configuration(
+                    {"nav_start": "False"})
+            return "Done"
+        else:
+            return "Closed"
 
-    def _getTableNum(self, table):
-        print("1111")
-        table_tmp = "Table"+str(table.num_req)
-        self.tableNum.append(table_tmp)
-        self.dclient.update_configuration({"Robot_mode": "Service"})
+    # def _getTableNum(self, table):
+    #     table_tmp = "Table"+str(table.num_req)
+    #     self.tableNum.append(table_tmp)
+    #     self.dclient.update_configuration({"Robot_mode": "Service"})
 
+#--------------------------------------------------------------------------------------------------------#
+# main Strategy
+#--------------------------------------------------------------------------------------------------------#
     def main(self):
         while not rospy.is_shutdown():
             if self.robot.game_start == True:
@@ -98,16 +119,6 @@ class Strategy(object):
                         print("it is setting", self.robot.item, "position")
                         self.robot.recordPosition(self.robot.item)
                         self.dclient.update_configuration({"get_loc": "False"})
-                elif self.robot.mode == "Service":
-                    table_tmp = self.tableNum[0]
-                    self.tableNum.pop(0)
-                    a = self.robot.goal_client(table_tmp)
-                    print(a)
-                    while 1:
-                        if self.robot.status[0].status == 3:
-                            print("Nav stop")
-                            break
-                    self.dclient.update_configuration({"Robot_mode": "Idle"})
                 elif self.robot.mode == "QGA":
                     self.cal_tmp2 = [1, 2, 3]
                     self.route_dict = {}

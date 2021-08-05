@@ -67,12 +67,12 @@ def main():
     #         print(j)
     # # for i in dict:
     # #     print(dict[i])
-    list = [1, 2, 3, 4]
-#
-    arr = [1, 2, 3]
-    str1 = ','.join(str(i) for i in arr)
-    print(len(list))
-    print(str1)
+#     list = [1, 2, 3, 4]
+# #
+#     arr = [1, 2, 3]
+#     str1 = ','.join(str(i) for i in arr)
+#     print(len(list))
+#     print(str1)
 
 
 def distance(x, y):

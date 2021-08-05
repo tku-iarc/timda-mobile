@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 import rospy
 import serial
-from button.srv import wifi_srv
-
+from button.srv import TimdaMode
 #COM_PORT = '/dev/ttyUSB0'
 
 BAUD_RATES = 115200
 
 list_ser = []
+
+TIMDA_SERVER = "Timda_mobile"
 
 
 def recieve_data():
@@ -30,12 +31,15 @@ def recieve_data():
 
 
 def pass_esp8266_info_to_server(data):
-    rospy.wait_for_service('wifi_module')
+    rospy.wait_for_service(TIMDA_SERVER)
     try:
         # create a server object
-        val = rospy.ServiceProxy('wifi_module', wifi_srv)
+        val = rospy.ServiceProxy(TIMDA_SERVER, TimdaMode)
         # val(arg) -> send a req to server
-        resp = val(data)
+        if data == "1":
+            resp = val("Table1")
+        else:
+            resp = val("Table2")
     except rospy.ServiceException, e:
         print('error')
 

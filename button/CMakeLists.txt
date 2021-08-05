@@ -57,7 +57,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
-  wifi_srv.srv
+  # wifi_srv.srv
+  TimdaMode.srv
 )
 
 ## Generate actions in the 'action' folder
