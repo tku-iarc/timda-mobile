@@ -16,8 +16,12 @@ def main():
     # chchcc = np.random.random((3, 2))
     # i = 0
     k = 1
-    table = "table" + str(k)
-    print(table)
+    # table = "table" + str(k)
+    # print(table)
+    # cal_tmp2 = ["a", "b", "c"]
+    # jj = 0
+    # str1 = '454'.join(str(k) for i in cal_tmp2[jj])
+    # print(str1)
     # for i in range(1, 3):
     #     for j in range(1, 3):
     #         print(i, j)
@@ -64,10 +68,11 @@ def main():
     # # for i in dict:
     # #     print(dict[i])
     list = [1, 2, 3, 4]
-
+#
     arr = [1, 2, 3]
     str1 = ','.join(str(i) for i in arr)
     print(len(list))
+    print(str1)
 
 
 def distance(x, y):

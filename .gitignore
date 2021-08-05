@@ -1,5 +1,6 @@
 *.swp
 node_modules/
+project_tool/
 
 *.tfw
 *.tif

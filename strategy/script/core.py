@@ -12,8 +12,9 @@ import dynamic_reconfigure.client
 from std_msgs.msg import String
 from std_msgs.msg import Int32
 import itertools
-from navigation_tool.calculate_path_distance import Nav_cal
+#from navigation_tool.calculate_path_distance import Nav_cal
 from strategy.srv import wifi_srv
+from strategy.srv import TimdaMode
 WIFI_BUTTON = "wifi_module"
 
 
@@ -48,9 +49,19 @@ class Strategy(object):
         self.tableNum = []
         #rospy.Subscriber("wifi_test", Int32, self._getTableNum)
         rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
+        rospy.Service('Timda_mobile', TimdaMode, self.handle_timda_mobile)
         self.main()
 
+#--------------------------------------------------------------------------------------------------------#
+# Service function
+#--------------------------------------------------------------------------------------------------------#
+
+    def handle_timda_mobile(self, req):
+        print(req)
+        return "luv u"
+
     def _getTableNum(self, table):
+        print("1111")
         table_tmp = "Table"+str(table.num_req)
         self.tableNum.append(table_tmp)
         self.dclient.update_configuration({"Robot_mode": "Service"})
@@ -87,12 +98,24 @@ class Strategy(object):
                         print("it is setting", self.robot.item, "position")
                         self.robot.recordPosition(self.robot.item)
                         self.dclient.update_configuration({"get_loc": "False"})
-                elif self.robot.mode == "Calculating":
+                elif self.robot.mode == "Service":
+                    table_tmp = self.tableNum[0]
+                    self.tableNum.pop(0)
+                    a = self.robot.goal_client(table_tmp)
+                    print(a)
+                    while 1:
+                        if self.robot.status[0].status == 3:
+                            print("Nav stop")
+                            break
+                    self.dclient.update_configuration({"Robot_mode": "Idle"})
+                elif self.robot.mode == "QGA":
                     self.cal_tmp2 = [1, 2, 3]
                     self.route_dict = {}
                     self.robot.Calculate(True)
                     self.robot.recordPosition("Current")
+                    # call the item list for making routes
                     self.cal_list = self.robot.GetCal_list()
+
                     self.cal_tmp = list(itertools.permutations(
                         self.cal_list, len(self.cal_list)))
                     self.cal_tmp2 = list(itertools.permutations(
@@ -101,6 +124,7 @@ class Strategy(object):
                     for i in self.cal_tmp:
                         start = self.robot.initial_point
                         dis_tmp = 0.0
+                        # use "," to seperate the string list
                         str1 = ','.join(str(i) for i in self.cal_tmp2[jj])
                         kk = 1
                         for j in i:
@@ -120,16 +144,6 @@ class Strategy(object):
                     print(self.route_dict)
                     self.dclient.update_configuration(
                         {"Robot_mode": "idle"})
-                elif self.robot.mode == "Service":
-                    table_tmp = self.tableNum[0]
-                    self.tableNum.pop(0)
-                    a = self.robot.goal_client(table_tmp)
-                    print(a)
-                    while 1:
-                        if self.robot.status[0].status == 3:
-                            print("Nav stop")
-                            break
-                    self.dclient.update_configuration({"Robot_mode": "Idle"})
 
 
 if __name__ == '__main__':

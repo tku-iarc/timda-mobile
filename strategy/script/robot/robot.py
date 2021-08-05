@@ -140,6 +140,7 @@ class Robot(object):
 # Getting information
 #--------------------------------------------------------------------------------------------------------#
 
+
     def GetPath(self):
         return self.path
 
