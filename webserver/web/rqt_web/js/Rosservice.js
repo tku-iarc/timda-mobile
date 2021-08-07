@@ -4,45 +4,46 @@ var myBoolean3 = new Boolean();
 var myBoolean4 = new Boolean();
 var myBoolean5 = new Boolean();
 var myBoolean6 = new Boolean();
-
+var get_loc_bool = false;
 //--------------------------------------------
 // 即時更新數據
 //--------------------------------------------
-var maxVelX = new ROSLIB.Param({
-    ros: ros,
-    name: '/left_wheel_pid/Kd'
-});
 
-var maxVely = new ROSLIB.Param({
-    ros: ros,
-    name: '/left_wheel_pid/Kp'
-});
-var maxVelz = new ROSLIB.Param({
-    ros: ros,
-    name: '/left_wheel_pid/Ki'
-});
-// maxVelX.set(0.8);
 
-var x;
-var y;
-function myrefresh() {
-    maxVelX.get(function (value) {
-        document.getElementById("demo").value = value;
-    });
-    maxVely.get(function (value) {
-        document.getElementById("demo2").value = value;
-        x = value
+// var x;
+// var y;
+// function myrefresh() {
+//     var maxVelX = new ROSLIB.Param({
+//         ros: ros,
+//         name: '/left_wheel_pid/Kd'
+//     });
 
-        maxVelz.get(function (value) {
-            document.getElementById("demo3").value = value;
-        });
-    });
-    setTimeout(myrefresh, 10);
-}
-myrefresh()
+//     var maxVely = new ROSLIB.Param({
+//         ros: ros,
+//         name: '/left_wheel_pid/Kp'
+//     });
+//     var maxVelz = new ROSLIB.Param({
+//         ros: ros,
+//         name: '/left_wheel_pid/Ki'
+//     });
+//  maxVelX.set(0.8);
+//     maxVelX.get(function (value) {
+//         document.getElementById("demo").value = value;
+//     });
+//     maxVely.get(function (value) {
+//         document.getElementById("demo2").value = value;
+//         x = value
+
+//         maxVelz.get(function (value) {
+//             document.getElementById("demo3").value = value;
+//         });
+//     });
+//     setTimeout(myrefresh, 10);
+// }
+// myrefresh()
 // setTimeout('myrefresh()', 100); //指定1秒刷新一次
-//--------------------------------------------
-//--------------------------------------------
+// --------------------------------------------
+// --------------------------------------------
 
 function processFormData() {
     if (document.getElementById("chase_straight").checked) {
@@ -194,12 +195,12 @@ function processFormData() {
 
 function gameStart() {
     if (document.getElementById("game_start").checked) {
-        myBoolean1 = Boolean(1);
+        myBoolean = Boolean(1);
     } else {
-        myBoolean1 = Boolean(0)
+        myBoolean = Boolean(0)
     }
     var game_start = new ROSLIB.Message({
-        data: myBoolean1
+        data: myBoolean
     });
 
     var request = new ROSLIB.ServiceRequest({
@@ -210,45 +211,147 @@ function gameStart() {
             ]
 
         }
-
     });
-    function chg() {
-        if (document.getElementById("change_plan").checked) {
-            myBoolean6 = Boolean(1);
-        } else {
-            myBoolean6 = Boolean(0)
+    pub(request)
+}
+
+function getLoc() {
+    if (get_loc_bool==false) {
+        myBoolean = Boolean(1);
+    } else {
+        myBoolean = Boolean(0)
+    }
+    var get_loc = new ROSLIB.Message({
+        data: myBoolean
+    });
+
+    var request = new ROSLIB.ServiceRequest({
+        config: {
+            bools: [
+                { name: 'get_loc', value: get_loc.data },
+
+            ]
+
         }
-        var change_plan = new ROSLIB.Message({
-            data: myBoolean6
+    });
+    pub(request)
+}
+
+function navStart() {
+    if (document.getElementById("nav_start").checked) {
+        myBoolean = Boolean(1);
+    } else {
+        myBoolean = Boolean(0)
+    }
+    var nav_start = new ROSLIB.Message({
+        data: myBoolean
+    });
+
+    var request = new ROSLIB.ServiceRequest({
+        config: {
+            bools: [
+                { name: 'nav_start', value: nav_start.data },
+
+            ]
+
+        }
+    });
+    pub(request)
+}
+
+function RobotMode() {
+    var Robot_mode = new ROSLIB.Message({
+        data: document.getElementById("Robot_mode").value
+    });
+    var request = new ROSLIB.ServiceRequest({
+        config: {
+            strs: [
+                { name: 'Robot_mode', value: Robot_mode.data },
+
+            ]
+
+        }
+    });
+    pub(request)
+}
+
+function Item1() {
+    var Item = new ROSLIB.Message({
+        data: document.getElementById("Item").value
+    });
+
+    var request = new ROSLIB.ServiceRequest({
+        config: {
+            strs: [
+                { name: 'Item', value: Item.data },
+
+            ]
+
+        }
+    });
+    pub(request)
+}
+function NavMode() {
+    var Nav_mode = new ROSLIB.Message({
+        data: document.getElementById("Nav_mode").value
+    });
+
+    var request = new ROSLIB.ServiceRequest({
+        config: {
+            strs: [
+                { name: 'Nav_mode', value: Nav_mode.data },
+
+            ]
+
+        }
+    });
+    pub(request)
+}
+
+
+
+
+function pub(request){
+    var pub = new ROSLIB.Service({
+        ros : ros,
+        name : '/core/set_parameters',
+        serviceType : 'dynamic_reconfigure/Reconfigure'
+        });
+    
+        pub.callService(request, function(result) {
+        console.log('updating');
         });
 
-        var request = new ROSLIB.ServiceRequest({
-            config: {
-                bools: [
-                    { name: 'change_plan', value: change_plan.data },
+}
 
-                ]
-
-            }
-
-        });
-        dynaRecClient.callService(request, function (result) {
-            console.log('Result for service call on '
-                + dynaRecClient.name
-                + ': '
-                + JSON.stringify(result, null, 2));
-        });
+function update_rqt(){
+    var listener = new ROSLIB.Topic({
+        ros : ros,
+        name : '/core/parameter_updates',
+        messageType : 'dynamic_reconfigure/Config'
+    });
+    
+    listener.subscribe(function(message) {
+        for (var i = 0; i < message.strs.length; i++) {
+            strs_update(message.strs[i].name,message.strs[i].value)
+        }
+        for (var i = 0; i < message.bools.length; i++) {
+            bools_update(message.bools[i].name,message.bools[i].value)
+            // console.log(message.bools[i].name+':'+message.bools[i].value);
+        }
+    
+      });   
+      
     }
+    function strs_update(MyList,MyItem)  
+    {   
+        $("#"+MyList+" option[value='"+MyItem+"']").prop("selected",true);
+    } 
+    function bools_update(MyList,MyItem)  
+    {   
+        $("#"+MyList).prop("checked", MyItem);  
+        get_loc_bool= MyItem
 
-    function ToInputValue(newValue, name, num) {
-        document.getElementsByName(name)[num].value = newValue;
-    }
+    } 
 
-    function ToSliderValue(newValue, name, num) {
-        /*if (newValue > 100) {
-            newValue = 100;
-        }*/
-        document.getElementsByName(name)[1].value = newValue;
-        document.getElementsByName(name)[num].value = newValue;
-    }
 //======================================================================
