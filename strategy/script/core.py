@@ -77,6 +77,7 @@ class Strategy(object):
                     {"nav_start": "False"})
             return "Done"
         else:
+            # print(req)
             return "Closed"
 
     # def _getTableNum(self, table):

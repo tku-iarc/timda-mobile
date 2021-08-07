@@ -12,22 +12,19 @@ TIMDA_SERVER = "Timda_mobile"
 
 
 def recieve_data():
-    try:
-        while True:
-            while ser.in_waiting:
-                list_ser.append(ser.read(1))
+    while not rospy.is_shutdown():
+        while ser.in_waiting:
+            list_ser.append(ser.read(1))
 
-            if len(list_ser) >= 3:
-                if list_ser[0] == 's' and list_ser[2] == 'e':
-                    print(list_ser)
-                    pass_esp8266_info_to_server(str(ord(list_ser[1])))
-                    del list_ser[:]
-                else:
-                    del list_ser[:]
-
-    except KeyboardInterrupt:
-        ser.close()
-        print('good bye!')
+        if len(list_ser) >= 3:
+            if list_ser[0] == 's' and list_ser[2] == 'e':
+                # print(list_ser)
+                pass_esp8266_info_to_server(str(ord(list_ser[1])))
+                del list_ser[:]
+            else:
+                del list_ser[:]
+    ser.close()
+    print('good bye!')
 
 
 def pass_esp8266_info_to_server(data):
@@ -47,7 +44,7 @@ def pass_esp8266_info_to_server(data):
 if __name__ == "__main__":
     rospy.init_node("NodeMCU")
 
-    port_name = rospy.get_param('~port', '/dev/ttyUSB1')
+    port_name = rospy.get_param('~port', '/dev/ttyUSB0')
     #baud = int(rospy.get_param('~baud','57600'))
     print("try to connect with {port_name}")
 
