@@ -10,3 +10,5 @@ bower_components/
 build/
 node_modules/
 package-lock.json
+.vscode/
+gazebo_ros_pkgs/
