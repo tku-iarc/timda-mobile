@@ -58,7 +58,7 @@ class Strategy(object):
 # Service function
 #--------------------------------------------------------------------------------------------------------#
 
-    def handle_timda_mobile(self, req):
+    def handle_timda_mobile(self, req): #delete
         if self.robot.mode == "Service":
             # if req == "Table1" or req == "Table2":
             #     table_tmp = self.tableNum[0]
