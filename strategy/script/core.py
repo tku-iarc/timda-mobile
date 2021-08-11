@@ -51,39 +51,9 @@ class Strategy(object):
         self.service_list = []
         #rospy.Subscriber("wifi_test", Int32, self._getTableNum)
         # rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
-        rospy.Service(TIMDA_SERVER, TimdaMode, self.handle_timda_mobile)
+        
         self.main()
 
-#--------------------------------------------------------------------------------------------------------#
-# Service function
-#--------------------------------------------------------------------------------------------------------#
-
-    def handle_timda_mobile(self, req): #delete
-        if self.robot.mode == "Service":
-            # if req == "Table1" or req == "Table2":
-            #     table_tmp = self.tableNum[0]
-            #     self.tableNum.pop(0)
-            # print(req)
-            self.dclient.update_configuration({"Item": req.item_req})
-            self.dclient.update_configuration({"nav_start": "True"})
-            while self.robot.nav_start == True:
-                a = self.robot.goal_client(req.item_req)
-                print(a)
-                while 1:
-                    if self.robot.status[0].status == 3:
-                        print("Nav stop")
-                        break
-                self.dclient.update_configuration(
-                    {"nav_start": "False"})
-            return "Done"
-        else:
-            # print(req)
-            return "Closed"
-
-    # def _getTableNum(self, table):
-    #     table_tmp = "Table"+str(table.num_req)
-    #     self.tableNum.append(table_tmp)
-    #     self.dclient.update_configuration({"Robot_mode": "Service"})
 
 #--------------------------------------------------------------------------------------------------------#
 # main Strategy
@@ -120,43 +90,6 @@ class Strategy(object):
                         print("it is setting", self.robot.item, "position")
                         self.robot.recordPosition(self.robot.item)
                         self.dclient.update_configuration({"get_loc": "False"})
-                elif self.robot.mode == "QGA":
-                    self.cal_tmp2 = [1, 2, 3]
-                    self.route_dict = {}
-                    self.robot.Calculate(True)
-                    self.robot.recordPosition("Current")
-                    # call the item list for making routes
-                    self.cal_list = self.robot.GetCal_list()
-
-                    self.cal_tmp = list(itertools.permutations(
-                        self.cal_list, len(self.cal_list)))
-                    self.cal_tmp2 = list(itertools.permutations(
-                        self.cal_tmp2, len(self.cal_tmp2)))
-                    jj = 0
-                    for i in self.cal_tmp:
-                        start = self.robot.initial_point
-                        dis_tmp = 0.0
-                        # use "," to seperate the string list
-                        str1 = ','.join(str(i) for i in self.cal_tmp2[jj])
-                        kk = 1
-                        for j in i:
-                            end = j
-                            self.path = self.robot.setting_path_point(
-                                str1, kk, start, end)
-                            rospy.sleep(1)
-                            self.path = self.robot.GetPath()
-                            dis_tmp = dis_tmp + self.robot.PrintPath(self.path)
-                            print("Distance:", dis_tmp)
-                            start = end
-                            kk = kk + 1
-                        self.route_dict[str1] = dis_tmp
-                        jj = jj + 1
-                    self.robot.Calculate(False)
-
-                    print(self.route_dict)
-                    self.dclient.update_configuration(
-                        {"Robot_mode": "idle"})
-
 
 if __name__ == '__main__':
     try:
