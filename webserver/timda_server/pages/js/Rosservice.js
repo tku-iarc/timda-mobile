@@ -1,9 +1,3 @@
-var myBoolean1 = new Boolean();
-var myBoolean2 = new Boolean();
-var myBoolean3 = new Boolean();
-var myBoolean4 = new Boolean();
-var myBoolean5 = new Boolean();
-var myBoolean6 = new Boolean();
 var get_loc_bool = false;
 
 function gameStart() {
