@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/ButtonStyle.css">
+    <title>TMP</title>
+</head>
+
+<body onload="update_rqt()">
+    <nav>
+     <a href="http://localhost:8001/rvizweb/www/index.html">Rviz</a>
+     <a href="http://localhost:8001/rvizweb/pages/index.html">Arm</a>
+     <a href="http://localhost:8001/rvizweb/pages/chat.html">SocketIO</a>
+     <a href="http://localhost:8001/rvizweb/pages/index2.html">TIMDA</a>
+   </nav>
+    <div>
+        <label>Connect to rosbridge: </label>
+        <span id="host-info"></span>
+	<span id="ros-status"></span>
+        <br>
+        <label>Socket IO status: </label>
+        <span id="io-status"></span>
+        <br>
+        <button id="shutdown" class="button button1">Shutdown</button>
+    </div>
+    <div>
+    <h2>Manual Control: </h2>
+    <form id="controlForm" class="inline">
+        <label class="radio-container">No Manual
+        <input type="radio" checked="checked" name="radio" value="No Manual">
+        <span class="checkmark"></span>
+        </label>
+        <label class="radio-container">Virtual Joystick
+        <input type="radio" name="radio" value="Virtual Joystick">
+        <span class="checkmark"></span>
+        </label>
+        <label class="radio-container">Real Joystick
+        <input type="radio" name="radio" value="Real Joystick">
+        <span class="checkmark"></span>
+        <select name="gamepadList" id="gamepadList" class="inline">
+            <option selected="selected" disabled>Select Gamepad</option>
+        </select>
+        </label>
+        <label class="radio-container">Keyboard
+        <input type="radio" name="radio" value="KeyboardControl">
+        <span class="checkmark"></span>
+        </label>
+    </form>
+    </div>
+
+    <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
+        <div id="joy3Div" style="width:200px;height:200px;margin:50px;"></div>
+        <div id="leftside" style=" width:300px; float:left">
+            <div style="left:750px;">
+                Posizione X:<input id="joy3PosizioneX" type="text" /><br />
+                Posizione Y:<input id="joy3PosizioneY" type="text" /><br />
+                Direzione:<input id="joy3Direzione" type="text" /><br />
+                X :<input id="joy3X" type="text" /></br>
+                Y :<input id="joy3Y" type="text" />
+            </div>
+        <div class="slidecontainer inline">
+            <input type="range" min="0.1" max="2.0" step="0.01" value="0.1" class="slider" id="powerRange" />
+        </div>
+        <div class="inline"><input style="width: 30px;" id="powerShow" type="text" value="20" disabled /></div>
+        <label class="inline">m/s</label>
+        </div>
+
+        <div id="rightside" style="width:auto;  margin-left:170px;">
+            strategy_web
+            <form name='form' id='form'>
+            game_start:
+            <input id='game_start' type="checkbox" onclick=gameStart()><br />
+            Robot_mode:
+            <select name="Robot_mode" id='Robot_mode' onchange=RobotMode()>
+                <option value="idle">idle</option>
+                <option value="Setting">Setting</option>
+                <option value="Navigating">Navigating</option>
+                <option value="test">test</option>
+                <option value="Service">Service</option>
+            </select><br />    
+            Item:
+            <select name="Item" id='Item' onchange=Item1()>
+                <option value="initial">initial</option>
+                <option value="shelf">shelf</option>
+                <option value="Table1">Table1</option>
+                <option value="Table2">Table2</option>
+            </select><br />   
+            loc:
+            <input type='button' id='get_loc' value='get' 
+            onclick=getLoc() /><br />    
+            <!-- <input id='get_loc' type="checkbox"onclick=getLoc() ><br />   -->
+            Nav_mode:
+            <select name="Nav_mode" id='Nav_mode' onchange=NavMode()>
+                <option value="test">test</option>
+                <option value="directory">directory</option>
+            </select><br />   
+            nav_start:    
+            <input id='nav_start' type="checkbox"onclick=navStart() ><br /> 
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script src="js/joy.js"></script>
+    <script src="js/eventemitter2.min.js"></script>
+    <script src="js/roslib.min.js"></script>
+    <script src="js/rostopic.js"></script>
+    <script src="js/Rosservice.js"></script>
+    <script src="js/KeyboardControl.js?ver=20210309"></script>
+</body>
+
+</html>

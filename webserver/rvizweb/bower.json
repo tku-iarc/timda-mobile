@@ -1,0 +1,22 @@
+{
+  "name": "rvizweb",
+  "authors": [
+    "Louise Poubel <louise@openrobotics.org>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "license": "Apache 2",
+  "homepage": "https://github.com/DamnTT/polymer-ros-rviz.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "web-animations-js": "^2.3.1",
+    "ros-rviz": "https://github.com/DamnTT/ros-rviz.git#main",
+    "KeyboardControl": "https://github.com/DamnTT/KeyboardControl.git#main"
+  }
+}

@@ -1,5 +1,6 @@
 <launch>
   <arg name="use_map" default="home-area" />
+  <arg name = "port" default = "/dev/ttyUSB0"/>
 
   <arg name="odom_frame_id"   default="odom"/>
   <arg name="base_frame_id"   default="base_link"/>
@@ -9,7 +10,7 @@
 
   <node pkg="map_server" type="map_server" name="map_server"
         args="$(find timda_configs)/maps/$(arg use_map).yaml" />
-
+  <node pkg = "button" type = "recieve_esp.py" name = "NodeMCU" />
   <include file="$(find timda_bringup)/launch/amcl.launch" />
 
   <node pkg="move_base" type="move_base" respawn="true" name="move_base" output="screen">

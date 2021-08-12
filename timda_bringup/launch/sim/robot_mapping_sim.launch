@@ -7,6 +7,9 @@
     <!-- <arg name="odom_frame" default="base_link" /> -->
     <!-- w/ odom-->
     <arg name="odom_frame" value="odom" />
+    <broadcasttf>1</broadcasttf> 
+    <odometryframe>odom</odometryframe>
   </include>
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find timda_description)/rviz/laser.rviz" />
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+  <!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find timda_description)/rviz/laser.rviz" />-->
 </launch>
