@@ -9,7 +9,7 @@
     <title>TMP</title>
 </head>
 
-<body>
+<body onload="update_rqt()">
     <nav>
      <a href="http://localhost:8001/rvizweb/www/index.html">Rviz</a>
      <a href="http://localhost:8001/rvizweb/pages/index.html">Arm</a>
@@ -50,29 +50,64 @@
         </label>
     </form>
     </div>
+
     <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
-        <!-- <div id="joy3Div" style="width:200px;height:200px;margin:50px;position:fixed;bottom:30px;left:500px;"></div> -->
         <div id="joy3Div" style="width:200px;height:200px;margin:50px;"></div>
-		<div style="left:750px;">
-			Posizione X:<input id="joy3PosizioneX" type="text" /><br />
-			Posizione Y:<input id="joy3PosizioneY" type="text" /><br />
-			Direzione:<input id="joy3Direzione" type="text" /><br />
-			X :<input id="joy3X" type="text" /></br>
-			Y :<input id="joy3Y" type="text" />
-		</div>
+        <div id="leftside" style=" width:300px; float:left">
+            <div style="left:750px;">
+                Posizione X:<input id="joy3PosizioneX" type="text" /><br />
+                Posizione Y:<input id="joy3PosizioneY" type="text" /><br />
+                Direzione:<input id="joy3Direzione" type="text" /><br />
+                X :<input id="joy3X" type="text" /></br>
+                Y :<input id="joy3Y" type="text" />
+            </div>
         <div class="slidecontainer inline">
             <input type="range" min="0.1" max="2.0" step="0.01" value="0.1" class="slider" id="powerRange" />
         </div>
         <div class="inline"><input style="width: 30px;" id="powerShow" type="text" value="20" disabled /></div>
         <label class="inline">m/s</label>
-    </div>
+        </div>
 
+        <div id="rightside" style="width:auto;  margin-left:170px;">
+            strategy_web
+            <form name='form' id='form'>
+            game_start:
+            <input id='game_start' type="checkbox" onclick=gameStart()><br />
+            Robot_mode:
+            <select name="Robot_mode" id='Robot_mode' onchange=RobotMode()>
+                <option value="idle">idle</option>
+                <option value="Setting">Setting</option>
+                <option value="Navigating">Navigating</option>
+                <option value="test">test</option>
+                <option value="Service">Service</option>
+            </select><br />    
+            Item:
+            <select name="Item" id='Item' onchange=Item1()>
+                <option value="initial">initial</option>
+                <option value="shelf">shelf</option>
+                <option value="Table1">Table1</option>
+                <option value="Table2">Table2</option>
+            </select><br />   
+            loc:
+            <input type='button' id='get_loc' value='get' 
+            onclick=getLoc() /><br />    
+            <!-- <input id='get_loc' type="checkbox"onclick=getLoc() ><br />   -->
+            Nav_mode:
+            <select name="Nav_mode" id='Nav_mode' onchange=NavMode()>
+                <option value="test">test</option>
+                <option value="directory">directory</option>
+            </select><br />   
+            nav_start:    
+            <input id='nav_start' type="checkbox"onclick=navStart() ><br /> 
+        </div>
+    </div>
     <script src="js/jquery.min.js"></script>
     <script src="js/socket.io.js"></script>
     <script src="js/joy.js"></script>
     <script src="js/eventemitter2.min.js"></script>
     <script src="js/roslib.min.js"></script>
     <script src="js/rostopic.js"></script>
+    <script src="js/Rosservice.js"></script>
     <script src="js/KeyboardControl.js?ver=20210309"></script>
 </body>
 

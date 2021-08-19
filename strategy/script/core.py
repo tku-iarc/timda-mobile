@@ -15,6 +15,7 @@ import itertools
 #from navigation_tool.calculate_path_distance import Nav_cal
 from strategy.srv import wifi_srv
 from strategy.srv import TimdaMode
+from strategy.msg import TimdaMobileStatus
 WIFI_BUTTON = "wifi_module"
 TIMDA_SERVER = "Timda_mobile"
 
@@ -52,6 +53,7 @@ class Strategy(object):
         #rospy.Subscriber("wifi_test", Int32, self._getTableNum)
         # rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
         rospy.Service(TIMDA_SERVER, TimdaMode, self.handle_timda_mobile)
+        self.pub_status = self.robot._Publisher("/timda_mobile_status",TimdaMobileStatus)
         self.main()
 
 #--------------------------------------------------------------------------------------------------------#
@@ -70,8 +72,10 @@ class Strategy(object):
                 a = self.robot.goal_client(req.item_req)
                 print(a)
                 while 1:
+                    self.pub_status.publish("Move To Goal")
                     if self.robot.status[0].status == 3:
                         print("Nav stop")
+                        self.pub_status.publish("Arrived")
                         break
                 self.dclient.update_configuration(
                     {"nav_start": "False"})
