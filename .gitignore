@@ -1,12 +1,15 @@
 *.swp
 node_modules/
 project_tool/
-
+*dat
 *.tfw
 *.tif
+*.pyc
 timda_configs/maps/*.pgm
 timda_configs/maps/*.yaml
 bower_components/
 build/
 node_modules/
 package-lock.json
+.vscode/
+gazebo_ros_pkgs/

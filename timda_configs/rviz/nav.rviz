@@ -458,9 +458,7 @@ Visualization Manager:
       Marker Topic: /move_base/TebLocalPlannerROS/teb_markers
       Name: Teb Marker
       Namespaces:
-        PointObstacles: true
-        RobotFootprintModel: true
-        TebContainer: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -508,7 +506,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 12.009258270263672
+      Distance: 16.872142791748047
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -544,5 +542,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1299
-  X: -153
-  Y: 70
+  X: 0
+  Y: 33
