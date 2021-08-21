@@ -1,7 +1,7 @@
 *.swp
 node_modules/
 project_tool/
-
+*dat
 *.tfw
 *.tif
 timda_configs/maps/*.pgm
