@@ -26,7 +26,6 @@ add_message_files(
 add_service_files(
   FILES
   TimdaMode.srv
-  wifi_srv.srv
 )
 
 #add_action_files(

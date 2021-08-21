@@ -12,9 +12,8 @@ import dynamic_reconfigure.client
 from std_msgs.msg import String
 from std_msgs.msg import Int32
 import itertools
-#from navigation_tool.calculate_path_distance import Nav_cal
-from strategy.srv import wifi_srv
-from strategy.srv import TimdaMode
+# from navigation_tool.calculate_path_distance import Nav_cal
+from strategy.srv import TimdaMode, TimdaModeResponse
 from strategy.msg import TimdaMobileStatus
 WIFI_BUTTON = "wifi_module"
 TIMDA_SERVER = "Timda_mobile"
@@ -50,11 +49,12 @@ class Strategy(object):
         self.cal_list = []
         self.tableNum = []
         self.service_list = []
-        #rospy.Subscriber("wifi_test", Int32, self._getTableNum)
+        # rospy.Subscriber("wifi_test", Int32, self._getTableNum)
         # rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
         rospy.Service(TIMDA_SERVER, TimdaMode, self.handle_timda_mobile)
         self.pub_status = self.robot._Publisher(
             "/timda_mobile_status", TimdaMobileStatus)
+
         self.main()
 
 #--------------------------------------------------------------------------------------------------------#
@@ -62,25 +62,74 @@ class Strategy(object):
 #--------------------------------------------------------------------------------------------------------#
 
     def handle_timda_mobile(self, req):
+        res = TimdaModeResponse()
         if self.robot.mode == "Service":
-            # if req == "Table1" or req == "Table2":
-            #     table_tmp = self.tableNum[0]
-            #     self.tableNum.pop(0)
-            # print(req)
-            self.dclient.update_configuration({"Item": req.item_req})
-            self.dclient.update_configuration({"nav_start": "True"})
-            while self.robot.nav_start == True:
-                a = self.robot.goal_client(req.item_req)
-                print(a)
+            item_key = list(self.robot.item_dict.keys())
+
+            if item_key.count(req.item_req) > 0:
+                self.dclient.update_configuration({"Item": req.item_req})
+                self.dclient.update_configuration({"nav_start": "True"})
+                while self.robot.nav_start == True:
+                    a = self.robot.goal_client(req.item_req)
+                    print(a)
+                    while 1:
+                        if self.robot.status[0].status == 3:
+                            print("Nav Stop")
+                            break
+                    self.dclient.update_configuration(
+                        {"nav_start": "False"})
+                self.pub_status.publish("Arrived")
+                print(req.item_req, "Reached!")
+                res.nav_res = 'finish'
+                return res
+            elif self.robot.item_adjust.count(req.item_req) > 0:
+                loc = self.robot.loc
+                var = 0.3
+                lim_r = 0.1
+                lim_v = 0.5
                 while 1:
-                    self.pub_status.publish("Move To Goal")
-                    if self.robot.status[0].status == 3:
-                        print("Nav stop")
-                        self.pub_status.publish("Arrived")
-                        break
-                self.dclient.update_configuration(
-                    {"nav_start": "False"})
-            return "Done"
+                    if "back" in req.item_req:
+                        dis_x = (loc.pose.pose.position.x - var) - \
+                            self.robot.loc.pose.pose.position.x
+                        dis_y = 0
+                        if abs(dis_x) < lim_r:
+                            self.robot.RobotCtrlS(0, 0, 0)
+                            res.nav_res = 'finish'
+                            print("Move Stop")
+                            break
+                        self.robot.RobotCtrlS(lim_v * -1, 0, 0)
+                    elif "front" in req.item_req:
+                        dis_x = (loc.pose.pose.position.x + var) - \
+                            self.robot.loc.pose.pose.position.x
+                        dis_y = 0
+                        if abs(dis_x) < lim_r:
+                            self.robot.RobotCtrlS(0, 0, 0)
+                            res.nav_res = 'finish'
+                            break
+                        self.robot.RobotCtrlS(lim_v, 0, 0)
+                    elif "left" in req.item_req:
+                        dis_x = 0
+                        dis_y = (loc.pose.pose.position.y + var) - \
+                            self.robot.loc.pose.pose.position.y
+                        if abs(dis_y) < lim_r:
+                            self.robot.RobotCtrlS(0, 0, 0)
+                            res.nav_res = 'finish'
+                            break
+                        self.robot.RobotCtrlS(0, lim_v, 0)
+                    elif "right" in req.item_req:
+                        dis_x = 0
+                        dis_y = (loc.pose.pose.position.y - var) - \
+                            self.robot.loc.pose.pose.position.y
+
+                        if abs(dis_y) < lim_r:
+                            self.robot.RobotCtrlS(0, 0, 0)
+                            res.nav_res = 'finish'
+                            break
+                        self.robot.RobotCtrlS(0, lim_v * -1, 0)
+
+                print("Move Stop")
+                return res
+
         else:
             # print(req)
             return "Closed"
@@ -91,8 +140,7 @@ class Strategy(object):
     #     self.dclient.update_configuration({"Robot_mode": "Service"})
 
 #--------------------------------------------------------------------------------------------------------#
-# main Strategy
-#--------------------------------------------------------------------------------------------------------#
+# main Strategy #--------------------------------------------------------------------------------------------------------#
     def main(self):
         while not rospy.is_shutdown():
             if self.robot.game_start == True:
