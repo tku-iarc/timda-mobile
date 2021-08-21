@@ -15,13 +15,15 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
 from numpy import testing
+from numpy.core.fromnumeric import ptp
 
 #########################################################
 # ALGORITHM PARAMETERS                                  #
 #########################################################
 N = 50                  # Define here the population size
-Genome = 3              # Define here the chromosome length
+Genome = 22              # Define here the chromosome length
 generation_max = 450    # Define here the maximum number of
 # generations/iterations
 
@@ -54,8 +56,23 @@ generation = 0
 # QUANTUM POPULATION INITIALIZATION                     #
 #########################################################
 test = []
-obj = [[0, 0], [-14, 60], [-18, 59], [39, 41]]
-rt = np.zeros(8)
+obj = [[0, 0], [-14, 60], [-18, 59], [39, 41], [85, 16],
+       [16, 96], [96, 55], [75, 36], [11, 23], [75, 8], [32, 18]]
+
+rt = np.zeros(int(math.pow(2, Genome)))
+
+
+def Init_sample():
+    data = np.loadtxt('output_2.dat')
+    for i in range(int(math.pow(2, Genome))):
+        rt[i] = 99999999999
+    # plot the first column as x, and second column as y
+    rt_tmp = data[:, 1]
+    k = 0
+    for j in rt_tmp:
+        rt[k] = j
+        print(rt[k])
+        k += 1
 
 
 def Init_population():
@@ -85,31 +102,99 @@ def Init_population():
             # beta squared
             qpv[i, j, 1] = np.around(2*pow(AlphaBeta[1], 2), 2)
 
-    i = 0
-    for j in range(1, 4):
-        route = distance((obj[j][0]-obj[0][0]), (obj[j][1]-obj[0][1]))
-        print("j is:", j)
-        for l in range(1, 4):
-            if l == j:
-                continue
-            print("l is:", l)
-            route = route + \
-                distance((obj[l][0]-obj[j][0]), (obj[l][1]-obj[j][1]))
-            for a in range(1, 4):
-                if a == l or a == j:
-                    continue
-                print("a is:", a)
-                print(j, l, a, "\n")
-                route = route + \
-                    distance((obj[l][0]-obj[j][0]),
-                             (obj[l][1]-obj[j][1]))
-                route = route + \
-                    distance((obj[0][0]-obj[l][0]),
-                             (obj[0][1]-obj[l][1]))
-                rt[i] = route
-                i += 1
-    rt[6] = 9999
-    rt[7] = 9999
+    # i = 0
+    # for j in range(1, 10):
+    #     route = distance((obj[j][0]-obj[0][0]), (obj[j][1]-obj[0][1]))
+    #     print("j is:", j)
+    #     for l in range(1, 10):
+    #         if l == j:
+    #             continue
+    #         print("l is:", l)
+    #         route = route + \
+    #             distance((obj[l][0]-obj[j][0]), (obj[l][1]-obj[j][1]))
+    #         for a in range(1, 10):
+    #             if a == l or a == j:
+    #                 continue
+    #             print("a is:", a)
+    #             print(j, l, a, "\n")
+    #             route = route + \
+    #                 distance((obj[a][0]-obj[l][0]),
+    #                          (obj[a][1]-obj[l][1]))
+    #             route = route + \
+    #                 distance((obj[0][0]-obj[a][0]),
+    #                          (obj[0][1]-obj[a][1]))
+    #             rt[i] = route
+    #             i += 1
+
+    # k = 0
+    # for i in range(1, 11):
+    #     route_i = distance((obj[i][0]-obj[0][0]), (obj[i][1]-obj[0][1]))
+    #     for j in range(1, 11):
+    #         if j == i:
+    #             continue
+    #         route_j = route_i + \
+    #             distance((obj[j][0]-obj[i][0]), (obj[j][1]-obj[i][1]))
+    #         for l in range(1, 11):
+    #             if l == i or l == j:
+    #                 continue
+    #             route_l = route_j + \
+    #                 distance((obj[l][0]-obj[j][0]), (obj[l][1]-obj[j][1]))
+    #             for a in range(1, 11):
+    #                 if a == i or a == j or a == l:
+    #                     continue
+    #                 route_a = route_l + \
+    #                     distance((obj[a][0]-obj[l][0]), (obj[a][1]-obj[l][1]))
+    #                 for b in range(1, 11):
+    #                     if b == i or b == j or b == l or b == a:
+    #                         continue
+    #                     route_b = route_a + \
+    #                         distance((obj[b][0]-obj[a][0]),
+    #                                  (obj[b][1]-obj[a][1]))
+    #                     for c in range(1, 11):
+    #                         if c == i or c == j or c == l or c == a or c == b:
+    #                             continue
+    #                         route_c = route_b + \
+    #                             distance((obj[c][0]-obj[b][0]),
+    #                                      (obj[c][1]-obj[b][1]))
+    #                         for d in range(1, 11):
+    #                             if d == i or d == j or d == l or d == a or d == b or d == c:
+    #                                 continue
+    #                             route_d = route_c + \
+    #                                 distance((obj[d][0]-obj[c][0]),
+    #                                          (obj[d][1]-obj[c][1]))
+    #                             for e in range(1, 11):
+    #                                 if e == i or e == j or e == l or e == a or e == b or e == c or e == d:
+    #                                     continue
+    #                                 route_e = route_d + \
+    #                                     distance(
+    #                                         (obj[e][0]-obj[d][0]), (obj[e][1]-obj[d][1]))
+    #                                 for f in range(1, 11):
+    #                                     if f == i or f == j or f == l or f == a or f == b or f == c or f == d or f == e:
+    #                                         continue
+    #                                     route_f = route_e + \
+    #                                         distance(
+    #                                             (obj[f][0]-obj[e][0]), (obj[f][1]-obj[e][1]))
+    #                                     for g in range(1, 11):
+    #                                         if g == i or g == j or g == l or g == a or g == b or g == c or g == d or g == e or g == f:
+    #                                             continue
+    #                                         route_g = route_f + \
+    #                                             distance(
+    #                                                 (obj[g][0]-obj[f][0]), (obj[g][1]-obj[f][1]))
+    #                                         route_0 = route_g + \
+    #                                             distance(
+    #                                                 (obj[0][0]-obj[g][0]), (obj[0][1]-obj[g][1]))
+    #                                         print(i, j, l, a, b, c, d, e, f, g)
+    #                                         print("")
+    #                                         fi = open("output_2.dat", "a")
+    #                                         # f.write(str(generation)+" "+str(fitness_average)+"\n")
+    #                                         fi.write(
+    #                                             str(k)+" "+str(route_0)+"\n")
+    #                                         fi.write(" \n")
+    #                                         fi.close()
+    #                                         rt[k] = route_0
+    #                                         print(route_0)
+
+    #                                         k += 1
 
 
 def distance(x, y):
@@ -221,6 +306,10 @@ def Fitness_evaluation(generation):
     f.write(str(generation)+" "+str(fitness_max/100)+"\n")
     f.write(" \n")
     f.close()
+    if generation == 449:
+        return fitness_max/100
+    else:
+        return 0
     # print("Population size = ", popSize - 1)
     # print("mean fitness = ", fitness_average)
     # print("variance = ", variance, "\n",
@@ -306,16 +395,16 @@ def mutation(pop_mutation_rate, mutation_rate):
 
 
 def plot_Output():
-    data = np.loadtxt('output.dat')
+    data = np.loadtxt('best_result.dat')
     # plot the first column as x, and second column as y
     y = data[:, 0]
     x = data[:, 1]
     # f = plt.figure()
     plt.show()
-    plt.plot(x, y)
-    plt.xlabel('Generation')
-    plt.ylabel('the best num')
-    plt.xlim(0.0, 550.0)
+    plt.plot(y, x)
+    plt.xlabel('Exercies times')
+    plt.ylabel('the best distance')
+    plt.xlim(0, 50)
     plt.show()
 
 ########################################################
@@ -330,6 +419,7 @@ def Q_GA():
     print("============== GENERATION: ", generation,
           " =========================== ")
     print()
+
     Init_population()
     Show_population()
     Measure(0.5)
@@ -350,12 +440,25 @@ def Q_GA():
         mutation(0.01, 0.001)
         generation = generation+1
         Measure(0.5)
-        Fitness_evaluation(generation)
+        re = Fitness_evaluation(generation)
+    return re
 
 
 print("""QUANTUM GENETIC ALGORITHM""")
 f = open("output.dat", "w")
+# fi = open("output_2.dat", "w")
+fi3 = open("best_result.dat", "w")
+
+
 input("Press Enter to continue...")
-Q_GA()
-print(rt)
-# plot_Output()
+Init_sample()
+for i in range(50):
+    max = Q_GA()
+    fi3 = open("best_result.dat", "a")
+    # f.write(str(generation)+" "+str(fitness_average)+"\n")
+    fi3.write(str(i)+" "+str(max)+"\n")
+    fi3.write(" \n")
+    fi3.close()
+# Init_population()
+# print(rt)
+plot_Output()
