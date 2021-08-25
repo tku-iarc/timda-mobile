@@ -84,9 +84,10 @@ class Strategy(object):
                 return res
             elif self.robot.item_adjust.count(req.item_req) > 0:
                 loc = self.robot.loc
-                var = 0.3
+                var = 0.2
+                varo = 0.27
                 lim_r = 0.1
-                lim_v = 0.5
+                lim_v = 0.1
                 while 1:
                     if "back" in req.item_req:
                         dis_x = (loc.pose.pose.position.x - var) - \
@@ -109,7 +110,7 @@ class Strategy(object):
                         self.robot.RobotCtrlS(lim_v, 0, 0)
                     elif "left" in req.item_req:
                         dis_x = 0
-                        dis_y = (loc.pose.pose.position.y + var) - \
+                        dis_y = (loc.pose.pose.position.y + varo) - \
                             self.robot.loc.pose.pose.position.y
                         if abs(dis_y) < lim_r:
                             self.robot.RobotCtrlS(0, 0, 0)
@@ -118,7 +119,7 @@ class Strategy(object):
                         self.robot.RobotCtrlS(0, lim_v, 0)
                     elif "right" in req.item_req:
                         dis_x = 0
-                        dis_y = (loc.pose.pose.position.y - var) - \
+                        dis_y = (loc.pose.pose.position.y - varo) - \
                             self.robot.loc.pose.pose.position.y
 
                         if abs(dis_y) < lim_r:
