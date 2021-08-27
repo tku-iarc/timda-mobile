@@ -16,13 +16,15 @@
           <div class="panel pricing-table">
             
             <div class="pricing-plan">
-              <img src="img/sandwiche.jpeg" alt="" class="pricing-img">
-              <h1 class="pricing-header">sandwiche</h1>
+              <img src="img/sandwich.jpeg" alt="" class="pricing-img">
+              <h1 class="pricing-header">sandwich</h1>
+
               <ul class="pricing-features">
                 <li class="pricing-features-item">Put meat, cheese, or vegetables in the middle of the bread</li>
               </ul>
               <span class="pricing-price">$50</span>
-              <a  class="pricing-button" id='sandwiche' onclick=pub_goods(id) >Send out</a>
+              <a  class="pricing-button" id='sandwich' onclick=pub_goods(id) >Send out</a>
+              <span  class="pricing-price"id='sandwich_print'  style="visibility: hidden;">ready</span>
             </div>
             
             <div class="pricing-plan">
@@ -33,13 +35,22 @@
               </ul>
               <span class="pricing-price">$35</span>
               <a  class="pricing-button is-featured" id='riceball' onclick=pub_goods(id) >Send out</a>
+              <span  class="pricing-price"id='riceball_print' style="visibility: hidden;">ready</span>
             </div>
+            
           </div>
+          <div>
+            <h1 style="float:left;font-size: 40px;">table : </h1>
+            <select  id="tables" name="tables"style="margin-top:25px; margin-left:10px; font-size: 40px;">
+              <option value="table1">table1</option>
+              <option value="table2">table2</option>
+            </select>              
+          </div>
+
+        
         </div>
       </div>
     <script src="js/rostopic.js"></script>
 </body>
 
 </html>
-
-

@@ -14,8 +14,9 @@ from std_msgs.msg import Int32
 import itertools
 # from navigation_tool.calculate_path_distance import Nav_cal
 from strategy.srv import TimdaMode, TimdaModeResponse
+from strategy.srv import aruco_relative_pose, aruco_relative_poseResponse
 from strategy.msg import TimdaMobileStatus
-WIFI_BUTTON = "wifi_module"
+ADJUST = "Timda_mobile_relative_pose"
 TIMDA_SERVER = "Timda_mobile"
 
 
@@ -52,14 +53,90 @@ class Strategy(object):
         # rospy.Subscriber("wifi_test", Int32, self._getTableNum)
         # rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
         rospy.Service(TIMDA_SERVER, TimdaMode, self.handle_timda_mobile)
+        rospy.Service(ADJUST, aruco_relative_pose, self.adjust_timda)
         self.pub_status = self.robot._Publisher(
             "/timda_mobile_status", TimdaMobileStatus)
 
         self.main()
 
 #--------------------------------------------------------------------------------------------------------#
+# main Strategy
+#--------------------------------------------------------------------------------------------------------#
+    def main(self):
+        while not rospy.is_shutdown():
+            if self.robot.game_start == True:
+                if self.robot.mode == "Navigating":
+                    while self.robot.nav_start == True:
+                        if self.robot.nav_mode == "test":
+                            j = 1
+                            for i in self.robot.item_dict:
+                                print("going to the number", j, "goal")
+                                a = self.robot.goal_client(i)
+                                print(a)
+                                j = j + 1
+                                while 1:
+                                    if self.robot.status[0].status == 3:
+                                        print("Nav stop")
+                                        break
+                            self.dclient.update_configuration(
+                                {"nav_start": "False"})
+                        elif self.robot.nav_mode == "directory":
+                            a = self.robot.goal_client(self.robot.item)
+                            print(a)
+                            while 1:
+                                if self.robot.status[0].status == 3:
+                                    print("Nav stop")
+                                    break
+                            self.dclient.update_configuration(
+                                {"nav_start": "False"})
+                elif self.robot.mode == "Setting":
+                    if self.robot.get_loc == True:
+                        print("it is setting", self.robot.item, "position")
+                        self.robot.recordPosition(self.robot.item)
+                        self.dclient.update_configuration({"get_loc": "False"})
+#--------------------------------------------------------------------------------------------------------#
 # Service function
 #--------------------------------------------------------------------------------------------------------#
+
+    def adjust_timda(self, req):
+        print("Client Request to move to (x_length, y_length, theta) =\
+                 {}, {}, {} relative to current pose".format(req.x_length, req.y_length, req.theta))
+
+        # Server RESPONSE
+        res = aruco_relative_poseResponse()
+        loc = self.robot.loc
+        # var_x = (req.x_length/0.2)*req.x_length
+        # var_y = (req.y_length/0.22)*req.y_length
+        var_x = req.x_length
+        var_y = req.y_length
+        varo = 0.27
+        lim_r = 0.1
+        lim_v = 0.1
+        print("x adjusting start")
+        while 1:
+            dis_x = (loc.pose.pose.position.x - var_x) - \
+                self.robot.loc.pose.pose.position.x
+            print(dis_x)
+            if abs(dis_x) < lim_r:
+                self.robot.RobotCtrlS(0, 0, 0)
+                print("X_adjusting Stop")
+                break
+            self.robot.RobotCtrlS(lim_v * dis_x/abs(dis_x), 0, 0)
+        print("X adjusting start")
+        while 1:
+            dis_y = (loc.pose.pose.position.y - var_y) - \
+                self.robot.loc.pose.pose.position.y
+            self.robot.RobotCtrlS(0, lim_v * dis_y/abs(dis_y), 0)
+            if abs(dis_y) < lim_r:
+                self.robot.RobotCtrlS(0, 0, 0)
+                print("X_adjusting Stop")
+                break
+            self.robot.RobotCtrlS(0, lim_v * dis_y/abs(dis_y), 0)
+        print("Adjusting Stop")
+
+        res.nav_done_res = "finish"
+        print('res.nav_done = ', res.nav_done_res)
+        return res
 
     def handle_timda_mobile(self, req):
         res = TimdaModeResponse()
@@ -134,46 +211,6 @@ class Strategy(object):
         else:
             # print(req)
             return "Closed"
-
-    # def _getTableNum(self, table):
-    #     table_tmp = "Table"+str(table.num_req)
-    #     self.tableNum.append(table_tmp)
-    #     self.dclient.update_configuration({"Robot_mode": "Service"})
-
-#--------------------------------------------------------------------------------------------------------#
-# main Strategy #--------------------------------------------------------------------------------------------------------#
-    def main(self):
-        while not rospy.is_shutdown():
-            if self.robot.game_start == True:
-                if self.robot.mode == "Navigating":
-                    while self.robot.nav_start == True:
-                        if self.robot.nav_mode == "test":
-                            j = 1
-                            for i in self.robot.item_dict:
-                                print("going to the number", j, "goal")
-                                a = self.robot.goal_client(i)
-                                print(a)
-                                j = j + 1
-                                while 1:
-                                    if self.robot.status[0].status == 3:
-                                        print("Nav stop")
-                                        break
-                            self.dclient.update_configuration(
-                                {"nav_start": "False"})
-                        elif self.robot.nav_mode == "directory":
-                            a = self.robot.goal_client(self.robot.item)
-                            print(a)
-                            while 1:
-                                if self.robot.status[0].status == 3:
-                                    print("Nav stop")
-                                    break
-                            self.dclient.update_configuration(
-                                {"nav_start": "False"})
-                elif self.robot.mode == "Setting":
-                    if self.robot.get_loc == True:
-                        print("it is setting", self.robot.item, "position")
-                        self.robot.recordPosition(self.robot.item)
-                        self.dclient.update_configuration({"get_loc": "False"})
 
 
 if __name__ == '__main__':
