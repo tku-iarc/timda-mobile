@@ -30,27 +30,57 @@ document.oncontextmenu = function () {
 }; // 防右鍵選單
 
 var addTwoIntsClient = new ROSLIB.Service({
-  ros : ros,
-  name : '/customer_order',
-  serviceType : 'diagnostic_msgs/AddDiagnostics'
+  ros: ros,
+  name: '/customer_order',
+  serviceType: 'diagnostic_msgs/AddDiagnostics'
+});
+function radio(name) {
+  table_name = document.getElementsByName(name)
+  for (var i = 0; i < table_name.length; i++) {
+    if (table_name[i].checked) {
+      return table_name[i].value;
+
+    }
+  }
+
+}
+
+table_name = document.getElementById("tables").value
+var request = new ROSLIB.ServiceRequest({
+  load_namespace: id + '+' + table_name
 });
 
+addTwoIntsClient.callService(request, function (result) {
+  document.getElementById(id + '_print').style = "visibility: visible;"
+  document.getElementById(id + '_print').innerHTML = result.message;
+  setTimeout(function myFunction() {
+    document.getElementById(id + '_print').style = "visibility: hidden;"
+  }, 1000);
 
+  console.log('Result for service call on '
+    + addTwoIntsClient.name
+    + ': '
+    + result.success
+    + result.message);
+});
 
+function pub_goods(id) {
 
-
-function pub_goods(id){
-
-  table_name=document.getElementById("tables").value
+  table_name = radio("group1")
+  // console.log(table_name
+  if (table_name == undefined) {
+    alert("Please choose table");
+    return;
+  }
   var request = new ROSLIB.ServiceRequest({
-    load_namespace:id+'+'+table_name
+    load_namespace: id + '+' + table_name
   });
 
-  addTwoIntsClient.callService(request, function(result) {
-    document.getElementById(id+'_print').style="visibility: visible;"
-    document.getElementById(id+'_print').innerHTML=result.message;
-    setTimeout(function myFunction(){
-      document.getElementById(id+'_print').style="visibility: hidden;"
+  addTwoIntsClient.callService(request, function (result) {
+    document.getElementById(id + '_print').style = "visibility: visible;"
+    document.getElementById(id + '_print').innerHTML = result.message;
+    setTimeout(function myFunction() {
+      document.getElementById(id + '_print').style = "visibility: hidden;"
     }, 1000);
 
     console.log('Result for service call on '

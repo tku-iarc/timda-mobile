@@ -11,6 +11,7 @@ from strategy.cfg import RobotConfig
 import dynamic_reconfigure.client
 from std_msgs.msg import String
 from std_msgs.msg import Int32
+from actionlib_msgs.msg import GoalID
 from diagnostic_msgs.srv import AddDiagnostics, AddDiagnosticsResponse
 import itertools
 # from navigation_tool.calculate_path_distance import Nav_cal
@@ -22,15 +23,16 @@ TIMDA_SERVER = "Timda_mobile"
 CUSTOMER = "customer_order"
 TIMDA_STATUS = "timda_mobile_status"
 
+
 class Core(Robot):
     def Callback(self, config, level):
-        self.game_start = config['game_start']
-        self.get_loc = config['get_loc']
+        self.game_start = config['Game_start']
+        self.get_loc = config['Get_loc']
         self.mode = config['Robot_mode']
         self.item = config['Item']
         self.nav_mode = config['Nav_mode']
-        self.nav_start = config['nav_start']
-        self.loc_reset = config['reset_loc']
+        self.nav_start = config['Nav_start']
+        self.loc_reset = config['Reset_loc']
 
         return config
 
@@ -50,17 +52,18 @@ class Strategy(object):
         self.dclient = dynamic_reconfigure.client.Client(
             "core", timeout=30, config_callback=None)
         self.dclient.update_configuration(
-            {"game_start": False})
+            {"Game_start": False})
+        self.dclient.update_configuration(
+            {"Robot_mode": "Idle"})
         self.cal_list = []
         self.tableNum = []
         self.service_list = []
-        # rospy.Subscriber("wifi_test", Int32, self._getTableNum)
-        # rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
+        self.stop = GoalID()
         rospy.Service(TIMDA_SERVER, TimdaMode, self.handle_timda_mobile)
         rospy.Service(ADJUST, aruco_relative_pose, self.adjust_timda)
         rospy.Service(CUSTOMER, AddDiagnostics, self.web_customer)
-        self.publish_status = self.robot._Publisher(TIMDA_STATUS,  TimdaMobileStatus)
-
+        self.publish_status = self.robot._Publisher(
+            TIMDA_STATUS,  TimdaMobileStatus)
 
         self.main()
 
@@ -84,26 +87,34 @@ class Strategy(object):
                                         print("Nav stop")
                                         break
                             self.dclient.update_configuration(
-                                {"nav_start": "False"})
+                                {"Nav_start": "False"})
                         elif self.robot.nav_mode == "directory":
+                            print("Navigation to" + self.robot.item)
                             a = self.robot.goal_client(self.robot.item)
                             print(a)
                             while 1:
                                 if self.robot.status[0].status == 3:
-                                    print("Nav stop")
+                                    print("Nav Stop")
+                                    print(self.robot.item + "Reached!")
                                     break
+                                if self.robot.status[0].status == 2:
+                                    print("Nav Cancel!")
+                                    break
+
                             self.dclient.update_configuration(
-                                {"nav_start": "False"})
+                                {"Nav_start": "False"})
                 elif self.robot.mode == "Setting":
                     if self.robot.get_loc == True:
-                        print("it is setting", self.robot.item, "position")
+                        print("it is setting" + self.robot.item + "position")
                         self.robot.recordPosition(self.robot.item)
-                        self.dclient.update_configuration({"get_loc": "False"})
+                        self.dclient.update_configuration({"Get_loc": "False"})
                     elif self.robot.loc_reset == True:
-                        print("it is reset", self.robot.item, "location")
+                        print("it is reset" + self.robot.item, "location")
                         self.robot.resetLocation(self.robot.item)
-                        self.dclient.update_configuration({"reset_loc": "False"})
-                    
+                        self.dclient.update_configuration(
+                            {"Reset_loc": "False"})
+
+
 #--------------------------------------------------------------------------------------------------------#
 # Service function
 #--------------------------------------------------------------------------------------------------------#
@@ -147,12 +158,11 @@ class Strategy(object):
             print("Adjusting Stop")
 
             res.nav_done_res = "finish"
-            print('res.nav_done = ', res.nav_done_res)
+            print('res.nav_done = ' + res.nav_done_res)
         else:
             print(req)
             res.nav_done_res = "closed"
         return res
-
 
     def handle_timda_mobile(self, req):
         res = TimdaModeResponse()
@@ -161,17 +171,20 @@ class Strategy(object):
 
             if item_key.count(req.item_req) > 0:
                 self.dclient.update_configuration({"Item": req.item_req})
-                self.dclient.update_configuration({"nav_start": "True"})
+                self.dclient.update_configuration({"Nav_start": "True"})
+                print("Navigation to" + self.robot.item)
                 while self.robot.nav_start == True:
-                    a = self.robot.goal_client(req.item_req)
+                    a = self.robot.goal_client(self.robot.item)
                     print(a)
                     while 1:
                         if self.robot.status[0].status == 3:
                             print("Nav Stop")
+                            print(req.item_req + "Reached!")
                             break
-                    self.dclient.update_configuration(
-                        {"nav_start": "False"})
-                print(req.item_req, "Reached!")
+                        if self.robot.status[0].status == 2:
+                            print("Nav Cancel!")
+
+                    self.dclient.update_configuration({"Nav_start": "False"})
                 res.nav_res = 'finish'
             elif self.robot.item_adjust.count(req.item_req) > 0:
                 loc = self.robot.loc
@@ -227,9 +240,10 @@ class Strategy(object):
 
     def web_customer(self, req):
         res = AddDiagnosticsResponse()
-        self.publish_status.publish(req.load_namespace) 
+        self.publish_status.publish(req.load_namespace)
         res.message = "Receive Order, Please Wait a minute"
         return res
+
 
 if __name__ == '__main__':
     try:

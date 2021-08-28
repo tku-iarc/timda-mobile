@@ -1,7 +1,7 @@
 var get_loc_bool = false;
 
 function gameStart() {
-  if (document.getElementById("game_start").checked) {
+  if (document.getElementById("Game_start").checked) {
     myBoolean = Boolean(1);
   } else {
     myBoolean = Boolean(0);
@@ -12,7 +12,7 @@ function gameStart() {
 
   var request = new ROSLIB.ServiceRequest({
     config: {
-      bools: [{ name: "game_start", value: game_start.data }],
+      bools: [{ name: "Game_start", value: game_start.data }],
     },
   });
   dynamic_reconfigure_pub(request);
@@ -30,7 +30,7 @@ function resetLoc() {
 
   var request = new ROSLIB.ServiceRequest({
     config: {
-      bools: [{ name: "reset_loc", value: get_loc.data }],
+      bools: [{ name: "Reset_loc", value: get_loc.data }],
     },
   });
   dynamic_reconfigure_pub(request);
@@ -48,14 +48,14 @@ function getLoc() {
 
   var request = new ROSLIB.ServiceRequest({
     config: {
-      bools: [{ name: "get_loc", value: get_loc.data }],
+      bools: [{ name: "Get_loc", value: get_loc.data }],
     },
   });
   dynamic_reconfigure_pub(request);
 }
 
 function navStart() {
-  if (document.getElementById("nav_start").checked) {
+  if (document.getElementById("Nav_start").checked) {
     myBoolean = Boolean(1);
   } else {
     myBoolean = Boolean(0);
@@ -66,10 +66,27 @@ function navStart() {
 
   var request = new ROSLIB.ServiceRequest({
     config: {
-      bools: [{ name: "nav_start", value: nav_start.data }],
+      bools: [{ name: "Nav_start", value: nav_start.data }],
     },
   });
   dynamic_reconfigure_pub(request);
+}
+function navStop() {
+  if (get_loc_bool == false) {
+    myBoolean = Boolean(1);
+  } else {
+    myBoolean = Boolean(0);
+  }
+  var get_loc = new ROSLIB.Message({
+    data: myBoolean,
+  });
+
+  var request = new ROSLIB.ServiceRequest({
+    config: {
+      bools: [{ name: "Nav_stop", value: get_loc.data }],
+    },
+  });
+  dynamic_reconfigure_pub_stop(request);
 }
 
 function RobotMode() {
@@ -120,6 +137,19 @@ function dynamic_reconfigure_pub(request) {
     console.log("updating");
   });
 }
+function dynamic_reconfigure_pub_stop(request) {
+  var pub = new ROSLIB.Service({
+    ros: ros,
+    name: "/stop/set_parameters",
+    serviceType: "dynamic_reconfigure/Reconfigure",
+  });
+
+  pub.callService(request, function (result) {
+    console.log("updating");
+  });
+}
+
+
 
 function update_rqt() {
   var listener = new ROSLIB.Topic({

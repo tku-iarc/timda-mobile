@@ -11,135 +11,138 @@
 
 <body onload="update_rqt()">
     <script src="js/roslib.min.js"></script>
-    <script type="text/javascript" src="range2dslider-master/jquery.js"></script> 
-	<link rel="stylesheet" href="range2dslider-master/jquery.range2dslider.css">
-	<script type="text/javascript" src="range2dslider-master/jquery.range2dslider.js"></script>
+    <script type="text/javascript" src="range2dslider-master/jquery.js"></script>
+    <link rel="stylesheet" href="range2dslider-master/jquery.range2dslider.css">
+    <script type="text/javascript" src="range2dslider-master/jquery.range2dslider.js"></script>
 
 
     <nav>
-     <a href="http://localhost:8001/rvizweb/www/index.html">Rviz</a>
-     <a href="http://localhost:8001/rvizweb/pages/index.html">Arm</a>
-     <a href="http://localhost:8001/rvizweb/pages/chat.html">SocketIO</a>
-     <a href="http://localhost:8001/rvizweb/pages/index2.html">TIMDA</a>
-   </nav>
+        <a href="http://localhost:8001/rvizweb/www/index.html">Rviz</a>
+        <a href="http://localhost:8001/rvizweb/pages/index.html">Arm</a>
+        <a href="http://localhost:8001/rvizweb/pages/chat.html">SocketIO</a>
+        <a href="http://localhost:8001/rvizweb/pages/index2.html">TIMDA</a>
+    </nav>
     <div style=" width:50%; float:left">
         <label>Connect to rosbridge: </label>
         <span id="host-info"></span>
-	<!-- <span id="ros-status"></span> -->
+        <!-- <span id="ros-status"></span> -->
         <br>
         <label>Socket IO status: </label>
         <span id="io-status"></span>
         <br>
-        
+
     </div>
     <div id="rightside2" style="width:auto;  margin-left:50%;">
-            <br>
-        <button id="shutdown" class="button button1" >Shutdown</button></div>
+        <br>
+        <button id="shutdown" class="button button1">Shutdown</button>
+    </div>
     <div>
-    
-    <form id="controlForm" class="inline">
-        Manual Control: 
-        <label class="radio-container">No Manual
-        <input type="radio" checked="checked" name="radio" value="No Manual">
-        <span class="checkmark"></span>
-        </label>
-        <label class="radio-container">Virtual Joystick
-        <input type="radio" name="radio" value="Virtual Joystick">
-        <span class="checkmark"></span>
-        </label>
-        
-        <label class="radio-container">Real Joystick
-        <input type="radio" name="radio" value="Real Joystick">
-        <span class="checkmark"></span>
-        <select name="gamepadList" id="gamepadList" class="inline">
-            <option selected="selected" disabled>Select Gamepad</option>
-        </select>
-        </label>
-        <label class="radio-container">Keyboard
-        <input type="radio" name="radio" value="KeyboardControl">
-        <span class="checkmark"></span>
-        </label>
-    </form>
+
+        <form id="controlForm" class="inline">
+            Manual Control:
+            <label class="radio-container">No Manual
+                <input type="radio" checked="checked" name="radio" value="No Manual">
+                <span class="checkmark"></span>
+            </label>
+            <label class="radio-container">Virtual Joystick
+                <input type="radio" name="radio" value="Virtual Joystick">
+                <span class="checkmark"></span>
+            </label>
+
+            <label class="radio-container">Real Joystick
+                <input type="radio" name="radio" value="Real Joystick">
+                <span class="checkmark"></span>
+                <select name="gamepadList" id="gamepadList" class="inline">
+                    <option selected="selected" disabled>Select Gamepad</option>
+                </select>
+            </label>
+            <label class="radio-container">Keyboard
+                <input type="radio" name="radio" value="KeyboardControl">
+                <span class="checkmark"></span>
+            </label>
+        </form>
     </div>
 
     <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
-        
+
         <div id="leftside" style=" width: 200px; float:left">
             <b>rqt control</b>
             <form name='form' id='form'>
-            game_start:
-            <input id='game_start' type="checkbox" onclick=gameStart()><br />
-            Robot_mode:
-            <select name="Robot_mode" id='Robot_mode' onchange=RobotMode()>
-                <option value="idle">idle</option>
-                <option value="Setting">Setting</option>
-                <option value="Navigating">Navigating</option>
-                <option value="test">test</option>
-                <option value="Service">Service</option>
-            </select><br />    
-            Item:
-            <select name="Item" id='Item' onchange=Item1()>
-                <option value="initial">initial</option>
-                <option value="shelf">shelf</option>
-                <option value="Table1">Table1</option>
-                <option value="Table2">Table2</option>
-            </select><br />   
-            loc:
-            <input type='button' id='get_loc' value='get' 
-            onclick = getLoc() /><br />    
-            <!-- <input id='get_loc' type="checkbox"onclick=getLoc() ><br />   -->
-            Reset_loc:
-            <input type='button' id='reset_loc' value='get' 
-            onclick = resetLoc() /><br />    
-            Nav_mode:
-            <select name="Nav_mode" id='Nav_mode' onchange=NavMode()>
-                <option value="test">test</option>
-                <option value="directory">directory</option>
-            </select><br />   
-            nav_start:    
-            <input id='nav_start' type="checkbox"onclick=navStart() ><br /> 
-            speed:
-        <div class="slidecontainer inline">
-            <input type="range" min="0.1" max="2.0" step="0.01" value="0.1" class="slider" id="powerRange" />
-        </div>
-        <div class="inline"><input style="width: 30px;" id="powerShow" type="text" value="0.1" disabled />m/s</div>
+                Game_start:
+                <input id='Game_start' type="checkbox" onclick=gameStart()><br />
+                Robot_mode:
+                <select name="Robot_mode" id='Robot_mode' onchange=RobotMode()>
+                    <option value="idle">idle</option>
+                    <option value="Setting">Setting</option>
+                    <option value="Navigating">Navigating</option>
+                    <option value="test">test</option>
+                    <option value="Service">Service</option>
+                </select><br />
+                Item:
+                <select name="Item" id='Item' onchange=Item1()>
+                    <option value="initial">initial</option>
+                    <option value="shelf">shelf</option>
+                    <option value="Table1">Table1</option>
+                    <option value="Table2">Table2</option>
+                </select><br />
+                Location:
+                <input type='button' id='get_loc' value='get' onclick=getLoc() /><br />
+                <!-- <input id='get_loc' type="checkbox"onclick=getLoc() ><br />   -->
+                Reset_loc:
+                <input type='button' id='reset_loc' value='get' onclick=resetLoc() /><br />
+                Nav_Mode:
+                <select name="Nav_mode" id='Nav_mode' onchange=NavMode()>
+                    <option value="test">test</option>
+                    <option value="directory">directory</option>
+                </select><br />
+                Nav_Start:
+                <input id='Nav_start' type="checkbox" onclick=navStart()><br />
+                <input id='Nav_stop' type="button" value="Nav_Stop" onclick=navStop()><br />
+                Speed:
+                <div class="slidecontainer inline">
+                    <input type="range" min="0.1" max="2.0" step="0.01" value="0.1" class="slider" id="powerRange" />
+                </div>
+                <div class="inline"><input style="width: 30px;" id="powerShow" type="text" value="0.1" disabled />m/s
+                </div>
         </div>
 
-                           
-                          
+
+
         <div id="rightside" style="width:auto;  margin-left:30%;">
             <input id="slider">
             <script type="text/javascript">
-        
-            $('#slider').range2DSlider({
-                grid:false,
-                axis:[[-100,100],[-100,100]],
-                projections:false,
-                showLegend:[1,1],
-                allowAxisMove:['both'],
-                printLabel:function( val ){
-                    this.projections&&this.projections[0].find('.xdsoft_projection_value_x').text(val[1].toFixed(5));
-                    return 'X:'+val[0].toFixed(2)+'     Y:'+val[1].toFixed(2)
 
-                    return val[0];
-                }
-                
-            })
-                .range2DSlider('value',[0,0]);
-            
-            $('#slider')
-                .range2DSlider();
+                $('#slider').range2DSlider({
+                    grid: false,
+                    axis: [[-100, 100], [-100, 100]],
+                    projections: false,
+                    showLegend: [1, 1],
+                    allowAxisMove: ['both'],
+                    printLabel: function (val) {
+                        this.projections && this.projections[0].find('.xdsoft_projection_value_x').text(val[1].toFixed(5));
+                        return 'X:' + val[0].toFixed(2) + '     Y:' + val[1].toFixed(2)
+
+                        return val[0];
+                    }
+
+                })
+                    .range2DSlider('value', [0, 0]);
+
+                $('#slider')
+                    .range2DSlider();
             </script>
             <div id="leftside" style=" width:140px; float:left">
-                <input type='button' id='get_loc' value='left trun' onmousedown=LeftTrunPub() onmouseup=TrunOffPub() ontouchstart="LeftTrunPub();"  ontouchend="TrunOffPub();"  /><br />
+                <input type='button' id='get_loc' value='left trun' onmousedown=LeftTrunPub() onmouseup=TrunOffPub()
+                    ontouchstart="LeftTrunPub();" ontouchend="TrunOffPub();" /><br />
             </div>
             <div id="right" style=" width:auto;  margin-left:100px;">
-                <input type='button' id='get_loc' value='right trun' onmousedown=RightTrunPub() onmouseup=TrunOffPub() ontouchstart="RightTrunPub();"  ontouchend="TrunOffPub();" /><br /> 
+                <input type='button' id='get_loc' value='right trun' onmousedown=RightTrunPub() onmouseup=TrunOffPub()
+                    ontouchstart="RightTrunPub();" ontouchend="TrunOffPub();" /><br />
             </div>
             _ _
         </div>
     </div>
-    
+
     <script src="js/jquery.min.js"></script>
     <script src="js/socket.io.js"></script>
     <!-- <script src="http://localhost:8081/socket.io/socket.io.js"></script> -->
@@ -150,7 +153,7 @@
     <script src="js/Rosservice.js"></script>
     <script src="js/KeyboardControl.js?ver=20210309"></script>
 
-    
+
     <!-- <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
 

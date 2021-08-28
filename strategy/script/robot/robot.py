@@ -85,7 +85,7 @@ class Robot(object):
         self.pub_initial_point = self._Publisher(
             INITIALPOSE_TOPIC, PoseWithCovarianceStamped)
         self.pub_stopNav = self._Publisher(
-            GOAL_STOP_TOPIC, PoseWithCovarianceStamped)
+            GOAL_STOP_TOPIC, GoalID)
         self.cmdvel_pub = self._Publisher(MOBILE_CMD_VEL, Twist)
 
 #--------------------------------------------------------------------------------------------------------#
@@ -169,10 +169,10 @@ class Robot(object):
 
     def resetLocation(self, name):
         if name == "initial":
-            self.pub_initial_point(self.initial_point)
+            self.pub_initial_point.publish(self.initial_point)
         else:
-            self.pub_initial_point(self.item_dict[name])
-        print(name,"Reset done")
+            self.pub_initial_point.publish(self.item_dict[name])
+        print(name, "Reset done")
 
     def recordPosition(self, name):
         # if cmd == 1:
@@ -183,7 +183,7 @@ class Robot(object):
         else:
             self.item_dict[name] = self.loc
             self.adjust_mobile_list(name)
-        print(name,"Record done")
+        print(name, "Record done")
 #--------------------------------------------------------------------------------------------------------#
 # Publish function
 #--------------------------------------------------------------------------------------------------------#
@@ -212,7 +212,6 @@ class Robot(object):
 #--------------------------------------------------------------------------------------------------------#
 # Getting information
 #--------------------------------------------------------------------------------------------------------#
-
 
     def GetPath(self):
         return self.path
