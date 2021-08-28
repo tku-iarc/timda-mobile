@@ -1,4 +1,4 @@
 <launch>
   <node name="core" pkg="strategy" type="core.py"  output="screen" />
-  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+  <node name="NodeMCU" pkg="button" type="recieve_esp.py" output="screen"/>
 </launch>

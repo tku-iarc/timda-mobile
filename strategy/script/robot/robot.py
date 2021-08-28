@@ -7,7 +7,7 @@ import rospy
 import sys
 import roslib
 import numpy as np
-from simple_pid import PID
+# from simple_pid import PID
 from actionlib_msgs.msg import GoalID
 from actionlib_msgs.msg import GoalStatusArray
 from move_base_msgs.msg import MoveBaseActionGoal
@@ -40,27 +40,27 @@ subscriber = None
 class Robot(object):
 
     # Configs
-    __minimum_w = 0
-    __maximum_w = 0
-    __minimum_v = 0
-    __maximum_v = 0
-    __handle_dis = 0
-    __handle_ang = 0
-    Kp_v = 1.5
-    Ki_v = 0.0
-    Kd_v = 0.1
-    Cp_v = 0
-    Kp_w = 0.5
-    Ki_w = 0.0
-    Kd_w = 0.1
-    Cp_w = 0
+    # __minimum_w = 0
+    # __maximum_w = 0
+    # __minimum_v = 0
+    # __maximum_v = 0
+    # __handle_dis = 0
+    # __handle_ang = 0
+    # Kp_v = 1.5
+    # Ki_v = 0.0
+    # Kd_v = 0.1
+    # Cp_v = 0
+    # Kp_w = 0.5
+    # Ki_w = 0.0
+    # Kd_w = 0.1
+    # Cp_w = 0
 
-    pid_v = PID(Kp_v, Ki_v, Kd_v, setpoint=Cp_v)
-    pid_v.output_limits = (-1*__maximum_v, __maximum_v)
-    pid_v.auto_mode = True
-    pid_w = PID(Kp_w, Ki_w, Kd_w, setpoint=Cp_w)
-    pid_w.output_limits = (-1*__maximum_w, __maximum_w)
-    pid_w.auto_mode = True
+    # pid_v = PID(Kp_v, Ki_v, Kd_v, setpoint=Cp_v)
+    # pid_v.output_limits = (-1*__maximum_v, __maximum_v)
+    # pid_v.auto_mode = True
+    # pid_w = PID(Kp_w, Ki_w, Kd_w, setpoint=Cp_w)
+    # pid_w.output_limits = (-1*__maximum_w, __maximum_w)
+    # pid_w.auto_mode = True
 
     def __init__(self, sim=False):
         self.loc = PoseWithCovarianceStamped()
@@ -85,7 +85,7 @@ class Robot(object):
         self.pub_initial_point = self._Publisher(
             INITIALPOSE_TOPIC, PoseWithCovarianceStamped)
         self.pub_stopNav = self._Publisher(
-            INITIALPOSE_TOPIC, PoseWithCovarianceStamped)
+            GOAL_STOP_TOPIC, PoseWithCovarianceStamped)
         self.cmdvel_pub = self._Publisher(MOBILE_CMD_VEL, Twist)
 
 #--------------------------------------------------------------------------------------------------------#
@@ -165,24 +165,25 @@ class Robot(object):
         # Prints out the result of executing the action
         return self.client.get_result()  # A FibonacciResult
 
+        # if cmd == 1:
+
+    def resetLocation(self, name):
+        if name == "initial":
+            self.pub_initial_point(self.initial_point)
+        else:
+            self.pub_initial_point(self.item_dict[name])
+        print(name,"Reset done")
+
     def recordPosition(self, name):
         # if cmd == 1:
         if name == "Current":
             self.Current_loc = self.loc
-            print("current_loc set done")
         elif name == "initial":
             self.initial_point = self.loc
         else:
             self.item_dict[name] = self.loc
             self.adjust_mobile_list(name)
-        print(name)
-        print("Record done")
-        # elif cmd == 2:
-        #     self.initial_point = self.loc
-        #     print("initial point get")
-        #     self.calculate_path = True
-
-        # print(mobilestatus.status_list)
+        print(name,"Record done")
 #--------------------------------------------------------------------------------------------------------#
 # Publish function
 #--------------------------------------------------------------------------------------------------------#

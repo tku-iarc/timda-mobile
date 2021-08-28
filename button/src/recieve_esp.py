@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 import rospy
 import serial
-from button.srv import TimdaMode
+from button.msg import TimdaMobileStatus
 #COM_PORT = '/dev/ttyUSB0'
 
 BAUD_RATES = 115200
 
 list_ser = []
 
-TIMDA_SERVER = "Timda_mobile"
-
+TABLE_NUM = "timda_mobile_status"
 
 def recieve_data():
     while not rospy.is_shutdown():
@@ -28,15 +27,13 @@ def recieve_data():
 
 
 def pass_esp8266_info_to_server(data):
-    rospy.wait_for_service(TIMDA_SERVER)
+    val = rospy.Publisher(TABLE_NUM, TimdaMobileStatus, queue_size=10)
     try:
         # create a server object
-        val = rospy.ServiceProxy(TIMDA_SERVER, TimdaMode)
-        # val(arg) -> send a req to server
         if data == "1":
-            resp = val("Table1")
+            val.publish("Table1")
         else:
-            resp = val("Table2")
+            val.publish("Table2")
     except rospy.ServiceException, e:
         print('error')
 

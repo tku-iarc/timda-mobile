@@ -11,6 +11,7 @@ from strategy.cfg import RobotConfig
 import dynamic_reconfigure.client
 from std_msgs.msg import String
 from std_msgs.msg import Int32
+from diagnostic_msgs.srv import AddDiagnostics, AddDiagnosticsResponse
 import itertools
 # from navigation_tool.calculate_path_distance import Nav_cal
 from strategy.srv import TimdaMode, TimdaModeResponse
@@ -18,7 +19,8 @@ from strategy.srv import aruco_relative_pose, aruco_relative_poseResponse
 from strategy.msg import TimdaMobileStatus
 ADJUST = "Timda_mobile_relative_pose"
 TIMDA_SERVER = "Timda_mobile"
-
+CUSTOMER = "customer_order"
+TIMDA_STATUS = "timda_mobile_status"
 
 class Core(Robot):
     def Callback(self, config, level):
@@ -28,6 +30,8 @@ class Core(Robot):
         self.item = config['Item']
         self.nav_mode = config['Nav_mode']
         self.nav_start = config['nav_start']
+        self.loc_reset = config['reset_loc']
+
         return config
 
     def __init__(self, sim=False):
@@ -54,8 +58,9 @@ class Strategy(object):
         # rospy.Service(WIFI_BUTTON, wifi_srv, self._getTableNum)
         rospy.Service(TIMDA_SERVER, TimdaMode, self.handle_timda_mobile)
         rospy.Service(ADJUST, aruco_relative_pose, self.adjust_timda)
-        self.pub_status = self.robot._Publisher(
-            "/timda_mobile_status", TimdaMobileStatus)
+        rospy.Service(CUSTOMER, AddDiagnostics, self.web_customer)
+        self.publish_status = self.robot._Publisher(TIMDA_STATUS,  TimdaMobileStatus)
+
 
         self.main()
 
@@ -94,49 +99,60 @@ class Strategy(object):
                         print("it is setting", self.robot.item, "position")
                         self.robot.recordPosition(self.robot.item)
                         self.dclient.update_configuration({"get_loc": "False"})
+                    elif self.robot.loc_reset == True:
+                        print("it is reset", self.robot.item, "location")
+                        self.robot.resetLocation(self.robot.item)
+                        self.dclient.update_configuration({"reset_loc": "False"})
+                    
 #--------------------------------------------------------------------------------------------------------#
 # Service function
 #--------------------------------------------------------------------------------------------------------#
 
     def adjust_timda(self, req):
-        print("Client Request to move to (x_length, y_length, theta) =\
-                 {}, {}, {} relative to current pose".format(req.x_length, req.y_length, req.theta))
-
-        # Server RESPONSE
         res = aruco_relative_poseResponse()
-        loc = self.robot.loc
-        # var_x = (req.x_length/0.2)*req.x_length
-        # var_y = (req.y_length/0.22)*req.y_length
-        var_x = req.x_length
-        var_y = req.y_length
-        varo = 0.27
-        lim_r = 0.1
-        lim_v = 0.1
-        print("x adjusting start")
-        while 1:
-            dis_x = (loc.pose.pose.position.x - var_x) - \
-                self.robot.loc.pose.pose.position.x
-            print(dis_x)
-            if abs(dis_x) < lim_r:
-                self.robot.RobotCtrlS(0, 0, 0)
-                print("X_adjusting Stop")
-                break
-            self.robot.RobotCtrlS(lim_v * dis_x/abs(dis_x), 0, 0)
-        print("X adjusting start")
-        while 1:
-            dis_y = (loc.pose.pose.position.y - var_y) - \
-                self.robot.loc.pose.pose.position.y
-            self.robot.RobotCtrlS(0, lim_v * dis_y/abs(dis_y), 0)
-            if abs(dis_y) < lim_r:
-                self.robot.RobotCtrlS(0, 0, 0)
-                print("X_adjusting Stop")
-                break
-            self.robot.RobotCtrlS(0, lim_v * dis_y/abs(dis_y), 0)
-        print("Adjusting Stop")
+        if self.robot.mode == "Service":
+            print("Client Request to move to (x_length, y_length, theta) =\
+                     {}, {}, {} relative to current pose".format(req.x_length, req.y_length, req.theta))
 
-        res.nav_done_res = "finish"
-        print('res.nav_done = ', res.nav_done_res)
+            # Server RESPONSE
+            loc = self.robot.loc
+            # var_x = (req.x_length/0.2)*req.x_length
+            # var_y = (req.y_length/0.22)*req.y_length
+            var_x = req.x_length
+            var_y = req.y_length
+            varo = 0.27
+            lim_r = 0.1
+            lim_v = 0.1
+            print("X adjusting start")
+            while 1:
+                dis_x = (loc.pose.pose.position.x - var_x) - \
+                    self.robot.loc.pose.pose.position.x
+                print(dis_x)
+                if abs(dis_x) < lim_r:
+                    self.robot.RobotCtrlS(0, 0, 0)
+                    print("X_adjusting Stop")
+                    break
+                self.robot.RobotCtrlS(lim_v * dis_x/abs(dis_x), 0, 0)
+            print("Y adjusting start")
+            while 1:
+                print(dis_y)
+                dis_y = (loc.pose.pose.position.y - var_y) - \
+                    self.robot.loc.pose.pose.position.y
+                self.robot.RobotCtrlS(0, lim_v * dis_y/abs(dis_y), 0)
+                if abs(dis_y) < lim_r:
+                    self.robot.RobotCtrlS(0, 0, 0)
+                    print("y_adjusting Stop")
+                    break
+                self.robot.RobotCtrlS(0, lim_v * dis_y/abs(dis_y), 0)
+            print("Adjusting Stop")
+
+            res.nav_done_res = "finish"
+            print('res.nav_done = ', res.nav_done_res)
+        else:
+            print(req)
+            res.nav_done_res = "closed"
         return res
+
 
     def handle_timda_mobile(self, req):
         res = TimdaModeResponse()
@@ -155,10 +171,8 @@ class Strategy(object):
                             break
                     self.dclient.update_configuration(
                         {"nav_start": "False"})
-                self.pub_status.publish("Arrived")
                 print(req.item_req, "Reached!")
                 res.nav_res = 'finish'
-                return res
             elif self.robot.item_adjust.count(req.item_req) > 0:
                 loc = self.robot.loc
                 var = 0.2
@@ -206,12 +220,16 @@ class Strategy(object):
                         self.robot.RobotCtrlS(0, lim_v * -1, 0)
 
                 print("Move Stop")
-                return res
-
         else:
-            # print(req)
-            return "Closed"
+            print(req)
+            res.nav_res = 'finish'
+        return res
 
+    def web_customer(self, req):
+        res = AddDiagnosticsResponse()
+        self.publish_status.publish(req.load_namespace) 
+        res.message = "Receive Order, Please Wait a minute"
+        return res
 
 if __name__ == '__main__':
     try:
