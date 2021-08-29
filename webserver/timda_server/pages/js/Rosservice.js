@@ -1,4 +1,7 @@
 var get_loc_bool = false;
+var navStop_bool = false;
+var saveYaml_bool = false;
+var loadYaml_bool = false;
 
 function gameStart() {
   if (document.getElementById("Game_start").checked) {
@@ -72,21 +75,55 @@ function navStart() {
   dynamic_reconfigure_pub(request);
 }
 function navStop() {
-  if (get_loc_bool == false) {
+  if (navStop_bool == false) {
     myBoolean = Boolean(1);
   } else {
     myBoolean = Boolean(0);
   }
-  var get_loc = new ROSLIB.Message({
+  var navStop = new ROSLIB.Message({
     data: myBoolean,
   });
 
   var request = new ROSLIB.ServiceRequest({
     config: {
-      bools: [{ name: "Nav_stop", value: get_loc.data }],
+      bools: [{ name: "Nav_stop", value: navStop.data }],
     },
   });
   dynamic_reconfigure_pub_stop(request);
+}
+function saveYaml() {
+  if (saveYaml_bool == false) {
+    myBoolean = Boolean(1);
+  } else {
+    myBoolean = Boolean(0);
+  }
+  var saveYaml = new ROSLIB.Message({
+    data: myBoolean,
+  });
+
+  var request = new ROSLIB.ServiceRequest({
+    config: {
+      bools: [{ name: "SaveYaml", value: saveYaml.data }],
+    },
+  });
+  dynamic_reconfigure_pub(request);
+}
+function loadYaml() {
+  if (loadYaml_bool == false) {
+    myBoolean = Boolean(1);
+  } else {
+    myBoolean = Boolean(0);
+  }
+  var loadYaml = new ROSLIB.Message({
+    data: myBoolean,
+  });
+
+  var request = new ROSLIB.ServiceRequest({
+    config: {
+      bools: [{ name: "LoadYaml", value: loadYaml.data }],
+    },
+  });
+  dynamic_reconfigure_pub(request);
 }
 
 function RobotMode() {

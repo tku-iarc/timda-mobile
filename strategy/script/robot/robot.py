@@ -7,6 +7,7 @@ import rospy
 import sys
 import roslib
 import numpy as np
+import yaml
 # from simple_pid import PID
 from actionlib_msgs.msg import GoalID
 from actionlib_msgs.msg import GoalStatusArray
@@ -19,6 +20,7 @@ from nav_msgs.msg import Path
 # from nodeMCU_python.srv import wifi_srv
 from std_msgs.msg import Int32
 from std_msgs.msg import String
+
 
 roslib.load_manifest('move_base')
 
@@ -114,9 +116,9 @@ class Robot(object):
         else:
             # current_vector = math.hypot(output_x, output_y)
             # output_v = self.pid_v(current_vector)
-            output_w = self.pid_w(yaw)
-            output_w = output_w if abs(
-                output_w) > self.__minimum_w else self.__minimum_w * np.sign(output_w)
+            # output_w = self.pid_w(yaw)
+            # output_w = output_w if abs(
+            # output_w) > self.__minimum_w else self.__minimum_w * np.sign(output_w)
 
             # magnitude = math.sqrt(output_x**2 + output_y**2)
             # if magnitude == 0:
@@ -131,7 +133,7 @@ class Robot(object):
             msg.linear.x = output_x
             msg.linear.y = output_y
 
-            msg.angular.z = output_w
+            msg.angular.z = 0
             self.cmdvel_pub.publish(msg)
 
     def goal_client(self, goal):
@@ -141,10 +143,10 @@ class Robot(object):
         # Waits until the action server has started up and started
         # listening for goals.
         self.client.wait_for_server()
-        if goal == "initial":
-            goal_tmp = self.initial_point
-        else:
-            goal_tmp = self.item_dict[goal]
+        # # if goal == "initial":
+        # #     goal_tmp = self.initial_point
+        # else:
+        goal_tmp = self.item_dict[goal]
 
         # Creates a goal to send to the action server.
         self.goal = MoveBaseGoal()
@@ -165,21 +167,19 @@ class Robot(object):
         # Prints out the result of executing the action
         return self.client.get_result()  # A FibonacciResult
 
-        # if cmd == 1:
-
     def resetLocation(self, name):
-        if name == "initial":
-            self.pub_initial_point.publish(self.initial_point)
-        else:
-            self.pub_initial_point.publish(self.item_dict[name])
+        # if name == "initial":
+        #     self.pub_initial_point.publish(self.initial_point)
+        # else:
+        self.pub_initial_point.publish(self.item_dict[name])
         print(name, "Reset done")
 
     def recordPosition(self, name):
         # if cmd == 1:
         if name == "Current":
             self.Current_loc = self.loc
-        elif name == "initial":
-            self.initial_point = self.loc
+        # elif name == "initial":
+        #     self.initial_point = self.loc
         else:
             self.item_dict[name] = self.loc
             self.adjust_mobile_list(name)
@@ -213,6 +213,7 @@ class Robot(object):
 # Getting information
 #--------------------------------------------------------------------------------------------------------#
 
+
     def GetPath(self):
         return self.path
 
@@ -231,6 +232,22 @@ class Robot(object):
     def GetTable(self):
 
         table_tmp = self.tableNum(0)
+
+    def GetYaml(self):
+        # py_object = {'school': 'zhang',
+        #          'students': ['a', 'b']}
+        file = open('position.yaml', mode='w')
+        yaml.dump(self.item_dict, file, encoding=('utf-8'))
+        file.close()
+        print("YAML create finished")
+        # current_path = os.path.abspath(".")
+        # yaml_path = os.path.join(current_path, "generate.yaml")
+        # generate_yaml_doc(yaml_path)
+
+    def LoadYaml(self):
+        with open("position.yaml", 'r') as stream:
+            self.item_dict = yaml.load(stream, Loader=yaml.CLoader)
+        print("YAML load success!")
 #--------------------------------------------------------------------------------------------------------#
 # Calculate route function
 #--------------------------------------------------------------------------------------------------------#

@@ -22,7 +22,7 @@
         <a href="http://localhost:8001/rvizweb/pages/chat.html">SocketIO</a>
         <a href="http://localhost:8001/rvizweb/pages/index2.html">TIMDA</a>
     </nav>
-    <div style=" width:50%; float:left">
+    <div style=" width: 20%; float:left">
         <label>Connect to rosbridge: </label>
         <span id="host-info"></span>
         <!-- <span id="ros-status"></span> -->
@@ -32,44 +32,45 @@
         <br>
 
     </div>
-    <div id="rightside2" style="width:auto;  margin-left:50%;">
+    <div id="rightside2" style="width:auto;  margin: left 0;;">
         <br>
         <button id="shutdown" class="button button1">Shutdown</button>
     </div>
     <div>
 
         <form id="controlForm" class="inline">
-            Manual Control:
-            <label class="radio-container">No Manual
+            Manual Control:</br>
+            <label class="radio-container">
                 <input type="radio" checked="checked" name="radio" value="No Manual">
-                <span class="checkmark"></span>
+                <span class="checkmark"></span>None
             </label>
-            <label class="radio-container">Virtual Joystick
+            <label class="radio-container">
                 <input type="radio" name="radio" value="Virtual Joystick">
-                <span class="checkmark"></span>
+                <span class="checkmark"></span>V-Joystick
             </label>
 
-            <label class="radio-container">Real Joystick
+            <label class="radio-container">
                 <input type="radio" name="radio" value="Real Joystick">
-                <span class="checkmark"></span>
+                <span class="checkmark"></span>R-Joystick
                 <select name="gamepadList" id="gamepadList" class="inline">
                     <option selected="selected" disabled>Select Gamepad</option>
                 </select>
             </label>
-            <label class="radio-container">Keyboard
+            <label class="radio-container">
                 <input type="radio" name="radio" value="KeyboardControl">
-                <span class="checkmark"></span>
+                <span class="checkmark"></span>Keyboard
             </label>
         </form>
     </div>
 
-    <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
+    <div id="joystick" style="border: 2px rgb(14, 3, 167) dashed; height: 500px; width: 700px;margin-top: 2%;">
 
-        <div id="leftside" style=" width: 200px; float:left">
-            <b>rqt control</b>
+        <div id="leftside" style=" width: 200px ; float:left;margin-left: 3%">
+            <h3>rqt control</h3>
             <form name='form' id='form'>
                 Game_start:
                 <input id='Game_start' type="checkbox" onclick=gameStart()><br />
+                <p></p>
                 Robot_mode:
                 <select name="Robot_mode" id='Robot_mode' onchange=RobotMode()>
                     <option value="idle">idle</option>
@@ -78,6 +79,7 @@
                     <option value="test">test</option>
                     <option value="Service">Service</option>
                 </select><br />
+                <p></p>
                 Item:
                 <select name="Item" id='Item' onchange=Item1()>
                     <option value="initial">initial</option>
@@ -85,30 +87,39 @@
                     <option value="Table1">Table1</option>
                     <option value="Table2">Table2</option>
                 </select><br />
+                <p></p>
                 Location:
                 <input type='button' id='get_loc' value='get' onclick=getLoc() /><br />
                 <!-- <input id='get_loc' type="checkbox"onclick=getLoc() ><br />   -->
+                <p></p>
                 Reset_loc:
                 <input type='button' id='reset_loc' value='get' onclick=resetLoc() /><br />
+                <p></p>
                 Nav_Mode:
                 <select name="Nav_mode" id='Nav_mode' onchange=NavMode()>
-                    <option value="test">test</option>
+                    <option value="test">On duty</option>
                     <option value="directory">directory</option>
                 </select><br />
+                <p></p>
                 Nav_Start:
                 <input id='Nav_start' type="checkbox" onclick=navStart()><br />
                 <input id='Nav_stop' type="button" value="Nav_Stop" onclick=navStop()><br />
+                <p></p>
+                <div class="yaml">
+                    <input id='save_yaml' type="button" value="save" onclick=saveYaml()>
+                    <input id='load_yaml' type="button" value="load" onclick=loadYaml()><br />
+                </div>
+                <p></p>
                 Speed:
                 <div class="slidecontainer inline">
                     <input type="range" min="0.1" max="2.0" step="0.01" value="0.1" class="slider" id="powerRange" />
-                </div>
-                <div class="inline"><input style="width: 30px;" id="powerShow" type="text" value="0.1" disabled />m/s
+                    <input style="width: 30px;" id="powerShow" type="text" value="0.1" disabled />m/s
                 </div>
         </div>
 
 
 
-        <div id="rightside" style="width:auto;  margin-left:30%;">
+        <div id="rightside" style="width:auto;  margin-left:50%; margin-top: 5%;">
             <input id="slider">
             <script type="text/javascript">
 
@@ -139,7 +150,6 @@
                 <input type='button' id='get_loc' value='right trun' onmousedown=RightTrunPub() onmouseup=TrunOffPub()
                     ontouchstart="RightTrunPub();" ontouchend="TrunOffPub();" /><br />
             </div>
-            _ _
         </div>
     </div>
 

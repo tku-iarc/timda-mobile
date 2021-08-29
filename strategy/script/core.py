@@ -33,6 +33,8 @@ class Core(Robot):
         self.nav_mode = config['Nav_mode']
         self.nav_start = config['Nav_start']
         self.loc_reset = config['Reset_loc']
+        self.loadYaml = config['LoadYaml']
+        self.saveYaml = config['SaveYaml']
 
         return config
 
@@ -52,9 +54,9 @@ class Strategy(object):
         self.dclient = dynamic_reconfigure.client.Client(
             "core", timeout=30, config_callback=None)
         self.dclient.update_configuration(
-            {"Game_start": False})
-        self.dclient.update_configuration(
-            {"Robot_mode": "Idle"})
+            {"Game_start": False,
+             "Robot_mode": "Idle",
+             "Nav_start": "False"})
         self.cal_list = []
         self.tableNum = []
         self.service_list = []
@@ -74,46 +76,67 @@ class Strategy(object):
         while not rospy.is_shutdown():
             if self.robot.game_start == True:
                 if self.robot.mode == "Navigating":
-                    while self.robot.nav_start == True:
-                        if self.robot.nav_mode == "test":
-                            j = 1
-                            for i in self.robot.item_dict:
-                                print("going to the number", j, "goal")
-                                a = self.robot.goal_client(i)
-                                print(a)
-                                j = j + 1
-                                while 1:
-                                    if self.robot.status[0].status == 3:
-                                        print("Nav stop")
-                                        break
-                            self.dclient.update_configuration(
-                                {"Nav_start": "False"})
-                        elif self.robot.nav_mode == "directory":
-                            print("Navigation to" + self.robot.item)
-                            a = self.robot.goal_client(self.robot.item)
-                            print(a)
-                            while 1:
-                                if self.robot.status[0].status == 3:
-                                    print("Nav Stop")
-                                    print(self.robot.item + "Reached!")
-                                    break
-                                if self.robot.status[0].status == 2:
-                                    print("Nav Cancel!")
-                                    break
+                    if self.robot.nav_start == True:
+                        # if self.robot.nav_mode == "test":
+                        # j = 1
+                        # for i in self.robot.item_dict:
+                        #     print("going to the number " + j + " goal")
+                        #     a = self.robot.goal_client(i)
+                        #     print(a)
+                        #     j = j + 1
+                        #     while 1:
+                        #         if self.robot.status[0].status == 3:
+                        #             print("Nav stop")
+                        #             break
+                        # self.dclient.update_configuration(
+                        #     {"Nav_start": "False"})
+                        print("Navigate to " + self.robot.item)
+                        a = self.robot.goal_client(self.robot.item)
+                        print(a)
+                        while 1:
+                            if self.robot.status[0].status == 3:
+                                print("Nav Stop")
+                                print(self.robot.item + " Reached!")
+                                break
+                            elif self.robot.status[0].status == 5 or self.robot.status[0].status == 4 or self.robot.status[0].status == 6 or self.robot.status[0].status == 7 or self.robot.status[0].status == 2:
+                                print("Nav Cancel!")
+                                break
+                        while self.robot.nav_mode == "directory":
+                            if self.robot.nav_start == False:
+                                break
+                        self.dclient.update_configuration(
+                            {"Nav_start": "False"})
+                        self.dclient.update_configuration(
+                            {"Robot_mode": "Idle"})
 
-                            self.dclient.update_configuration(
-                                {"Nav_start": "False"})
                 elif self.robot.mode == "Setting":
                     if self.robot.get_loc == True:
-                        print("it is setting" + self.robot.item + "position")
+                        print("it is setting " + self.robot.item + "position")
                         self.robot.recordPosition(self.robot.item)
                         self.dclient.update_configuration({"Get_loc": "False"})
                     elif self.robot.loc_reset == True:
-                        print("it is reset" + self.robot.item, "location")
+                        print("it is reset " + self.robot.item, " location")
                         self.robot.resetLocation(self.robot.item)
                         self.dclient.update_configuration(
                             {"Reset_loc": "False"})
-
+                if self.robot.loadYaml == True:
+                    self.robot.LoadYaml()
+                    self.dclient.update_configuration(
+                        {"LoadYaml": "False"})
+                elif self.robot.saveYaml == True:
+                    self.robot.GetYaml()
+                    self.dclient.update_configuration(
+                        {"SaveYaml": "False"})
+            else:
+                self.dclient.update_configuration(
+                    {
+                        "Robot_mode": "Idle",
+                        "Nav_start": "False",
+                        "Get_loc": False,
+                        "Reset_loc": False,
+                        "SaveYaml": False,
+                        "LoadYaml": False
+                    })
 
 #--------------------------------------------------------------------------------------------------------#
 # Service function
@@ -136,7 +159,7 @@ class Strategy(object):
             lim_v = 0.1
             print("X adjusting start")
             while 1:
-                dis_x = (loc.pose.pose.position.x - var_x) - \
+                dis_x = (loc.pose.pose.position.x + var_x) - \
                     self.robot.loc.pose.pose.position.x
                 print(dis_x)
                 if abs(dis_x) < lim_r:
@@ -147,7 +170,7 @@ class Strategy(object):
             print("Y adjusting start")
             while 1:
                 print(dis_y)
-                dis_y = (loc.pose.pose.position.y - var_y) - \
+                dis_y = (loc.pose.pose.position.y + var_y) - \
                     self.robot.loc.pose.pose.position.y
                 self.robot.RobotCtrlS(0, lim_v * dis_y/abs(dis_y), 0)
                 if abs(dis_y) < lim_r:
@@ -173,7 +196,7 @@ class Strategy(object):
                 self.dclient.update_configuration({"Item": req.item_req})
                 self.dclient.update_configuration({"Nav_start": "True"})
                 print("Navigation to" + self.robot.item)
-                while self.robot.nav_start == True:
+                if self.robot.nav_start == True:
                     a = self.robot.goal_client(self.robot.item)
                     print(a)
                     while 1:
@@ -181,10 +204,15 @@ class Strategy(object):
                             print("Nav Stop")
                             print(req.item_req + "Reached!")
                             break
-                        if self.robot.status[0].status == 2:
+                        elif self.robot.status[0].status == 5 or self.robot.status[0].status == 4 or self.robot.status[0].status == 6 or self.robot.status[0].status == 7 or self.robot.status[0].status == 2:
                             print("Nav Cancel!")
+                            break
 
-                    self.dclient.update_configuration({"Nav_start": "False"})
+                    while self.robot.nav_mode == "directory":
+                        if self.robot.nav_start == False:
+                            break
+                    self.dclient.update_configuration(
+                        {"Nav_start": "False"})
                 res.nav_res = 'finish'
             elif self.robot.item_adjust.count(req.item_req) > 0:
                 loc = self.robot.loc
