@@ -1,0 +1,5 @@
+<launch>
+  <node name="core" pkg="strategy" type="core.py"  output="screen" />
+  <node name="NodeMCU" pkg="button" type="recieve_esp.py" output="screen"/>
+  <node name="stop" pkg="strategy" type="stop.py" output="screen"/>
+</launch>

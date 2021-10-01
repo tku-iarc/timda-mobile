@@ -1,0 +1,7 @@
+float32    x_length
+float32    y_length
+float32    theta
+
+---
+
+string nav_done_res

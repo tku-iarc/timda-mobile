@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo 2d Slider</title>
+	<script type="text/javascript" src="jquery.js"></script>
+	<link rel="stylesheet" href="jquery.range2dslider.css">
+	<script type="text/javascript" src="jquery.range2dslider.js"></script>
+	
+	<style>
+		body,html{
+			margin:0px;
+			padding:0px;
+		}
+		ul{
+			margin:0px 0px;
+			padding:10px 25px;
+		}
+		body>div{
+			margin:0px 20px;
+			padding:20px;
+			background:rgba(184, 184, 184, 0.1);
+		}
+	</style>
+</head>
+<body>
+	<div>
+
+	<h2>Simple 2d slider</h2>
+	<!-- <input id="slider"> -->
+	<script>
+
+	$('#slider').range2DSlider({
+		grid:false,
+		axis:[[-100,100],[-100,100]],
+		projections:false,
+		showLegend:[1,1],
+		allowAxisMove:['both'],
+		printLabel:function( val ){
+			this.projections&&this.projections[0].find('.xdsoft_projection_value_x').text(val[1].toFixed(5));
+			return 'X:'+val[0].toFixed(2)+'     Y:'+val[1].toFixed(2)
+		}
+	})
+		.range2DSlider('value',[0,0]);
+	
+	$('#slider')
+		.range2DSlider();
+	</script>
+
+</html>

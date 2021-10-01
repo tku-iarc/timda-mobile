@@ -20,12 +20,13 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_message_files(
    FILES
+   TimdaMobileStatus.msg
  )
 
 add_service_files(
   FILES
   TimdaMode.srv
-  wifi_srv.srv
+  aruco_relative_pose.srv
 )
 
 #add_action_files(

@@ -1,153 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
 
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous"
-    />
-    <link rel="shortcut icon" href="img/champion.ico" />
-    <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/form.css" />
-    <link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css" />
-    <link rel="stylesheet" href="css2/form2.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-    />
-    <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-    <link
-      rel="import"
-      href="bower_components/ros-websocket/ros-websocket.html"
-    />
-    <link rel="import" href="bower_components/ros-rviz/ros-rviz.html" />
-    <title>test</title>
-  </head>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <body>
-    <h4 class="modal-title">TIMDA UI</h4>
-    <nav>
-      <a href="http://localhost:8001/rvizweb/www/index.html">Rviz</a>
-      <a href="http://localhost:8001/rvizweb/pages/index.html">Arm</a>
-      <a href="http://localhost:8001/rvizweb/pages/chat.html">SocketIO</a>
-      <a href="http://localhost:8001/rvizweb/pages/index2.html">TIMDA</a>
-    </nav>
-    <div>
-      <div id="StatusTableDiv">
-        <label class="content">Connect to rosbridge: </label>
-        <span id="host-info"></span>
-        <span id="ros-status"></span>
-        <br />
-        <label class="content">Socket IO status: </label>
-        <span id="io-status"></span>
-        <br />
-        <button id="shutdown" class="button button1">Shutdown</button>
-      </div>
-      <div id="ControlTable">
-        <h2 class="modal-title">Manual Control:</h2>
-        <form id="controlForm" class="inline">
-          <label class="radio-container"
-            >No Manual
-            <input
-              type="radio"
-              checked="checked"
-              name="radio"
-              value="No Manual"
-            />
-            <span class="checkmark"></span>
-          </label>
-          <br />
-          <label class="radio-container"
-            >Virtual Joystick
-            <input type="radio" name="radio" value="Virtual Joystick" />
-            <span class="checkmark"></span>
-          </label>
-          <br />
-          <label class="radio-container"
-            >Real Joystick
-            <input type="radio" name="radio" value="Real Joystick" />
-            <span class="checkmark"></span>
-            <select name="gamepadList" id="gamepadList" class="inline">
-              <option selected="selected" disabled>Select Gamepad</option>
-            </select>
-          </label>
-          <br />
-          <label class="radio-container"
-            >Keyboard
-            <input type="radio" name="radio" value="KeyboardControl" />
-            <span class="checkmark"></span>
-          </label>
-          <br />
-        </form>
-      </div>
-      <div id="joystick" style="border: 2px rgb(3, 167, 158) dashed">
-        <div
-          id="joy3Div"
-          style="width: 200px; height: 200px; margin: 50px"
-        ></div>
-        <div style="left: 750px">
-          Position X:<input id="joy3PosizioneX" type="text" /><br />
-          Position Y:<input id="joy3PosizioneY" type="text" /><br />
-          Direction:<input id="joy3Direzione" type="text" /> <br />
-          X :<input id="joy3X" type="text" /> <br />
-          Y :<input id="joy3Y" type="text" />
-        </div>
-        <div class="slidecontainer inline">
-          <input
-            type="range"
-            min="0.1"
-            max="2.0"
-            step="0.01"
-            value="0.1"
-            class="slider"
-            id="powerRange"
-          />
-        </div>
-        <div class="inline">
-          <input
-            style="width: 30px"
-            id="powerShow"
-            type="text"
-            value="20"
-            disabled
-          />
-        </div>
-        <label class="inline">m/s</label>
-      </div>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+  <link rel="shortcut icon" href="img/champion.ico" />
+  <link rel="stylesheet" href="font-awesome-4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/form.css" />
+  <link rel="stylesheet" href="jquery-ui-1.11.4/jquery-ui.css" />
+  <link rel="stylesheet" href="css2/form2.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <link rel="import" href="bower_components/ros-websocket/ros-websocket.html" />
+  <link rel="import" href="bower_components/ros-rviz/ros-rviz.html" />
+  <title>test</title>
+</head>
+
+<body>
+  <h4 class="modal-title">TIMDA UI</h4>
+  <nav>
+    <a href="http://localhost:8001/rvizweb/www/index.html">Rviz</a>
+    <a href="http://localhost:8001/rvizweb/pages/index.html">Arm</a>
+    <a href="http://localhost:8001/rvizweb/pages/chat.html">SocketIO</a>
+    <a href="http://localhost:8001/rvizweb/pages/index2.html">TIMDA</a>
+  </nav>
+  <div>
+    <div id="StatusTableDiv">
+      <label class="content">Connect to rosbridge: </label>
+      <span id="host-info"></span>
+      <span id="ros-status"></span>
+      <br />
+      <label class="content">Socket IO status: </label>
+      <span id="io-status"></span>
+      <br />
+      <button id="shutdown" class="button button1">Shutdown</button>
     </div>
+    <div id="ControlTable">
+      <h2 class="modal-title">Manual Control:</h2>
+      <form id="controlForm" class="inline">
+        <label class="radio-container">No Manual
+          <input type="radio" checked="checked" name="radio" value="No Manual" />
+          <span class="checkmark"></span>
+        </label>
+        <br />
+        <label class="radio-container">Virtual Joystick
+          <input type="radio" name="radio" value="Virtual Joystick" />
+          <span class="checkmark"></span>
+        </label>
+        <br />
+        <label class="radio-container">Real Joystick
+          <input type="radio" name="radio" value="Real Joystick" />
+          <span class="checkmark"></span>
+          <select name="gamepadList" id="gamepadList" class="inline">
+            <option selected="selected" disabled>Select Gamepad</option>
+          </select>
+        </label>
+        <br />
+        <label class="radio-container">Keyboard
+          <input type="radio" name="radio" value="KeyboardControl" />
+          <span class="checkmark"></span>
+        </label>
+        <br />
+      </form>
+    </div>
+    <div id="joystick" style="border: 10px rgb(3, 167, 158) dashed">
+      <div id="joy3Div" style="width: 200px; height: 200px; margin: 50px"></div>
+      <div style="left: 750px">
+        Position X:<input id="joy3PosizioneX" type="text" /><br />
+        Position Y:<input id="joy3PosizioneY" type="text" /><br />
+        Direction:<input id="joy3Direzione" type="text" /> <br />
+        X :<input id="joy3X" type="text" /> <br />
+        Y :<input id="joy3Y" type="text" />
+      </div>
+      <div class="slidecontainer inline">
+        <input type="range" min="0.1" max="2.0" step="0.01" value="0.1" class="slider" id="powerRange" />
+      </div>
+      <div class="inline">
+        <input style="width: 30px" id="powerShow" type="text" value="20" disabled />
+      </div>
+      <label class="inline">m/s</label>
+    </div>
+  </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/joy.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/roslib.min.js"></script>
-    <script src="js/rostopic.js"></script>
-    ></script>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="js/joy.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/roslib.min.js"></script>
+  <script src="js/rostopic.js"></script>
+  ></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+</body>
 </htmlssss

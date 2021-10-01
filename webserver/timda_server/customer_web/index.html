@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/download.css">
+  <title>TMP</title>
+</head>
+
+<body>
+  <script src="js/roslib.min.js"></script>
+  <div class="background">
+    <div class="container">
+      <div class="panel pricing-table">
+
+        <div class="pricing-plan">
+          <img src="img/sandwich.jpeg" alt="" class="pricing-img">
+          <h1 class="pricing-header">sandwich</h1>
+
+          <ul class="pricing-features">
+            <li class="pricing-features-item">Put meat, cheese, or vegetables in the middle of the bread</li>
+          </ul>
+          <span class="pricing-price">$50</span>
+          <a class="pricing-button" id='sandwich' onclick=pub_goods(id)>Send out</a>
+          <span class="pricing-price" id='sandwich_print' style="visibility: hidden;">ready</span>
+        </div>
+
+        <div class="pricing-plan">
+          <img src="img/riceball.jpeg" alt="" class="pricing-img">
+          <h1 class="pricing-header">riceball</h1>
+          <ul class="pricing-features">
+            <li class="pricing-features-item">Put meat, cheese, or vegetables in the middle of the rice</li>
+          </ul>
+          <span class="pricing-price">$35</span>
+          <a class="pricing-button is-featured" id='riceball' onclick=pub_goods(id)>Send out</a>
+          <span class="pricing-price" id='riceball_print' style="visibility: hidden;">ready</span>
+        </div>
+
+      </div>
+      <div>
+
+        <form id="controlForm" class="inline">
+          <h1 style="float:left;font-size: 40px;">Table : </h1>
+          <input type="radio" name="group1" value="table1"
+            style="float:left;width: 3em;height: 3em;margin-top:30px; margin-left:20px">
+          <h2 style="float:left; font-size: 40px;margin-left:5px">table1 </h2>
+
+          <input type="radio" name="group1" value="table2"
+            style="float:left;width: 3em;height: 3em;margin-top:30px; margin-left:20px">
+          <h2 style="float:left;font-size: 40px;margin-left:5px">table2</h2>
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+  </div>
+  <script src="js/rostopic.js"></script>
+</body>
+
+</html>
