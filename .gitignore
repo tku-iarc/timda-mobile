@@ -1,9 +1,10 @@
 *.swp
 node_modules/
 project_tool/
-
+*dat
 *.tfw
 *.tif
+*.pyc
 timda_configs/maps/*.pgm
 timda_configs/maps/*.yaml
 bower_components/
