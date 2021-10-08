@@ -8,7 +8,8 @@
   <node name="mobile_node" pkg="mecanum" type="mobile_node"></node>
 
   <!-- Robot description -->
-  <param name="robot_description" command="$(find xacro)/xacro $(find timda_description)/urdf/timda.urdf.xacro" />
+  <!--<param name="robot_description" command="$(find xacro)/xacro $(find timda_description)/urdf/timda.urdf.xacro" />-->
+  <param name="robot_description" command="$(find xacro)/xacro $(find timda_description)/urdf/timda_only_mobile.urdf.xacro" />
   <!--
   <node name="spawn_model"
         pkg="gazebo_ros"
@@ -27,7 +28,7 @@
   <!-- Lidar -->
   <node name="lidar_front" pkg="urg_node" type="urg_node" output="screen">
     <param name="ip_address" value=""/>
-    <param name="serial_port" value="/dev/sensors/hokuyo_00905846"/>
+    <param name="serial_port" value="/dev/sensors/hokuyo_H1625659"/>
     <param name="serial_baud" value="115200"/>
     <param name="frame_id" value="front_lidar_frame"/>
     <param name="calibrate_time" value="true"/>

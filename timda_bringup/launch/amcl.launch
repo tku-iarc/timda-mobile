@@ -18,7 +18,7 @@
     <param name="odom_alpha2" value="0.2"/>
     <param name="odom_alpha3" value="0.8"/>
     <param name="odom_alpha4" value="0.2"/>
-    <param name="laser_z_hit" value="0.5"/>
+    <param name="laser_z_hit" value="0.5"/> 
     <param name="laser_z_short" value="0.05"/>
     <param name="laser_z_max" value="0.05"/>
     <param name="laser_z_rand" value="0.5"/>
@@ -36,6 +36,10 @@
     <param name="transform_tolerance" value="0.1"/>
     <param name="recovery_alpha_slow" value="0.0"/>
     <param name="recovery_alpha_fast" value="0.0"/>
+    <param name="initial_pose_x" value="-0.781761502817"/>
+    <param name="initial_pose_y" value="0.73104182119"/>
+    <param name="initial_pose_a" value="-49.902"/>
+
   </node>
 
 </launch>

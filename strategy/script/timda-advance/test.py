@@ -9,13 +9,22 @@ obj = [[0, 0], [-4, 6], [-1, 9], [3, 1]]
 
 
 def main():
+    if "bck" in "fuck_back":
+        print("fuck back")
+    else:
+        print("fuck none")
+    # list = ['a', 'b', 'c', 'd', 'e']
+    # if list.count('z') > 0:
+    #     print("fuck")
+    # else:
+    #     print("fuck u to ")
     # plt.plot([1, 2, 3, 4])
     # plt.show()
     # a = np.array([[0], [1]])
     # chromosome = np.empty([3, 2])
     # chchcc = np.random.random((3, 2))
     # i = 0
-    k = 1
+    # k = 1
     # table = "table" + str(k)
     # print(table)
     # cal_tmp2 = ["a", "b", "c"]
@@ -73,11 +82,64 @@ def main():
 #     str1 = ','.join(str(i) for i in arr)
 #     print(len(list))
 #     print(str1)
+    # cal(1, 0, 0)
+    # cal_t(1, 0, 4)
+    # for i in range(1, 5):
+    #     for j in range(1, 5):
+    #         if j == i:
+    #             continue
+    #         for l in range(1, 5):
+    #             if l == i or l == j:
+    #                 continue
+    #             for a in range(1, 5):
+    #                 if a == i or a == j or a == l:
+    #                     continue
+    #                 for b in range(1, 10):
+    #                     if b == i or b == j or b == l or b == a:
+    #                         continue
+    #                     for c in range(1, 10):
+    #                         if c == i or c == j or c == l or c == a or c == b:
+    #                             continue
+    #                         for d in range(1, 10):
+    #                             if d == i or d == j or d == l or d == a or d == b or d == c:
+    #                                 continue
+    #                             for e in range(1, 10):
+    #                                 if e == i or e == j or e == l or e == a or e == b or e == c or e == d:
+    #                                     continue
+    #                                 for f in range(1, 10):
+    #                                     if f == i or f == j or f == l or f == a or f == b or f == c or f == d or f == e:
+    #                                         continue
+    #                                     for g in range(1, 10):
+    #                                         if g == i or g == j or g == l or g == a or g == b or g == c or g == d or g == e or g == f:
+    #                                             continue
+    #                                         print(i, j, l, a, b, c, d, e, f, g)
+    #                                         print("")
 
 
 def distance(x, y):
     r = math.sqrt(pow(x, 2) + pow(y, 2))
     return r
+
+
+# def cal_t(ggg, i):
+#     if ggg == 0:
+#         print(i)
+#         return
+#     else:
+#         for i in range(, 5):
+#             cal_t(ggg-1, i)
+#             print("")
+
+
+def cal(goa, beg, route):
+    route_new = route + distance((obj[goa][0]-obj[beg][0]),
+                                 (obj[goa][1]-obj[beg][1]))
+    for i in range(goa, 4):
+        if goa == 4:
+            break
+        cal(i, goa, route_new)
+
+    print(route_new)
 
 
 main()
